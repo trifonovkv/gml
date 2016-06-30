@@ -3,7 +3,6 @@ all:
 				autoheader
 				automake -a -c --foreign
 				autoconf
-# libtoolize --force
 
 configure:
 				./configure
