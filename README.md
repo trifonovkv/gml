@@ -12,6 +12,7 @@ gcc flex bison gtk
 ```Shell
 git clone git@github.com:trifonovkv/gml.git
 cd gml
+make -f Makefile.dist
 ./configure
 make
 ```
