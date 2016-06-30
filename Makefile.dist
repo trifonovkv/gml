@@ -1,9 +1,9 @@
 all:
 				aclocal
 				autoheader
+				libtoolize --force
 				automake -a -c --foreign
 				autoconf
-# libtoolize --force
 
 configure:
 				./configure

@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
 SUBDIRS =									\
 				src								\
 				src/example				\
@@ -14,13 +16,20 @@ MAINTAINERCLEANFILES = 		\
 				aclocal.m4 				\
 				compile						\
 				configure 				\
-        install-sh				\
-				Makefile.in				\
-			  missing						\
-				stamp-h.in 				\
 				config.cache 			\
 				config.h					\
 				config.h.in 			\
+				config.guess			\
+				config.sub				\
 				depcomp 					\
+        install-sh				\
+				m4								\
+				Makefile.in				\
+			  missing						\
+				ltmain.sh  				\
+				stamp-h.in 				\
         ylwrap						\
 				$(NULL)
+
+maintainer-clean-local:
+				-rm -rf m4

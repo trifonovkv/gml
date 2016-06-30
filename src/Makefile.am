@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
 AM_YFLAGS = -d
 
 AUTOMAKE_OPTIONS = subdir-objects

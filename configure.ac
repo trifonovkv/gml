@@ -6,6 +6,8 @@ AC_INIT([gml], [0.1], [trifonovkv@gmail.com])
 AC_CONFIG_SRCDIR([src])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE
+AC_CONFIG_MACRO_DIRS([m4])
+LT_INIT
 
 # Checks for programs.
 AC_PROG_CC
