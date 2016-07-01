@@ -4,13 +4,20 @@ GML is a user interface markup language. It is a declarative language for design
 gml - translator that gets the description of the user interface written in
 the GML language and translates into a C code with using the GTK libraries.
 
-## Dependencies                                                                                                                                                  
-gcc flex bison gtk
+## Dependencies                                                                                                                 
+### Fedora
+```Shell
+dnf install automake libtool bison flex gtk3-devel
+```
+### Ubuntu
+```Shell
+apt install git automake bison flex libgtk-3-dev libtool-bin
+```
 
 ## Installation
 
 ```Shell
-git clone git@github.com:trifonovkv/gml.git
+git clone https://github.com/trifonovkv/gml.git
 cd gml
 make -f Makefile.dist
 ./configure
