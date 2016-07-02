@@ -28,5 +28,6 @@ make
 
 ```Shell
 ./src/gml
-./src/example/example
+./src/example/window
+./src/example/header_bar
 ```
