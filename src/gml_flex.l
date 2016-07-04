@@ -14,6 +14,9 @@ void comment();
 "/*"                  comment();
 {DIGIT}+              yylval.int_val=atoi(yytext);    return NUMBER; 
 {DIGIT}+\.{DIGIT}+    yylval.float_val=atof(yytext);  return FLOAT;
+ADJUSTMENT            return ADJUSTMENT;
+SCROLLED_WINDOW       return SCROLLED_WINDOW;
+HEADER_BAR            return HEADER_BAR;
 ENTRY                 return ENTRY;
 HBOX                  return HBOX;
 VBOX                  return VBOX;
@@ -49,6 +52,7 @@ Skip_taskbar          return SKIP_TASKBAR;
 Destroy_with_parent   return DESTROY_WITH_PARENT;
 
 Title                 return TITLE;
+Titlebar              return TITLEBAR;
 Default_size          return DEFAULT_SIZE;
 Resizable             return RESIZABLE;
 Deletable             return DELETABLE;
@@ -108,6 +112,35 @@ Focus_on_click        return FOCUS_ON_CLICK;
 Image                 return IMAGE;
 Image_position        return IMAGE_POSITION;
 Always_show_image     return ALWAYS_SHOW_IMAGE;
+
+Header_bar_title      return HEADER_BAR_TITLE;
+Subtitle              return SUBTITLE;
+Has_subtitle          return HAS_SUBTITLE;
+Custom_title          return CUSTOM_TITLE;
+Show_close_button     return SHOW_CLOSE_BUTTON;
+Decoration_layout     return DECORATION_LAYOUT;
+Pack_start            return PACK_START;
+Pack_end              return PACK_END; 
+
+Policy                return POLICY;
+Placement             return PLACEMENT;
+Shadow_type           return SHADOW_TYPE;
+Hadjustment           return HADJUSTMENT; 
+Vadjustment           return VADJUSTMENT; 
+Min_content_width     return MIN_CONTENT_WIDTH;
+Min_content_height    return MIN_CONTENT_HEIGHT;
+Kinetic_scrolling     return KINETIC_SCROLLING;
+Capture_button_press  return CAPTURE_BUTTON_PRESS;
+Overlay_scrolling     return OVERLAY_SCROLLING;
+
+Value                 return VALUE;
+Clamp_page            return CLAMP_PAGE;
+Configure             return CONFIGURE; 
+Lower                 return LOWER; 
+Page_increment        return PAGE_INCREMENT;
+Page_size             return PAGE_SIZE; 
+Step_increment        return STEP_INCREMENT;
+Upper                 return UPPER;
 
 \"(\\.|[^\\"])*\"     yylval.string=strdup(yytext); return STRING;  
 {ID}+                 yylval.string=strdup(yytext); return IDENTIFIER;

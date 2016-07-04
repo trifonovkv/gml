@@ -6,6 +6,9 @@
 #include"widgets/entry.h"
 #include"widgets/box.h"
 #include"widgets/button.h"
+#include"widgets/header_bar.h"
+#include"widgets/scrolled_window.h"
+#include"widgets/adjustment.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -33,7 +36,7 @@ int yylex();
 %token DECORATED DEFAULT_GEOMETRY HIDE_TITLEBAR_WHEN_MAXIMIZED KEEP_ABOVE 
 %token KEEP_BELOW STARTUP_ID ROLE ICON_NAME MNEMONICS_VISIBLE FOCUS_VISIBLE 
 %token SKIP_TASKBAR_HINT SKIP_PAGER_HINT URGENCY_HINT GRAVITY TYPE_HINT 
-%token POSITION MODAL FOCUS_ON_MAP SKIP_TASKBAR DESTROY_WITH_PARENT 
+%token POSITION MODAL FOCUS_ON_MAP SKIP_TASKBAR DESTROY_WITH_PARENT TITLEBAR
 
 %token ACCEPT_FOCUS URGENT DELETABLE RESIZABLE DEFAULT_SIZE TITLE 
 
@@ -51,7 +54,17 @@ int yylex();
 
 %token RELIEF LABEL USE_UNDERLINE FOCUS_ON_CLICK IMAGE IMAGE_POSITION
 %token ALWAYS_SHOW_IMAGE 
- 
+
+%token HEADER_BAR HEADER_BAR_TITLE SUBTITLE HAS_SUBTITLE CUSTOM_TITLE 
+%token SHOW_CLOSE_BUTTON DECORATION_LAYOUT PACK_START PACK_END 
+
+%token SCROLLED_WINDOW POLICY PLACEMENT SHADOW_TYPE HADJUSTMENT VADJUSTMENT 
+%token MIN_CONTENT_WIDTH MIN_CONTENT_HEIGHT KINETIC_SCROLLING 
+%token CAPTURE_BUTTON_PRESS OVERLAY_SCROLLING
+
+%token ADJUSTMENT VALUE CLAMP_PAGE CONFIGURE LOWER PAGE_INCREMENT PAGE_SIZE 
+%token STEP_INCREMENT UPPER
+
 %union
 {
         int   int_val;
@@ -77,6 +90,9 @@ command:
         | vbox
         | hbox
         | entry
+        | header_bar
+        | scrolled_window
+        | adjustment
         ;
 
 commons:
@@ -295,6 +311,55 @@ add:
                 container_add(yyout, $2);
         }
         ;
+
+hb_packs:
+        | hb_packs hb_pack
+        ;
+
+hb_pack:
+        ADD PACK_START IDENTIFIER
+        {
+                header_bar_pack_start(yyout, $3);
+        }
+        |
+        ADD PACK_END IDENTIFIER
+        {
+                header_bar_pack_end(yyout, $3);
+        }
+        ;
+
+adjustment:
+        ADJUSTMENT IDENTIFIER 
+        {
+                adjustment_new(yyout, $2);
+        } params SEMICOLON
+        {
+                block_close($2);
+        }
+        ;
+
+scrolled_window:
+        SCROLLED_WINDOW IDENTIFIER
+        {
+                scrolled_window_new(yyout, $2);
+        }
+        commons params adds SEMICOLON
+        {
+                block_close($2);
+        }
+        ;      
+
+header_bar:
+        HEADER_BAR IDENTIFIER
+        {
+                header_bar_new(yyout, $2); 
+        }
+        commons params hb_packs SEMICOLON
+        {
+                block_close($2);
+        }
+        ;
+
 entry:
         ENTRY IDENTIFIER
         {
@@ -448,6 +513,7 @@ param:
         | set_window_skip_taskbar_hint
         | set_window_skip_pager_hint
         | set_window_urgency_hint
+        | set_window_titlebar
         | set_box_spacing
         | set_box_baseline
         | set_box_homogeneous
@@ -472,6 +538,198 @@ param:
         | set_button_image
         | set_button_image_position
         | set_button_always_show_image
+        | set_header_bar_title
+        | set_header_bar_subtitle
+        | set_header_bar_has_subtitle
+        | set_header_bar_custom_title
+        | set_header_bar_show_close_button
+        | set_header_bar_decoration_layout
+        | set_scrolled_window_policy
+        | set_scrolled_window_placement
+        | set_scrolled_window_shadow_type
+        | set_scrolled_window_hadjustment
+        | set_scrolled_window_vadjustment
+        | set_scrolled_window_min_content_width 
+        | set_scrolled_window_min_content_height
+        | set_scrolled_window_kinetic_scrolling
+        | set_scrolled_window_capture_button_press
+        | set_scrolled_window_overlay_scrolling
+        | set_adjustment_value
+        | set_adjustment_clamp_page
+        | set_adjustment_configure
+        | set_adjustment_lower
+        | set_adjustment_page_increment
+        | set_adjustment_page_size
+        | set_adjustment_step_increment
+        | set_adjustment_upper
+        ;
+
+set_adjustment_value:
+        SET VALUE FLOAT 
+        {
+                adjustment_set_value(yyout, $3);
+        }
+        ;
+
+set_adjustment_clamp_page:
+        SET CLAMP_PAGE FLOAT FLOAT
+        {
+                adjustment_clamp_page(yyout, $3, $4);
+        }
+        ;
+
+set_adjustment_configure:
+        SET CONFIGURE FLOAT FLOAT FLOAT FLOAT FLOAT FLOAT
+        {
+                adjustment_configure(yyout, $3, $4, $5, $6, $7, $8);
+        }
+        ;
+
+set_adjustment_lower:
+        SET LOWER FLOAT
+        {
+                adjustment_set_lower(yyout, $3);
+        }
+        ;
+
+set_adjustment_page_increment:
+        SET PAGE_INCREMENT FLOAT
+        {
+                adjustment_set_page_increment(yyout, $3);
+        }
+        ;
+
+set_adjustment_page_size:
+        SET PAGE_SIZE FLOAT
+        {
+                adjustment_set_page_size(yyout, $3);
+        }
+        ;
+
+set_adjustment_step_increment:
+        SET STEP_INCREMENT FLOAT
+        {
+                adjustment_set_step_increment(yyout, $3);
+        }
+        ;
+
+set_adjustment_upper:
+        SET UPPER FLOAT
+        {
+                adjustment_set_upper(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_policy:
+        SET POLICY IDENTIFIER IDENTIFIER 
+        {
+                scrolled_window_set_policy(yyout, $3, $4);
+        }
+        ;
+
+set_scrolled_window_placement:
+        SET PLACEMENT IDENTIFIER
+        {
+                scrolled_window_set_placement(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_shadow_type:
+        SET SHADOW_TYPE IDENTIFIER
+        {
+                scrolled_window_set_shadow_type(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_hadjustment:
+        SET HADJUSTMENT IDENTIFIER
+        {
+                scrolled_window_set_hadjustment(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_vadjustment:
+        SET VADJUSTMENT IDENTIFIER
+        {
+                scrolled_window_set_vadjustment(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_min_content_width:
+        SET MIN_CONTENT_WIDTH NUMBER
+        {
+                scrolled_window_set_min_content_width(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_min_content_height:
+        SET MIN_CONTENT_HEIGHT NUMBER
+        {
+                scrolled_window_set_min_content_height(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_kinetic_scrolling:
+        SET KINETIC_SCROLLING IDENTIFIER
+        {
+                scrolled_window_set_kinetic_scrolling(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_capture_button_press:
+        SET CAPTURE_BUTTON_PRESS IDENTIFIER
+        {
+                scrolled_window_set_capture_button_press(yyout, $3);
+        }
+        ;
+
+set_scrolled_window_overlay_scrolling:
+        SET OVERLAY_SCROLLING IDENTIFIER
+        {
+                scrolled_window_set_overlay_scrolling(yyout, $3);
+        }
+        ;
+ 
+set_header_bar_title:
+        SET HEADER_BAR_TITLE STRING 
+        {
+                header_bar_set_title(yyout, $3);
+        }
+        ;
+
+set_header_bar_subtitle:
+        SET SUBTITLE STRING 
+        {
+                header_bar_set_subtitle(yyout, $3);
+        }
+        ;
+
+set_header_bar_has_subtitle:
+        SET HAS_SUBTITLE IDENTIFIER
+        {
+                header_bar_set_has_subtitle(yyout, $3);
+        }
+        ;
+
+set_header_bar_custom_title:
+        SET CUSTOM_TITLE IDENTIFIER
+        {
+                header_bar_set_custom_title(yyout, $3);
+        }
+        ;
+
+set_header_bar_show_close_button:
+        SET SHOW_CLOSE_BUTTON IDENTIFIER
+        {
+                header_bar_set_show_close_button(yyout, $3);
+        }
+        ;
+
+set_header_bar_decoration_layout:
+        SET DECORATION_LAYOUT STRING
+        {
+                header_bar_set_decoration_layout(yyout, $3);
+        }
         ;
 
 set_button_relief:
@@ -627,6 +885,13 @@ set_box_spacing:
         SET SPACING NUMBER
         {
                 box_set_spacing(yyout, $3);
+        }
+        ;
+
+set_window_titlebar:
+        SET TITLEBAR IDENTIFIER
+        {
+                window_set_titlebar(yyout, $3);
         }
         ;
 

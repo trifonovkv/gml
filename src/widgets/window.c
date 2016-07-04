@@ -9,6 +9,14 @@ char *WINDOW_TYPE = "GTK_WINDOW_TOPLEVEL";
  * }
  */
 
+void window_set_titlebar(FILE *out, char *titlebar)
+{
+        char *widget = getsymval("this");
+        tab_insert(out);
+        fprintf(out, "gtk_window_set_titlebar(GTK_WINDOW(%s), %s);\n",
+                widget, titlebar);
+}
+
 void window_set_default_geometry(FILE *out, int width, int height)
 {
         char *widget = getsymval("this");

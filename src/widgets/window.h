@@ -1,5 +1,14 @@
 #include"gml.h"
 
+/*
+ * Sets a custom titlebar for window.
+ * If you set a custom titlebar, GTK+ will do its best to convince the window
+ * manager not to put its own titlebar on the window. Depending on the system,
+ * this function may not work for a window that is already visible, so you set
+ * the titlebar before calling gtk_widget_show().
+ */
+void window_set_titlebar(FILE *out, char *titlebar);
+
 /* 
  * Like gtk_window_set_default_size(), but width and height are interpreted in 
  * terms of the base size and increment set with gtk_window_set_geometry_hints.
