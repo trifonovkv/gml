@@ -2,8 +2,8 @@
 
 void adjustment_new(FILE *out, char *widget)
 {
-        syminst(widget, widget);
-        syminst("this", widget);
+        syminst(GTK_ADJUSTMENT, widget, widget);
+        syminst(GTK_ADJUSTMENT, "this", widget);
         tab_insert(out);
         fprintf(out, 
 "GtkAdjustment *%s=gtk_adjustment_new(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);\n", 

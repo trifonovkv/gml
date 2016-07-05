@@ -2,8 +2,8 @@
 
 void scrolled_window_new(FILE *out, char *widget)
 {
-        syminst(widget, widget);
-        syminst("this", widget);
+        syminst(GTK_SCROLLED_WINDOW, widget, widget);
+        syminst(GTK_SCROLLED_WINDOW, "this", widget);
         tab_insert(out); 
         fprintf(out, "GtkWidget *%s=gtk_scrolled_window_new(NULL, NULL);\n",
                 widget);

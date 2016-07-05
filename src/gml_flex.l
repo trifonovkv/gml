@@ -14,6 +14,7 @@ void comment();
 "/*"                  comment();
 {DIGIT}+              yylval.int_val=atoi(yytext);    return NUMBER; 
 {DIGIT}+\.{DIGIT}+    yylval.float_val=atof(yytext);  return FLOAT;
+TEXT_VIEW             return TEXT_VIEW;
 ADJUSTMENT            return ADJUSTMENT;
 SCROLLED_WINDOW       return SCROLLED_WINDOW;
 HEADER_BAR            return HEADER_BAR;
@@ -28,6 +29,9 @@ ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 CMN                   return COMMON;
+
+Editable              return EDITABLE;
+Input_purpose         return INPUT_PURPOSE;
 
 Decorated             return DECORATED;
 Default_geometry      return DEFAULT_GEOMETRY;
@@ -69,13 +73,11 @@ Pack_type             return PACK_TYPE;
 Center                return CENTER;
 
 Max_length            return MAX_LENGTH;
-Input_purpose         return INPUT_PURPOSE;
 Width_chars           return WIDTH_CHARS;
 Alignment             return ALIGNMENT;
 Placeholder_text      return PLACEHOLDER_TEXT;
 Text                  return TEXT;
 Activates_defalut     return ACTIVATES_DEFAULT;
-Editable              return EDITABLE;
 Overwrite_mode        return OVERWRITE_MODE;
 Has_frame             return HAS_FRAME;
 Visibility_char       return VISIBILITY_CHAR;
@@ -142,6 +144,20 @@ Page_size             return PAGE_SIZE;
 Step_increment        return STEP_INCREMENT;
 Upper                 return UPPER;
 
+Border_window_size    return BORDER_WINDOW_SIZE;
+Wrap_mode             return WRAP_MODE; 
+Cursor_visible        return CURSOR_VISIBLE;
+Overwrite             return OVERWRITE; 
+Pixels_above_lines    return PIXELS_ABOVE_LINES;
+Pixels_below_linew    return PIXELS_BELOW_LINES;
+Pixels_inside_wrap    return PIXELS_INSIDE_WRAP;
+Justification         return JUSTIFICATION; 
+Left_margin           return LEFT_MARGIN;
+Right_margin          return RIGHT_MARGIN;
+Indent                return INDENT;
+Accepts_tab           return ACCEPTS_TAB;
+Input_hints           return INPUT_HINTS; 
+ 
 \"(\\.|[^\\"])*\"     yylval.string=strdup(yytext); return STRING;  
 {ID}+                 yylval.string=strdup(yytext); return IDENTIFIER;
 ;                     return SEMICOLON;

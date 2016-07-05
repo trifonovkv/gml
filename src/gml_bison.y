@@ -1,6 +1,7 @@
 %{
 #include<string.h>
 #include"gml.h"
+#include"widgets/shared.h"
 #include"widgets/widget.h"
 #include"widgets/window.h"
 #include"widgets/entry.h"
@@ -9,6 +10,7 @@
 #include"widgets/header_bar.h"
 #include"widgets/scrolled_window.h"
 #include"widgets/adjustment.h"
+#include"widgets/text_view.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -29,9 +31,11 @@ int yylex();
 %token INCLUDE 
 %token SET ADD SIGNAL PACK COMMON
 %token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR
-%token ENTRY HBOX VBOX BUTTON BUTTONBOX WINDOW 
+%token HBOX VBOX BUTTON BUTTONBOX WINDOW 
 
 %token SKIP_PAGER 
+
+%token EDITABLE INPUT_PURPOSE 
 
 %token DECORATED DEFAULT_GEOMETRY HIDE_TITLEBAR_WHEN_MAXIMIZED KEEP_ABOVE 
 %token KEEP_BELOW STARTUP_ID ROLE ICON_NAME MNEMONICS_VISIBLE FOCUS_VISIBLE 
@@ -42,10 +46,8 @@ int yylex();
 
 %token SPACING BASELINE HOMOGENEOUS PADDING FILL EXPAND PACK_TYPE CENTER
 
-%token MAX_LENGTH INPUT_PURPOSE WIDTH_CHARS ALIGNMENT PLACEHOLDER_TEXT
-%token ACTIVATES_DEFAULT EDITABLE OVERWRITE_MODE HAS_FRAME VISIBILITY_CHAR
-%token VISIBILITY TEXT
-
+%token ENTRY ALIGNMENT MAX_LENGTH WIDTH_CHARS PLACEHOLDER_TEXT TEXT
+%token ACTIVATES_DEFAULT OVERWRITE_MODE HAS_FRAME VISIBILITY_CHAR VISIBILITY
 
 %token SIZE_REQUEST MARGIN_BOTTOM MARGIN_TOP MARGIN_END MARGIN_START VALIGN 
 %token HALIGN VEXPAND_SET VEXPAND HEXPAND_SET HEXPAND RECEIVES_DEFAULT
@@ -65,6 +67,10 @@ int yylex();
 %token ADJUSTMENT VALUE CLAMP_PAGE CONFIGURE LOWER PAGE_INCREMENT PAGE_SIZE 
 %token STEP_INCREMENT UPPER
 
+%token TEXT_VIEW BORDER_WINDOW_SIZE WRAP_MODE CURSOR_VISIBLE OVERWRITE 
+%token PIXELS_ABOVE_LINES PIXELS_BELOW_LINES PIXELS_INSIDE_WRAP JUSTIFICATION 
+%token LEFT_MARGIN RIGHT_MARGIN INDENT ACCEPTS_TAB INPUT_HINTS 
+ 
 %union
 {
         int   int_val;
@@ -93,6 +99,7 @@ command:
         | header_bar
         | scrolled_window
         | adjustment
+        | text_view
         ;
 
 commons:
@@ -328,6 +335,17 @@ hb_pack:
         }
         ;
 
+text_view:
+        TEXT_VIEW IDENTIFIER
+        {
+                text_view_new(yyout, $2);
+        } 
+        commons params SEMICOLON
+        {
+                block_close($2);
+        }
+        ;
+
 adjustment:
         ADJUSTMENT IDENTIFIER 
         {
@@ -486,7 +504,9 @@ params:
         ;
 
 param:
-          set_window_title
+          set_editable
+        | set_input_purpose
+        | set_window_title
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -518,13 +538,17 @@ param:
         | set_box_baseline
         | set_box_homogeneous
         | set_entry_max_length
-        | set_entry_input_purpose
+        /*
+         *| set_entry_input_purpose
+         */
         | set_entry_width_chars
         | set_entry_alignment
         | set_entry_placeholder_text
         | set_entry_text
         | set_entry_activates_default
-        | set_editable
+        /*
+         *| set_editable
+         */
         | set_entry_overwrite_mode
         | set_entry_has_frame
         /*
@@ -562,6 +586,134 @@ param:
         | set_adjustment_page_size
         | set_adjustment_step_increment
         | set_adjustment_upper
+        | set_text_view_border_window_size
+        | set_text_view_wrap_mode
+        /*
+         *| set_text_view_editable
+         */
+        | set_text_view_cursor_visible
+        | set_text_view_overwrite
+        | set_text_view_pixels_above_lines
+        | set_text_view_pixels_below_lines
+        | set_text_view_pixels_inside_wrap
+        | set_text_view_justification
+        | set_text_view_left_margin
+        | set_text_view_right_margin
+        | set_text_view_indent
+        | set_text_view_accepts_tab
+        /*
+         *| set_text_view_input_purpose
+         */
+        | set_text_view_input_hints
+        ;
+
+set_text_view_border_window_size:
+        SET BORDER_WINDOW_SIZE IDENTIFIER NUMBER
+        {
+                text_view_set_border_window_size(yyout, $3, $4);
+        }
+        ;
+
+set_text_view_wrap_mode:
+        SET WRAP_MODE IDENTIFIER
+        {
+                text_view_set_wrap_mode(yyout, $3);
+        }
+        ;
+
+/*
+ *set_text_view_editable:
+ *        SET EDITABLE IDENTIFIER
+ *        {
+ *                text_view_set_editable(yyout, $3);
+ *        }
+ *        ;
+ */
+
+set_text_view_cursor_visible:
+        SET CURSOR_VISIBLE IDENTIFIER
+        {
+                text_view_set_cursor_visible(yyout, $3);
+        }
+        ;
+
+set_text_view_overwrite:
+        SET OVERWRITE IDENTIFIER
+        {
+                text_view_set_overwrite(yyout, $3);
+        }
+        ;
+
+set_text_view_pixels_above_lines:
+        SET PIXELS_ABOVE_LINES NUMBER
+        {
+                text_view_set_pixels_above_lines(yyout, $3);
+        }
+        ;
+
+set_text_view_pixels_below_lines:
+        SET PIXELS_BELOW_LINES NUMBER
+        {
+                text_view_set_pixels_below_lines(yyout, $3);
+        }
+        ;
+
+set_text_view_pixels_inside_wrap:
+        SET PIXELS_INSIDE_WRAP NUMBER
+        {
+                text_view_set_pixels_inside_wrap(yyout, $3);
+        }
+        ;
+
+set_text_view_justification:
+        SET JUSTIFICATION IDENTIFIER
+        {
+                text_view_set_justification(yyout, $3);
+        }
+        ;
+
+set_text_view_left_margin:
+        SET LEFT_MARGIN NUMBER
+        {
+                text_view_set_left_margin(yyout, $3);
+        }
+        ;
+
+set_text_view_right_margin:
+        SET RIGHT_MARGIN NUMBER
+        {
+                text_view_set_right_margin(yyout, $3);
+        }
+        ;
+
+set_text_view_indent:
+        SET INDENT NUMBER
+        {
+                text_view_set_indent(yyout, $3);
+        }
+        ;
+
+set_text_view_accepts_tab:
+        SET ACCEPTS_TAB IDENTIFIER
+        {
+                text_view_set_accepts_tab(yyout, $3);
+        }
+        ;
+
+/*
+ *set_text_view_input_purpose:
+ *        SET INPUT_PURPOSE IDENTIFIER
+ *        {
+ *                text_view_set_input_purpose(yyout, $3);
+ *        }
+ *        ;
+ */
+
+set_text_view_input_hints:
+        SET INPUT_HINTS IDENTIFIER
+        {
+                text_view_set_input_hints(yyout, $3);
+        }
         ;
 
 set_adjustment_value:
@@ -805,7 +957,7 @@ set_entry_activates_default:
 set_editable:
         SET EDITABLE IDENTIFIER
         {
-                editable_set_editable(yyout, $3);
+                set_editable(yyout, $3);
         }
         ;
 
@@ -853,10 +1005,10 @@ set_entry_width_chars:
         }
         ;
 
-set_entry_input_purpose:
+set_input_purpose:
         SET INPUT_PURPOSE IDENTIFIER
         {
-                entry_set_input_purpose(yyout, $3);
+                set_input_purpose(yyout, $3);
         }
         ;
 

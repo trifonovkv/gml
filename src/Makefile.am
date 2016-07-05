@@ -18,6 +18,7 @@ gml_SOURCES =                               \
 								widgets/header_bar.c        \
 								widgets/scrolled_window.c   \
 								widgets/adjustment.c        \
+								widgets/text_view.c         \
 								$(NULL)
 
 noinst_HEADERS = gml.h

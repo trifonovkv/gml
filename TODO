@@ -1,0 +1,4 @@
+delete old commented code in gml_bison.y
+sorted params set_editable set_input_purpose
+check short path in include headers
+make example with scrolled window and text view

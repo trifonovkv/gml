@@ -27,7 +27,7 @@ void include_insert(FILE *out, char *include)
         fprintf(out, "#include%s\n", include);
 }
 
-void block_close(const char *start)
+void block_close(char *start)
 {
         symdelto(start);
 }
@@ -50,15 +50,25 @@ void container_add(FILE *out, char *widget)
 
 void button_box_new(FILE *out, char *widget)
 {
-        syminst(widget, widget);
-        syminst("this", widget);
+        syminst(GTK_BUTTON_BOX, widget, widget);
+        syminst(GTK_BUTTON_BOX, "this", widget);
         char *setting = "GTK_ORIENTATION_HORIZONTAL";
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_button_box_new(%s);\n",
                 widget, setting);
 }
 
-char *getsymval(const char *sym_name)
+widget_type getsymtype(char *sym_name)
+{
+        symrec *sym = getsym(sym_name);
+        if (sym == NULL) {
+                printf("%s is an undeclared identifier\n", sym_name);
+                return NONE_TYPE;
+        }
+        return sym->type;
+}
+
+char *getsymval(char *sym_name)
 {
         symrec *sym = getsym(sym_name);
         if (sym == NULL) {
@@ -68,7 +78,7 @@ char *getsymval(const char *sym_name)
         return sym->value;
 }
 
-void symdelto(const char *sym_name)
+void symdelto(char *sym_name)
 {
         symrec *ptr = sym_table;
         symrec *tmp;
@@ -82,18 +92,19 @@ void symdelto(const char *sym_name)
         sym_table = ptr;
 }
 
-void syminst(const char *sym_name, const char *sym_value)
+void syminst(widget_type sym_type, char *sym_name, char *sym_value)
 { 
         symrec *s = getsym(sym_name);
         if (s == NULL)
-                putsym(sym_name, sym_value);
+                putsym(sym_type, sym_name, sym_value);
         else 
                 printf("%s is already defined\n", sym_name);
 }
 
-symrec *putsym(const char *sym_name, const char *sym_value)
+symrec *putsym(widget_type sym_type, char *sym_name, char *sym_value)
 {
         symrec *ptr = (symrec *)malloc(sizeof(symrec));
+        ptr->type = sym_type;
         ptr->name = (char *)malloc(strlen(sym_name) + 1);
         strcpy(ptr->name, sym_name);
         ptr->value = (char *)malloc(strlen(sym_value) + 1);
@@ -103,7 +114,7 @@ symrec *putsym(const char *sym_name, const char *sym_value)
         return ptr;
 }
 
-symrec *getsym(char const *sym_name)
+symrec *getsym(char *sym_name)
 {
         symrec *ptr;
         for (ptr = sym_table; ptr != NULL; ptr = (symrec *)ptr->next)
