@@ -107,7 +107,6 @@ command:
         | text_view
         | stack
         | stack_switcher
-        | application_window
         ;
 
 adds:
