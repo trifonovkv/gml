@@ -28,8 +28,8 @@ int yywrap()
 }
 
 int yylex();
-%}
 
+%}
 %token INCLUDE 
 %token SET ADD SIGNAL PACK COMMON
 %token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR
@@ -75,7 +75,7 @@ int yylex();
 
 %token STACK STACK_SWITCHER STACK_SWITCHER_STACK HHOMOGENEOUS VHOMOGENEOUS 
 %token TRANSITION_DURATION TRANSITION_TYPE TITLED
- 
+
 %union
 {
         int   int_val;
@@ -107,212 +107,7 @@ command:
         | text_view
         | stack
         | stack_switcher
-        ;
-
-commons:
-        | commons common
-        ;
-
-common:
-          widget_set_size_request
-        | widget_set_margin_bottom
-        | widget_set_margin_top
-        | widget_set_margin_end
-        | widget_set_margin_start
-        | widget_set_valign
-        | widget_set_halign
-        | widget_set_vexpand_set
-        | widget_set_vexpand
-        | widget_set_hexpand_set
-        | widget_set_hexpand
-        | widget_set_receives_default
-        | widget_set_sensitive
-        | widget_set_no_show_all
-        | widget_set_app_paintable
-        | widget_set_can_default
-        | widget_set_can_focus
-        | widget_set_visible
-        | widget_set_opacity
-        | widget_set_tooltip_markup
-        | widget_set_has_tootip
-        | widget_set_tooltip_text
-        | widget_set_name
-        ;
-
-widget_set_size_request:
-        COMMON SIZE_REQUEST NUMBER NUMBER
-        {
-                widget_set_size_request(yyout, $3, $4);
-        }
-        ;
-
-widget_set_margin_bottom:
-        COMMON MARGIN_BOTTOM NUMBER
-        {
-                widget_set_margin_bottom(yyout, $3);
-        }
-        ;
-
-widget_set_margin_top:
-        COMMON MARGIN_TOP NUMBER
-        {
-                widget_set_margin_top(yyout, $3);
-        }
-        ;
-
-widget_set_margin_end:
-        COMMON MARGIN_END NUMBER
-        {
-                widget_set_margin_end(yyout, $3);
-        }
-        ;
-
-widget_set_margin_start:
-        COMMON MARGIN_START NUMBER
-        {
-                widget_set_margin_start(yyout, $3);
-        }
-        ;
-
-widget_set_valign:
-        COMMON VALIGN IDENTIFIER
-        {
-                widget_set_valign(yyout, $3);
-        }
-        ;
-
-widget_set_halign:
-        COMMON HALIGN IDENTIFIER
-        {
-                widget_set_halign(yyout, $3);
-        }
-        ;
-
-widget_set_vexpand_set:
-        COMMON VEXPAND_SET IDENTIFIER
-        {
-                widget_set_vexpand_set(yyout, $3);
-        }
-        ;
-
-widget_set_vexpand:
-        COMMON VEXPAND IDENTIFIER
-        {
-                widget_set_vexpand(yyout, $3);
-        }
-        ;
-
-widget_set_hexpand_set:
-        COMMON HEXPAND_SET IDENTIFIER
-        {
-                widget_set_hexpand_set(yyout, $3);
-        }
-        ;
-
-widget_set_hexpand:
-        COMMON HEXPAND IDENTIFIER
-        {
-                widget_set_hexpand(yyout, $3);
-        }
-        ;
-
-widget_set_receives_default:
-        COMMON RECEIVES_DEFAULT IDENTIFIER
-        {
-                widget_set_receives_default(yyout, $3);
-        }
-        ;
-
-widget_set_sensitive:
-        COMMON SENSITIVE IDENTIFIER
-        {
-                widget_set_sensitive(yyout, $3);
-        }
-        ;
-
-widget_set_no_show_all:
-        COMMON NO_SHOW_ALL IDENTIFIER
-        {
-                widget_set_no_show_all(yyout, $3);
-        }
-        ;
-
-widget_set_app_paintable:
-        COMMON APP_PAINTABLE IDENTIFIER
-        {
-                widget_set_app_paintable(yyout, $3);
-        }
-        ;
-
-widget_set_can_default:
-        COMMON CAN_DEFAULT IDENTIFIER
-        {
-                widget_set_can_default(yyout, $3);
-        }
-        ;
-
-widget_set_can_focus:
-        COMMON CAN_FOCUS IDENTIFIER
-        {
-                widget_set_can_focus(yyout, $3);
-        }
-        ;
-
-widget_set_visible:
-        COMMON VISIBLE IDENTIFIER
-        {
-                widget_set_visible(yyout, $3);
-        }
-        ;
-
-widget_set_opacity:
-        COMMON OPACITY FLOAT
-        {
-                widget_set_opacity(yyout, $3);
-        }
-        ;
-
-widget_set_tooltip_markup:
-        COMMON TOOLTIP_MARKUP STRING
-        {
-                widget_set_tooltip_markup(yyout, $3);
-        }
-        ;
-
-widget_set_has_tootip:
-        COMMON HAS_TOOLTIP IDENTIFIER
-        {
-                widget_set_has_tootip(yyout, $3);
-        }
-        ;
-
-widget_set_tooltip_text:
-        COMMON TOOLTIP_TEXT STRING
-        {
-                widget_set_tooltip_text(yyout, $3);
-        }
-        ;
-
-widget_set_name:
-        COMMON NAME STRING
-        {
-                widget_set_name(yyout, $3);
-        }
-        ;
-
-signals:
-        | signals signal 
-        ;
-        
-signal:
-        SIGNAL STRING IDENTIFIER IDENTIFIER
-        {
-                signal_connect(yyout, $2, $3, $4);
-        }
-        | SIGNAL STRING IDENTIFIER
-        {
-                signal_connect(yyout, $2, $3, "NULL");
-        }
+        | application_window
         ;
 
 adds:
@@ -1272,6 +1067,212 @@ set_editable:
         SET EDITABLE IDENTIFIER
         {
                 set_editable(yyout, $3);
+        }
+        ;
+
+commons:
+        | commons common
+        ;
+
+common:
+          widget_set_size_request
+        | widget_set_margin_bottom
+        | widget_set_margin_top
+        | widget_set_margin_end
+        | widget_set_margin_start
+        | widget_set_valign
+        | widget_set_halign
+        | widget_set_vexpand_set
+        | widget_set_vexpand
+        | widget_set_hexpand_set
+        | widget_set_hexpand
+        | widget_set_receives_default
+        | widget_set_sensitive
+        | widget_set_no_show_all
+        | widget_set_app_paintable
+        | widget_set_can_default
+        | widget_set_can_focus
+        | widget_set_visible
+        | widget_set_opacity
+        | widget_set_tooltip_markup
+        | widget_set_has_tootip
+        | widget_set_tooltip_text
+        | widget_set_name
+        ;
+
+widget_set_size_request:
+        COMMON SIZE_REQUEST NUMBER NUMBER
+        {
+                widget_set_size_request(yyout, $3, $4);
+        }
+        ;
+
+widget_set_margin_bottom:
+        COMMON MARGIN_BOTTOM NUMBER
+        {
+                widget_set_margin_bottom(yyout, $3);
+        }
+        ;
+
+widget_set_margin_top:
+        COMMON MARGIN_TOP NUMBER
+        {
+                widget_set_margin_top(yyout, $3);
+        }
+        ;
+
+widget_set_margin_end:
+        COMMON MARGIN_END NUMBER
+        {
+                widget_set_margin_end(yyout, $3);
+        }
+        ;
+
+widget_set_margin_start:
+        COMMON MARGIN_START NUMBER
+        {
+                widget_set_margin_start(yyout, $3);
+        }
+        ;
+
+widget_set_valign:
+        COMMON VALIGN IDENTIFIER
+        {
+                widget_set_valign(yyout, $3);
+        }
+        ;
+
+widget_set_halign:
+        COMMON HALIGN IDENTIFIER
+        {
+                widget_set_halign(yyout, $3);
+        }
+        ;
+
+widget_set_vexpand_set:
+        COMMON VEXPAND_SET IDENTIFIER
+        {
+                widget_set_vexpand_set(yyout, $3);
+        }
+        ;
+
+widget_set_vexpand:
+        COMMON VEXPAND IDENTIFIER
+        {
+                widget_set_vexpand(yyout, $3);
+        }
+        ;
+
+widget_set_hexpand_set:
+        COMMON HEXPAND_SET IDENTIFIER
+        {
+                widget_set_hexpand_set(yyout, $3);
+        }
+        ;
+
+widget_set_hexpand:
+        COMMON HEXPAND IDENTIFIER
+        {
+                widget_set_hexpand(yyout, $3);
+        }
+        ;
+
+widget_set_receives_default:
+        COMMON RECEIVES_DEFAULT IDENTIFIER
+        {
+                widget_set_receives_default(yyout, $3);
+        }
+        ;
+
+widget_set_sensitive:
+        COMMON SENSITIVE IDENTIFIER
+        {
+                widget_set_sensitive(yyout, $3);
+        }
+        ;
+
+widget_set_no_show_all:
+        COMMON NO_SHOW_ALL IDENTIFIER
+        {
+                widget_set_no_show_all(yyout, $3);
+        }
+        ;
+
+widget_set_app_paintable:
+        COMMON APP_PAINTABLE IDENTIFIER
+        {
+                widget_set_app_paintable(yyout, $3);
+        }
+        ;
+
+widget_set_can_default:
+        COMMON CAN_DEFAULT IDENTIFIER
+        {
+                widget_set_can_default(yyout, $3);
+        }
+        ;
+
+widget_set_can_focus:
+        COMMON CAN_FOCUS IDENTIFIER
+        {
+                widget_set_can_focus(yyout, $3);
+        }
+        ;
+
+widget_set_visible:
+        COMMON VISIBLE IDENTIFIER
+        {
+                widget_set_visible(yyout, $3);
+        }
+        ;
+
+widget_set_opacity:
+        COMMON OPACITY FLOAT
+        {
+                widget_set_opacity(yyout, $3);
+        }
+        ;
+
+widget_set_tooltip_markup:
+        COMMON TOOLTIP_MARKUP STRING
+        {
+                widget_set_tooltip_markup(yyout, $3);
+        }
+        ;
+
+widget_set_has_tootip:
+        COMMON HAS_TOOLTIP IDENTIFIER
+        {
+                widget_set_has_tootip(yyout, $3);
+        }
+        ;
+
+widget_set_tooltip_text:
+        COMMON TOOLTIP_TEXT STRING
+        {
+                widget_set_tooltip_text(yyout, $3);
+        }
+        ;
+
+widget_set_name:
+        COMMON NAME STRING
+        {
+                widget_set_name(yyout, $3);
+        }
+        ;
+
+signals:
+        | signals signal 
+        ;
+        
+signal:
+        SIGNAL STRING IDENTIFIER IDENTIFIER
+        {
+                signal_connect(yyout, $2, $3, $4);
+        }
+        | SIGNAL STRING IDENTIFIER
+        {
+                signal_connect(yyout, $2, $3, "NULL");
         }
         ;
 %%
