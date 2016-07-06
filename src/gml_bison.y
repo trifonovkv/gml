@@ -11,6 +11,8 @@
 #include"widgets/scrolled_window.h"
 #include"widgets/adjustment.h"
 #include"widgets/text_view.h"
+#include"widgets/stack.h"
+#include"widgets/stack_switcher.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -35,7 +37,7 @@ int yylex();
 
 %token SKIP_PAGER 
 
-%token EDITABLE INPUT_PURPOSE 
+%token EDITABLE INPUT_PURPOSE HOMOGENEOUS 
 
 %token DECORATED DEFAULT_GEOMETRY HIDE_TITLEBAR_WHEN_MAXIMIZED KEEP_ABOVE 
 %token KEEP_BELOW STARTUP_ID ROLE ICON_NAME MNEMONICS_VISIBLE FOCUS_VISIBLE 
@@ -44,7 +46,7 @@ int yylex();
 
 %token ACCEPT_FOCUS URGENT DELETABLE RESIZABLE DEFAULT_SIZE TITLE 
 
-%token SPACING BASELINE HOMOGENEOUS PADDING FILL EXPAND PACK_TYPE CENTER
+%token SPACING BASELINE PADDING FILL EXPAND PACK_TYPE CENTER
 
 %token ENTRY ALIGNMENT MAX_LENGTH WIDTH_CHARS PLACEHOLDER_TEXT TEXT
 %token ACTIVATES_DEFAULT OVERWRITE_MODE HAS_FRAME VISIBILITY_CHAR VISIBILITY
@@ -70,6 +72,9 @@ int yylex();
 %token TEXT_VIEW BORDER_WINDOW_SIZE WRAP_MODE CURSOR_VISIBLE OVERWRITE 
 %token PIXELS_ABOVE_LINES PIXELS_BELOW_LINES PIXELS_INSIDE_WRAP JUSTIFICATION 
 %token LEFT_MARGIN RIGHT_MARGIN INDENT ACCEPTS_TAB INPUT_HINTS 
+
+%token STACK STACK_SWITCHER STACK_SWITCHER_STACK HHOMOGENEOUS VHOMOGENEOUS 
+%token TRANSITION_DURATION TRANSITION_TYPE TITLED
  
 %union
 {
@@ -100,6 +105,8 @@ command:
         | scrolled_window
         | adjustment
         | text_view
+        | stack
+        | stack_switcher
         ;
 
 commons:
@@ -319,6 +326,17 @@ add:
         }
         ;
 
+stack_adds:
+        | stack_adds stack_add
+        ;
+
+stack_add:
+        ADD TITLED IDENTIFIER STRING STRING
+        {
+                stack_add_titled(yyout, $3, $4, $5);
+        }
+        ;
+
 hb_packs:
         | hb_packs hb_pack
         ;
@@ -332,6 +350,28 @@ hb_pack:
         ADD PACK_END IDENTIFIER
         {
                 header_bar_pack_end(yyout, $3);
+        }
+        ;
+
+stack:
+        STACK IDENTIFIER
+        {
+                stack_new(yyout, $2);
+        } 
+        commons params packs stack_adds adds SEMICOLON
+        {
+                block_close($2);
+        }
+        ;
+
+stack_switcher:
+        STACK_SWITCHER IDENTIFIER
+        {
+                stack_switcher_new(yyout, $2);
+        }
+        commons params packs SEMICOLON
+        {
+                block_close($2);
         }
         ;
 
@@ -505,6 +545,7 @@ params:
 
 param:
           set_editable
+        | set_homogeneous
         | set_input_purpose
         | set_window_title
         | set_window_default_size
@@ -536,24 +577,14 @@ param:
         | set_window_titlebar
         | set_box_spacing
         | set_box_baseline
-        | set_box_homogeneous
         | set_entry_max_length
-        /*
-         *| set_entry_input_purpose
-         */
         | set_entry_width_chars
         | set_entry_alignment
         | set_entry_placeholder_text
         | set_entry_text
         | set_entry_activates_default
-        /*
-         *| set_editable
-         */
         | set_entry_overwrite_mode
         | set_entry_has_frame
-        /*
-         * | set_entry_invisible_char
-         */
         | set_entry_visibility
         | set_button_relief
         | set_button_label
@@ -588,9 +619,6 @@ param:
         | set_adjustment_upper
         | set_text_view_border_window_size
         | set_text_view_wrap_mode
-        /*
-         *| set_text_view_editable
-         */
         | set_text_view_cursor_visible
         | set_text_view_overwrite
         | set_text_view_pixels_above_lines
@@ -601,10 +629,47 @@ param:
         | set_text_view_right_margin
         | set_text_view_indent
         | set_text_view_accepts_tab
-        /*
-         *| set_text_view_input_purpose
-         */
         | set_text_view_input_hints
+        | set_stack_hhomogeneous
+        | set_stack_vhomogeneous
+        | set_stack_transition_duration
+        | set_stack_transition_type
+        | set_stack_switcher_stack
+        ;
+
+set_stack_switcher_stack:
+        SET STACK_SWITCHER_STACK IDENTIFIER
+        {
+                stack_switcher_set_stack(yyout, $3);
+        }
+        ;
+
+set_stack_hhomogeneous:
+        SET HHOMOGENEOUS IDENTIFIER
+        {
+                stack_set_hhomogeneous(yyout, $3);
+        }
+        ;
+
+set_stack_vhomogeneous:
+        SET VHOMOGENEOUS IDENTIFIER
+        {
+                stack_set_vhomogeneous(yyout, $3);
+        }
+        ;
+
+set_stack_transition_duration:
+        SET TRANSITION_DURATION NUMBER
+        {
+                stack_set_transition_duration(yyout, $3);
+        }
+        ;
+
+set_stack_transition_type:
+        SET TRANSITION_TYPE IDENTIFIER
+        {
+                stack_set_transition_type(yyout, $3);
+        }
         ;
 
 set_text_view_border_window_size:
@@ -620,15 +685,6 @@ set_text_view_wrap_mode:
                 text_view_set_wrap_mode(yyout, $3);
         }
         ;
-
-/*
- *set_text_view_editable:
- *        SET EDITABLE IDENTIFIER
- *        {
- *                text_view_set_editable(yyout, $3);
- *        }
- *        ;
- */
 
 set_text_view_cursor_visible:
         SET CURSOR_VISIBLE IDENTIFIER
@@ -699,15 +755,6 @@ set_text_view_accepts_tab:
                 text_view_set_accepts_tab(yyout, $3);
         }
         ;
-
-/*
- *set_text_view_input_purpose:
- *        SET INPUT_PURPOSE IDENTIFIER
- *        {
- *                text_view_set_input_purpose(yyout, $3);
- *        }
- *        ;
- */
 
 set_text_view_input_hints:
         SET INPUT_HINTS IDENTIFIER
@@ -954,13 +1001,6 @@ set_entry_activates_default:
         }
         ;
 
-set_editable:
-        SET EDITABLE IDENTIFIER
-        {
-                set_editable(yyout, $3);
-        }
-        ;
-
 set_entry_overwrite_mode:
         SET OVERWRITE_MODE IDENTIFIER
         {
@@ -974,15 +1014,6 @@ set_entry_has_frame:
                 entry_set_has_frame(yyout, $3);
         }
         ;
-
-/*
- * set_entry_invisible_char:
- *         SET VISIBILITY_CHAR STRING 
- *         {
- *                 entry_set_invisible_char(yyout, $3);
- *         }
- *         ;
- */
 
 set_entry_visibility:
         SET VISIBILITY IDENTIFIER
@@ -1005,24 +1036,10 @@ set_entry_width_chars:
         }
         ;
 
-set_input_purpose:
-        SET INPUT_PURPOSE IDENTIFIER
-        {
-                set_input_purpose(yyout, $3);
-        }
-        ;
-
 set_entry_max_length:
         SET MAX_LENGTH NUMBER
         {
                 entry_set_max_length(yyout, $3);
-        }
-        ;
-
-set_box_homogeneous:
-        SET HOMOGENEOUS IDENTIFIER
-        {
-                box_set_homogeneus(yyout, $3);
         }
         ;
 
@@ -1237,5 +1254,25 @@ set_window_title:
         }
         ;
 
+set_homogeneous:
+        SET HOMOGENEOUS IDENTIFIER
+        {
+                set_homogeneous(yyout, $3);
+        }
+        ;
+
+set_input_purpose:
+        SET INPUT_PURPOSE IDENTIFIER
+        {
+                set_input_purpose(yyout, $3);
+        }
+        ;
+
+set_editable:
+        SET EDITABLE IDENTIFIER
+        {
+                set_editable(yyout, $3);
+        }
+        ;
 %%
 

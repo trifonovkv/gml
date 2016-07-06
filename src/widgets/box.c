@@ -60,7 +60,7 @@ void box_reorder_child(FILE *out, char *child, int setting)
                 widget, child, setting);
 }
 
-void box_set_homogeneus(FILE *out, char *setting)
+void box_set_homogeneous(FILE *out, char *setting)
 {
         char *widget = getsymval("this");
         tab_insert(out);

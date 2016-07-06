@@ -71,7 +71,7 @@ void box_vertical_new(FILE *out, char *setting);
  * Sets the “homogeneous” property of box , controlling whether or not all 
  * children of box are given equal space in the box.
  */
-void box_set_homogeneus(FILE *out, char *setting);
+void box_set_homogeneous(FILE *out, char *setting);
 
 /* 
  * Sets the “spacing” property of box , which is the number of pixels to 

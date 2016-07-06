@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 
+SUBDIR = scrolled_window
+
 noinst_PROGRAMS = window header_bar 
 
 window_CFLAGS = `pkg-config --cflags gtk+-3.0`

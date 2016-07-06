@@ -14,6 +14,8 @@ void comment();
 "/*"                  comment();
 {DIGIT}+              yylval.int_val=atoi(yytext);    return NUMBER; 
 {DIGIT}+\.{DIGIT}+    yylval.float_val=atof(yytext);  return FLOAT;
+STACK                 return STACK;
+STACK_SWITCHER        return STACK_SWITCHER;
 TEXT_VIEW             return TEXT_VIEW;
 ADJUSTMENT            return ADJUSTMENT;
 SCROLLED_WINDOW       return SCROLLED_WINDOW;
@@ -32,6 +34,7 @@ CMN                   return COMMON;
 
 Editable              return EDITABLE;
 Input_purpose         return INPUT_PURPOSE;
+Homogeneous           return HOMOGENEOUS;
 
 Decorated             return DECORATED;
 Default_geometry      return DEFAULT_GEOMETRY;
@@ -65,7 +68,6 @@ Accept_focus          return ACCEPT_FOCUS;
 
 Spacing               return SPACING;
 Baseline              return BASELINE;
-Homogeneous           return HOMOGENEOUS;
 Padding               return PADDING;
 Fill                  return FILL;
 Expand                return EXPAND;
@@ -157,7 +159,14 @@ Right_margin          return RIGHT_MARGIN;
 Indent                return INDENT;
 Accepts_tab           return ACCEPTS_TAB;
 Input_hints           return INPUT_HINTS; 
- 
+
+Stack_switcher_stack  return STACK_SWITCHER_STACK;
+Hhomogeneous          return HHOMOGENEOUS;
+Vhomogeneous          return VHOMOGENEOUS;
+Transition_duration   return TRANSITION_DURATION;
+Transition_type       return TRANSITION_TYPE;
+Titled                return TITLED;
+  
 \"(\\.|[^\\"])*\"     yylval.string=strdup(yytext); return STRING;  
 {ID}+                 yylval.string=strdup(yytext); return IDENTIFIER;
 ;                     return SEMICOLON;

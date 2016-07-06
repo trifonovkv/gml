@@ -25,6 +25,8 @@ typedef enum
         ,GTK_WIDGET           
         ,GTK_WINDOW
         ,GTK_BUTTON_BOX
+        ,GTK_STACK
+        ,GTK_STACK_SWITCHER
 } widget_type;
 
 /* Data type for links in the chain of symbols. */
