@@ -31,19 +31,6 @@ TEXT_VIEW text_view
 ;
 
 TEXT_VIEW text_view2
-  SET Border_window_size GTK_TEXT_WINDOW_TOP 100
-  SET Wrap_mode GTK_WRAP_WORD
-  SET Cursor_visible FALSE
-  SET Overwrite TRUE
-  SET Pixels_above_lines 10
-  SET Pixels_below_linew 20
-  SET Pixels_inside_wrap 10
-  SET Justification GTK_JUSTIFY_LEFT
-  SET Left_margin 100
-  SET Right_margin 100
-  SET Indent 100
-  SET Accepts_tab FALSE
-  SET Input_hints GTK_INPUT_HINT_NO_SPELLCHECK
 ;
 
 SCROLLED_WINDOW scrolled_window

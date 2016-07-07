@@ -7,10 +7,12 @@ test_LDFLAGS = `pkg-config --libs gtk+-3.0`
 test_SOURCES = test.c handlers.c
 
 test.c: test.gml
-				../gml test.gml test.c
+				$(top_builddir)/src/gml $(srcdir)/test.gml $(builddir)/test.c
 
-CLEANFILES = *~ test.c 
+CLEANFILES = *~             \
+				$(builddir)/test.c  \
+				$(NULL)
 
-MAINTAINERCLEANFILES = 		\
-				Makefile.in				\
+MAINTAINERCLEANFILES =    \
+				Makefile.in       \
 				$(NULL)

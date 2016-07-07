@@ -7,10 +7,12 @@ scrolled_window_LDFLAGS = `pkg-config --libs gtk+-3.0`
 scrolled_window_SOURCES = scrolled_window.c handlers.c
 
 scrolled_window.c: scrolled_window.gml
-				../../gml scrolled_window.gml scrolled_window.c
+				$(top_builddir)/src/gml $(srcdir)/scrolled_window.gml $(builddir)/scrolled_window.c
 
-CLEANFILES = *~ scrolled_window.c
+CLEANFILES = *~						            \
+				$(builddir)/scrolled_window.c \
+				$(NULL)
 
-MAINTAINERCLEANFILES = 		\
-				Makefile.in				\
+MAINTAINERCLEANFILES =    \
+				Makefile.in       \
 				$(NULL)
