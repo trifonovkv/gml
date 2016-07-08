@@ -1,10 +1,7 @@
 make example with scrolled window and text view
-change example directory
-corect README file
 check on dublicate title in header bar and window
 add application window
 add stack add titled
 change add for header bar (hb_pack) ?
 add other last stack add
 stack_add move in add
-make bin directory for executable files

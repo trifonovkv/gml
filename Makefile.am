@@ -3,7 +3,6 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS =                                 \
 				src                               \
 				src/example                       \
-				src/example/scrolled_window       \
 				src/tests                         \
 				$(NULL)
 

@@ -28,6 +28,11 @@ make
 
 ```Shell
 ./src/gml
-./src/example/window
-./src/example/header_bar
+```
+
+## Examples
+```Shell
+./src/example/window/window
+./src/example/header_bar/header_bar
+./src/example/scrolled_window/scrolled_window
 ```
