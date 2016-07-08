@@ -1,7 +1,6 @@
 make example with scrolled window and text view
 change example directory
 corect README file
-add in generated c file EOF
 check on dublicate title in header bar and window
 add application window
 add stack add titled

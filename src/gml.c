@@ -19,7 +19,7 @@ void main_end(FILE *out)
         tab_insert(out);
         fprintf(out, "gtk_main();\n");
         tab_insert(out);
-        fprintf(out, "return 0;\n}");
+        fprintf(out, "return 0;\n}\n");
 }
 
 void include_insert(FILE *out, char *include)
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
                 printf("Error opening file\n");
                 exit(1);
         } 
-        yyout = fopen(argv[2], "w");
+        yyout = fopen(argv[2], "a");
         if(yyout == NULL) {
                 printf("Error opening file\n");
                 exit(1);
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
         main_start(yyout);
         int result = yyparse();
         main_end(yyout);
-
+        
         fclose(yyin);
         fclose(yyout);
 
