@@ -32,6 +32,7 @@ SIGNAL                return SIGNAL;
 PACK                  return PACK;
 CMN                   return COMMON;
 
+Title                 return TITLE;
 Editable              return EDITABLE;
 Input_purpose         return INPUT_PURPOSE;
 Homogeneous           return HOMOGENEOUS;
@@ -58,7 +59,6 @@ Focus_on_map          return FOCUS_ON_MAP;
 Skip_taskbar          return SKIP_TASKBAR;
 Destroy_with_parent   return DESTROY_WITH_PARENT;
 
-Title                 return TITLE;
 Titlebar              return TITLEBAR;
 Default_size          return DEFAULT_SIZE;
 Resizable             return RESIZABLE;
@@ -117,7 +117,6 @@ Image                 return IMAGE;
 Image_position        return IMAGE_POSITION;
 Always_show_image     return ALWAYS_SHOW_IMAGE;
 
-Header_bar_title      return HEADER_BAR_TITLE;
 Subtitle              return SUBTITLE;
 Has_subtitle          return HAS_SUBTITLE;
 Custom_title          return CUSTOM_TITLE;

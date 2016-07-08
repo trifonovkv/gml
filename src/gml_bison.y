@@ -59,8 +59,8 @@ int yylex();
 %token RELIEF LABEL USE_UNDERLINE FOCUS_ON_CLICK IMAGE IMAGE_POSITION
 %token ALWAYS_SHOW_IMAGE 
 
-%token HEADER_BAR HEADER_BAR_TITLE SUBTITLE HAS_SUBTITLE CUSTOM_TITLE 
-%token SHOW_CLOSE_BUTTON DECORATION_LAYOUT PACK_START PACK_END 
+%token HEADER_BAR SUBTITLE HAS_SUBTITLE CUSTOM_TITLE SHOW_CLOSE_BUTTON
+%token DECORATION_LAYOUT PACK_START PACK_END 
 
 %token SCROLLED_WINDOW POLICY PLACEMENT SHADOW_TYPE HADJUSTMENT VADJUSTMENT 
 %token MIN_CONTENT_WIDTH MIN_CONTENT_HEIGHT KINETIC_SCROLLING 
@@ -341,7 +341,7 @@ param:
           set_editable
         | set_homogeneous
         | set_input_purpose
-        | set_window_title
+        | set_title
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -387,7 +387,6 @@ param:
         | set_button_image
         | set_button_image_position
         | set_button_always_show_image
-        | set_header_bar_title
         | set_header_bar_subtitle
         | set_header_bar_has_subtitle
         | set_header_bar_custom_title
@@ -683,13 +682,6 @@ set_scrolled_window_overlay_scrolling:
         }
         ;
  
-set_header_bar_title:
-        SET HEADER_BAR_TITLE STRING 
-        {
-                header_bar_set_title(yyout, $3);
-        }
-        ;
-
 set_header_bar_subtitle:
         SET SUBTITLE STRING 
         {
@@ -1041,10 +1033,10 @@ set_window_default_size:
         }
         ;
 
-set_window_title:
+set_title:
         SET TITLE STRING 
         {
-                window_set_title(yyout, $3);
+                set_title(yyout, $3);
         }
         ;
 

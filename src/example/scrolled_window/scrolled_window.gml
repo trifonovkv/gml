@@ -10,7 +10,7 @@ SCROLLED_WINDOW scrolled_window
 ;
 
 HEADER_BAR header_bar
-  SET Header_bar_title "Example Application"
+  SET Title "Example Application"
   SET Show_close_button TRUE
 ;
 

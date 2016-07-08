@@ -1,5 +1,4 @@
 make example with scrolled window and text view
-check on dublicate title in header bar and window
 add application window
 add stack add titled
 change add for header bar (hb_pack) ?
