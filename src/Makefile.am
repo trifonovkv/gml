@@ -21,6 +21,7 @@ gml_SOURCES =                                 \
 								widgets/text_view.c           \
 								widgets/stack.c               \
 								widgets/stack_switcher.c      \
+								widgets/application.c         \
 								$(NULL)
 
 noinst_HEADERS = gml.h

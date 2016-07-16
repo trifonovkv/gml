@@ -9,7 +9,9 @@ test_SOURCES = test.c handlers.c
 test.c: test.gml
 				$(top_builddir)/src/gml $(srcdir)/test.gml test.c
 
-CLEANFILES = *~ 
+CLEANFILES = *~                   \
+				$(builddir)/test.c        \
+				$(NULL)
 
 MAINTAINERCLEANFILES =            \
 				Makefile.in               \

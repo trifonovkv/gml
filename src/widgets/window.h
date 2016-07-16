@@ -238,3 +238,11 @@ void window_set_accept_focus(FILE *out, char *setting);
  * input focus when the window is mapped. This function sets this hint.
  */
 void window_set_focus_on_map(FILE *out, char *setting);
+
+/*
+ * Sets or unsets the GtkApplication associated with the window.
+ * The application will be kept alive for at least as long as the window is
+ * open.
+ */
+void window_set_application(FILE *out, char *setting);
+

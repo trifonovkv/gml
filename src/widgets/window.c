@@ -183,6 +183,7 @@ void window_set_deletable(FILE *out, char *setting)
         fprintf(out, "gtk_window_set_deletable(GTK_WINDOW(%s), %s);\n", 
                 widget, setting);
 }
+
 void window_set_resizable(FILE *out, char *setting)
 {
         char *widget = getsymval("this");
@@ -191,14 +192,19 @@ void window_set_resizable(FILE *out, char *setting)
                 widget, setting);
 }
 
-
 void window_new(FILE *out, char *widget)
 {
         syminst(GTK_WINDOW, widget, widget);
         syminst(GTK_WINDOW, "this", widget);
         tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_window_new(%s);\n", 
-                widget, WINDOW_TYPE);
+        /*
+         *fprintf(out, "GtkWidget *%s=gtk_window_new(%s);\n", 
+         *        widget, WINDOW_TYPE);
+         *char *application = getsymval("application"); 
+         *window_set_application(out, application);
+         */
+        fprintf(out, "GtkWidget *%s=gtk_application_window_new(app);\n",
+                widget);
 }
 
 void window_set_title(FILE *out, char *setting)
@@ -215,5 +221,13 @@ void window_set_default_size(FILE *out, int width, int height)
         tab_insert(out);
         fprintf(out, "gtk_window_set_default_size(GTK_WINDOW(%s), %d, %d);\n", 
                 widget, width, height);
+}
+
+void window_set_application(FILE *out, char *setting)
+{
+        char *widget = getsymval("this");
+        tab_insert(out);
+        fprintf(out, "gtk_window_set_application(GTK_WINDOW(%s), %s);\n",
+                widget, setting);
 }
 

@@ -13,6 +13,7 @@
 #include"widgets/text_view.h"
 #include"widgets/stack.h"
 #include"widgets/stack_switcher.h"
+#include"widgets/application.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -32,7 +33,7 @@ int yylex();
 %}
 %token INCLUDE 
 %token SET ADD SIGNAL PACK COMMON
-%token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR
+%token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR OR
 %token HBOX VBOX BUTTON BUTTONBOX WINDOW 
 
 %token SKIP_PAGER 
@@ -76,6 +77,8 @@ int yylex();
 %token STACK STACK_SWITCHER STACK_SWITCHER_STACK HHOMOGENEOUS VHOMOGENEOUS 
 %token TRANSITION_DURATION TRANSITION_TYPE TITLED
 
+%token APPLICATION APP_ID APP_FLAGS ACCELS_FOR_ACTION
+
 %union
 {
         int   int_val;
@@ -84,12 +87,19 @@ int yylex();
         float float_val;
 }
 
-%type <string>    IDENTIFIER STRING  
+%type <string>    IDENTIFIER STRING flags 
 %type <int_val>   NUMBER
 %type <char_val>  CHAR
 %type <float_val> FLOAT
 
 %%
+
+main:
+        APPLICATION IDENTIFIER params SEMICOLON commands
+        |
+        commands
+        ;
+        
 commands: 
         | commands command
         ;
@@ -278,6 +288,7 @@ window:
                 block_close($2);
         }
         ;
+
 packs:
         | packs pack
         ;
@@ -428,6 +439,30 @@ param:
         | set_stack_transition_duration
         | set_stack_transition_type
         | set_stack_switcher_stack
+        | set_application_accels_for_action
+        | set_application_flags
+        | set_application_id
+        ;
+
+set_application_flags:
+        SET APP_FLAGS flags
+        {
+                application_set_flags($3);
+        }
+        ;
+
+set_application_id: 
+        SET APP_ID STRING
+        {
+                application_set_id($3);
+        }
+        ;
+
+set_application_accels_for_action:
+        SET ACCELS_FOR_ACTION STRING STRING
+        {
+                accels_add($3, $4);
+        }
         ;
 
 set_stack_switcher_stack:
@@ -1264,6 +1299,18 @@ signal:
         | SIGNAL STRING IDENTIFIER
         {
                 signal_connect(yyout, $2, $3, "NULL");
+        }
+        ;
+
+flags:
+        IDENTIFIER
+        {
+                $$ = $1;
+        }
+        |
+        flags OR IDENTIFIER 
+        {
+                $$ = append_flag($$, " | ", $3);
         }
         ;
 %%

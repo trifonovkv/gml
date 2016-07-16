@@ -14,6 +14,7 @@ void comment();
 "/*"                  comment();
 {DIGIT}+              yylval.int_val=atoi(yytext);    return NUMBER; 
 {DIGIT}+\.{DIGIT}+    yylval.float_val=atof(yytext);  return FLOAT;
+APPLICATION           return APPLICATION;
 STACK                 return STACK;
 STACK_SWITCHER        return STACK_SWITCHER;
 TEXT_VIEW             return TEXT_VIEW;
@@ -165,10 +166,15 @@ Vhomogeneous          return VHOMOGENEOUS;
 Transition_duration   return TRANSITION_DURATION;
 Transition_type       return TRANSITION_TYPE;
 Titled                return TITLED;
+
+App_id                return APP_ID;
+App_flags             return APP_FLAGS;
+Accels_for_action     return ACCELS_FOR_ACTION;
   
 \"(\\.|[^\\"])*\"     yylval.string=strdup(yytext); return STRING;  
 {ID}+                 yylval.string=strdup(yytext); return IDENTIFIER;
 ;                     return SEMICOLON;
+"|"                   return OR;
 \n                    ;
 [ \t]+                ;
 .                     fprintf(stderr, "Error operator: %s\n", yytext);

@@ -27,7 +27,22 @@ typedef enum
         ,GTK_BUTTON_BOX
         ,GTK_STACK
         ,GTK_STACK_SWITCHER
+        ,GTK_APPLICATION
+        ,P_STRING
 } widget_type;
+
+/* Keyboard accelerators and action */
+struct accels
+{
+        char*           action;
+        char*           key;
+        struct accels*  next;
+};
+
+typedef struct accels accels;
+
+/* Table of keyboard accelerators */
+extern accels *accels_table;
 
 /* Data type for links in the chain of symbols. */
 struct symrec
@@ -37,13 +52,15 @@ struct symrec
         widget_type     type;
         struct symrec*  next;        /* link field */
 };
+
 typedef struct symrec symrec;
 
 /* The symbol table: a chain of 'struct symrec'. */
 extern symrec *sym_table;
 
-void tab_insert(FILE *out);
-
+void    accels_add      (char *action_name, char *accel_key);
+char*   append_flag     (char *flags, char *or, char *flag);
+void    tab_insert      (FILE *out);
 void    main_start      (FILE *out);
 void    main_end        (FILE *out);
 void    include_insert  (FILE *out, char *include);

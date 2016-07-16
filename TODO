@@ -1,6 +1,7 @@
-make example with scrolled window and text view
-add application window
-add stack add titled
-change add for header bar (hb_pack) ?
-add other last stack add
-stack_add move in add
+replace string name type of symbol on enum name 
+del GTK prefix on enum types of symbol tables
+change quits signal of examples
+correct application empty rules in bison file
+key accelerators don't work
+error app_id and app_flags undeclared identifier
+add in Makefile.am in examples *.c files for clean

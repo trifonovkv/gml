@@ -1,6 +1,25 @@
 #include"gml.h"
+#include"widgets/application.h"
 
 symrec *sym_table;
+
+void accels_add(char *action_name, char *accel_key)
+{
+        accels *ptr = (accels *)malloc(sizeof(accels));
+        ptr->action = (char *)malloc(strlen(action_name) + 1);
+        strcpy(ptr->action, action_name);
+        ptr->key = (char *)malloc(strlen(accel_key) + 1);
+        strcpy(ptr->key, accel_key);
+        ptr->next = (struct accels *)accels_table;
+        accels_table = ptr;
+}
+
+char *append_flag(char *flags, char *or, char *flag)
+{
+        flags = strcat(flags, or);
+        flags = strcat(flags, flag);
+        return flags;
+}
 
 void tab_insert(FILE *out)
 {
@@ -9,17 +28,37 @@ void tab_insert(FILE *out)
 
 void main_start(FILE *out)
 {
-        fprintf(out, "int main(int argc, char **argv)\n{\n");
-        tab_insert(out);
-        fprintf(out, "gtk_init(&argc, &argv);\n");
+        fprintf(out, "static void\n");
+        fprintf(out, "activate (GtkApplication *app,\n");
+        fprintf(out, "          gpointer        user_data)\n");
+        fprintf(out, "{\n");
+        /*
+         *fprintf(out, "int main(int argc, char **argv)\n{\n");
+         *tab_insert(out);
+         *fprintf(out, "gtk_init(&argc, &argv);\n");
+         */
 }
 
 void main_end(FILE *out)
 {
+
+        fprintf(out, "}\n\n");
+        fprintf(out, "int\n");
+        fprintf(out, "main (int    argc,\n");
+        fprintf(out, "      char **argv)\n");
+        fprintf(out, "{\n");
         tab_insert(out);
-        fprintf(out, "gtk_main();\n");
-        tab_insert(out);
-        fprintf(out, "return 0;\n}\n");
+        fprintf(out, "int status;\n");
+
+        application(out);
+
+        fprintf(out, "return status;\n}\n");
+        /*
+         *tab_insert(out);
+         *fprintf(out, "gtk_main();\n");
+         *tab_insert(out);
+         *fprintf(out, "return 0;\n}\n");
+         */
 }
 
 void include_insert(FILE *out, char *include)
@@ -131,7 +170,7 @@ int main(int argc, char *argv[])
                 printf("Error opening file\n");
                 exit(1);
         } 
-        yyout = fopen(argv[2], "a");
+        yyout = fopen(argv[2], "w");
         if(yyout == NULL) {
                 printf("Error opening file\n");
                 exit(1);

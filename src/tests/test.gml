@@ -77,29 +77,32 @@ STACK_SWITCHER stack_switcher
 ;
 
 HEADER_BAR header_bar
+  CMN Visible TRUE
+  SET Custom_title stack_switcher
 /*
+  SET Show_close_button TRUE
   SET Header_bar_title "Header bar"
   SET Subtitle "Subtitle" 
   SET Has_subtitle TRUE
-  SET Show_close_button TRUE
   SET Decoration_layout "menu:minimize,maximize,close"
   ADD Pack_end button
 */
-  SET Custom_title stack_switcher
 ;
 
 VBOX vbox
+  CMN Visible TRUE
   ADD header_bar
   ADD stack
 ;
 
 WINDOW window
   SET Default_size 720 404
-  ADD vbox
+  SET Title "Example Application"
 /*
+  SET Titlebar vbox
   SET Titlebar header_bar
-  ADD scrolled_window
-*/
   SIGNAL "destroy" gtk_main_quit
+*/
+  ADD vbox
 ;
 
