@@ -18,5 +18,4 @@ WINDOW window
   SET Default_size 600 400
   SET Titlebar header_bar
   ADD scrolled_window
-  SIGNAL "destroy" gtk_main_quit
 ;

@@ -12,9 +12,10 @@ header_bar_SOURCES =                  \
 header_bar.c: header_bar.gml
 				$(top_builddir)/src/gml $(srcdir)/header_bar.gml header_bar.c
 
-CLEANFILES = *~ 
+CLEANFILES = *~                         \
+				header_bar.c                    \
+				$(NULL)
 
 MAINTAINERCLEANFILES =                  \
 				Makefile.in                     \
-				header_bar.c                    \
 				$(NULL)

@@ -28,37 +28,22 @@ void tab_insert(FILE *out)
 
 void main_start(FILE *out)
 {
-        fprintf(out, "static void\n");
-        fprintf(out, "activate (GtkApplication *app,\n");
-        fprintf(out, "          gpointer        user_data)\n");
+        fprintf(out, 
+"static void activate(GtkApplication *app, gpointer user_data)\n");
         fprintf(out, "{\n");
-        /*
-         *fprintf(out, "int main(int argc, char **argv)\n{\n");
-         *tab_insert(out);
-         *fprintf(out, "gtk_init(&argc, &argv);\n");
-         */
 }
 
 void main_end(FILE *out)
 {
 
-        fprintf(out, "}\n\n");
-        fprintf(out, "int\n");
-        fprintf(out, "main (int    argc,\n");
-        fprintf(out, "      char **argv)\n");
-        fprintf(out, "{\n");
+        fprintf(out, "}\n\nint main(int argc, char **argv)\n{\n");
         tab_insert(out);
         fprintf(out, "int status;\n");
 
         application(out);
 
+        tab_insert(out);
         fprintf(out, "return status;\n}\n");
-        /*
-         *tab_insert(out);
-         *fprintf(out, "gtk_main();\n");
-         *tab_insert(out);
-         *fprintf(out, "return 0;\n}\n");
-         */
 }
 
 void include_insert(FILE *out, char *include)
@@ -89,8 +74,8 @@ void container_add(FILE *out, char *widget)
 
 void button_box_new(FILE *out, char *widget)
 {
-        syminst(GTK_BUTTON_BOX, widget, widget);
-        syminst(GTK_BUTTON_BOX, "this", widget);
+        syminst(TYPE_BUTTON_BOX, widget, widget);
+        syminst(TYPE_BUTTON_BOX, "this", widget);
         char *setting = "GTK_ORIENTATION_HORIZONTAL";
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_button_box_new(%s);\n",
@@ -100,20 +85,16 @@ void button_box_new(FILE *out, char *widget)
 widget_type getsymtype(char *sym_name)
 {
         symrec *sym = getsym(sym_name);
-        if (sym == NULL) {
-                printf("%s is an undeclared identifier\n", sym_name);
-                return NONE_TYPE;
-        }
+        if (sym == NULL)
+                return TYPE_NONE;
         return sym->type;
 }
 
 char *getsymval(char *sym_name)
 {
         symrec *sym = getsym(sym_name);
-        if (sym == NULL) {
-                printf("%s is an undeclared identifier\n", sym_name);
+        if (sym == NULL) 
                 return NULL;
-        }
         return sym->value;
 }
 

@@ -12,9 +12,10 @@ window_SOURCES =                  \
 window.c: window.gml
 				$(top_builddir)/src/gml $(srcdir)/window.gml window.c
 
-CLEANFILES = *~ 
+CLEANFILES = *~                     \
+				window.c                    \
+				$(NULL)
 
 MAINTAINERCLEANFILES =              \
 				Makefile.in                 \
-				window.c                    \
 				$(NULL)

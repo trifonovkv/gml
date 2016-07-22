@@ -9,9 +9,10 @@ scrolled_window_SOURCES = scrolled_window.c handlers.c
 scrolled_window.c: scrolled_window.gml
 				$(top_builddir)/src/gml $(srcdir)/scrolled_window.gml scrolled_window.c
 
-CLEANFILES = *~	
+CLEANFILES = *~	                \
+				scrolled_window.c       \
+				$(NULL)
 
 MAINTAINERCLEANFILES =          \
 				Makefile.in             \
-				scrolled_window.c       \
 				$(NULL)

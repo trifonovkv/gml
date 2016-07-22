@@ -1,7 +1,3 @@
-replace string name type of symbol on enum name 
-del GTK prefix on enum types of symbol tables
-change quits signal of examples
-correct application empty rules in bison file
-key accelerators don't work
-error app_id and app_flags undeclared identifier
-add in Makefile.am in examples *.c files for clean
+set invisible char in entry
+implement variable count of tab in tab_insert
+implement code generation and formated functions

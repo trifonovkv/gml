@@ -100,8 +100,8 @@ void entry_set_max_length(FILE *out, int setting)
 
 void entry_new(FILE *out, char *widget)
 {
-        syminst(GTK_ENTRY, widget, widget);
-        syminst(GTK_ENTRY, "this", widget);
+        syminst(TYPE_ENTRY, widget, widget);
+        syminst(TYPE_ENTRY, "this", widget);
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_entry_new();\n", widget);
 }

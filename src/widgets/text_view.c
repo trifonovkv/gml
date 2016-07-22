@@ -2,8 +2,8 @@
 
 void text_view_new(FILE *out, char *widget)
 {
-        syminst(GTK_TEXT_VIEW, widget, widget);
-        syminst(GTK_TEXT_VIEW, "this", widget);
+        syminst(TYPE_TEXT_VIEW, widget, widget);
+        syminst(TYPE_TEXT_VIEW, "this", widget);
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_text_view_new();\n", widget);
 }

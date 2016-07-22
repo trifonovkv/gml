@@ -1,3 +1,8 @@
+APPLICATION application
+  SET Accels_for_action quit_activated "<Ctrl>Q"
+  SET Accels_for_action print_hello "<Ctrl>P"
+;
+
 ADJUSTMENT adjustment
   SET Value 10.86
   SET Clamp_page 3.3 5.5

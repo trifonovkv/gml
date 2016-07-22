@@ -2,8 +2,8 @@
 
 void header_bar_new(FILE *out, char *widget) 
 {
-        syminst(GTK_HEADER_BAR, widget, widget);
-        syminst(GTK_HEADER_BAR, "this", widget);
+        syminst(TYPE_HEADER_BAR, widget, widget);
+        syminst(TYPE_HEADER_BAR, "this", widget);
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_header_bar_new();\n", widget);
 }

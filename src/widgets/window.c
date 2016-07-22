@@ -194,15 +194,9 @@ void window_set_resizable(FILE *out, char *setting)
 
 void window_new(FILE *out, char *widget)
 {
-        syminst(GTK_WINDOW, widget, widget);
-        syminst(GTK_WINDOW, "this", widget);
+        syminst(TYPE_WINDOW, widget, widget);
+        syminst(TYPE_WINDOW, "this", widget);
         tab_insert(out);
-        /*
-         *fprintf(out, "GtkWidget *%s=gtk_window_new(%s);\n", 
-         *        widget, WINDOW_TYPE);
-         *char *application = getsymval("application"); 
-         *window_set_application(out, application);
-         */
         fprintf(out, "GtkWidget *%s=gtk_application_window_new(app);\n",
                 widget);
 }

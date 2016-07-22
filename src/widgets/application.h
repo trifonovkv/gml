@@ -2,6 +2,8 @@
 
 void application(FILE *out);
 
+void application_set_name(char *name);
+
 void application_set_flags(char *flags);
 
 void application_set_id(char *id);

@@ -96,6 +96,9 @@ int yylex();
 
 main:
         APPLICATION IDENTIFIER params SEMICOLON commands
+        {
+                application_set_name($2);
+        }
         |
         commands
         ;
@@ -194,7 +197,8 @@ adjustment:
         ADJUSTMENT IDENTIFIER 
         {
                 adjustment_new(yyout, $2);
-        } params SEMICOLON
+        } 
+        params SEMICOLON
         {
                 block_close($2);
         }
@@ -459,7 +463,7 @@ set_application_id:
         ;
 
 set_application_accels_for_action:
-        SET ACCELS_FOR_ACTION STRING STRING
+        SET ACCELS_FOR_ACTION IDENTIFIER STRING
         {
                 accels_add($3, $4);
         }

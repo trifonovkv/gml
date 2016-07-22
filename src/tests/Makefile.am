@@ -15,5 +15,4 @@ CLEANFILES = *~                   \
 
 MAINTAINERCLEANFILES =            \
 				Makefile.in               \
-				$(builddir)/test.c        \
 				$(NULL)

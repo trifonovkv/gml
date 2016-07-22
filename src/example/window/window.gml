@@ -10,5 +10,4 @@ BUTTONBOX button_box
 WINDOW window
   SET Title "Hello"
   ADD button_box
-  SIGNAL "destroy" gtk_main_quit
 ;

@@ -2,8 +2,8 @@
 
 void stack_new(FILE *out, char *widget)
 {
-        syminst(GTK_STACK, widget, widget);
-        syminst(GTK_STACK, "this", widget);
+        syminst(TYPE_STACK, widget, widget);
+        syminst(TYPE_STACK, "this", widget);
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_stack_new();\n", widget);
 }

@@ -2,8 +2,8 @@
 
 void button_new(FILE *out, char *setting)
 {
-        syminst(GTK_BUTTON, setting, setting);
-        syminst(GTK_BUTTON, "this", setting);
+        syminst(TYPE_BUTTON, setting, setting);
+        syminst(TYPE_BUTTON, "this", setting);
         tab_insert(out);
         fprintf(out, "GtkWidget *%s=gtk_button_new();\n", setting);
 } 

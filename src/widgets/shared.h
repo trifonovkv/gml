@@ -19,10 +19,10 @@
 void set_title(FILE *out, char *string)
 {
         widget_type type = getsymtype("this");
-        if (type == GTK_WINDOW) {
+        if (type == TYPE_WINDOW) {
                 window_set_title(out, string);
         }
-        if (type == GTK_HEADER_BAR) {
+        if (type == TYPE_HEADER_BAR) {
                 header_bar_set_title(out, string);
         }
 }
@@ -34,10 +34,10 @@ void set_title(FILE *out, char *string)
 void set_editable(FILE *out, char *setting)
 {
         widget_type type = getsymtype("this");
-        if (type == GTK_TEXT_VIEW) {
+        if (type == TYPE_TEXT_VIEW) {
                 text_view_set_editable(out, setting);
         }
-        if (type == GTK_ENTRY) {
+        if (type == TYPE_ENTRY) {
                 editable_set_editable(out, setting);
         }
 }
@@ -49,10 +49,10 @@ void set_editable(FILE *out, char *setting)
 void set_input_purpose(FILE *out, char *setting)
 {
         widget_type type = getsymtype("this");
-        if (type == GTK_TEXT_VIEW) {
+        if (type == TYPE_TEXT_VIEW) {
                 text_view_set_input_purpose(out, setting);
         }
-        if (type == GTK_ENTRY) {
+        if (type == TYPE_ENTRY) {
                 entry_set_input_purpose(out, setting);
         }
         
@@ -69,10 +69,10 @@ void set_input_purpose(FILE *out, char *setting)
 void set_homogeneous(FILE *out, char *setting)
 {
         widget_type type = getsymtype("this");
-        if (type == GTK_VBOX || type == GTK_HBOX) {
+        if (type == TYPE_VBOX || type == TYPE_HBOX) {
                 box_set_homogeneous(out, setting);
         }
-        if (type == GTK_STACK) {
+        if (type == TYPE_STACK) {
                 stack_set_homogeneous(out, setting);
         }
 }

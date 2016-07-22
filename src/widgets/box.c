@@ -86,8 +86,8 @@ void box_set_spacing(FILE *out, int setting)
 
 void box_horizontal_new(FILE *out, char *setting)
 {
-        syminst(GTK_HBOX, setting, setting);
-        syminst(GTK_HBOX, "this", setting);
+        syminst(TYPE_HBOX, setting, setting);
+        syminst(TYPE_HBOX, "this", setting);
         tab_insert(out);
         fprintf(out, "gboolean    expand;\n");
         tab_insert(out);
@@ -105,8 +105,8 @@ void box_horizontal_new(FILE *out, char *setting)
 
 void box_vertical_new(FILE *out, char *setting)
 {
-        syminst(GTK_VBOX, setting, setting);
-        syminst(GTK_VBOX, "this", setting);
+        syminst(TYPE_VBOX, setting, setting);
+        syminst(TYPE_VBOX, "this", setting);
         tab_insert(out);
         fprintf(out, "gboolean    expand;\n");
         tab_insert(out);

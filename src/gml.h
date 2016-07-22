@@ -13,22 +13,22 @@ int yyparse(void);
 /* Types of widgets */
 typedef enum
 {
-        NONE_TYPE
-        ,GTK_ADJUSTMENT        
-        ,GTK_HBOX              
-        ,GTK_VBOX              
-        ,GTK_BUTTON           
-        ,GTK_ENTRY            
-        ,GTK_HEADER_BAR       
-        ,GTK_SCROLLED_WINDOW  
-        ,GTK_TEXT_VIEW        
-        ,GTK_WIDGET           
-        ,GTK_WINDOW
-        ,GTK_BUTTON_BOX
-        ,GTK_STACK
-        ,GTK_STACK_SWITCHER
-        ,GTK_APPLICATION
-        ,P_STRING
+        TYPE_NONE
+        ,TYPE_ADJUSTMENT        
+        ,TYPE_HBOX              
+        ,TYPE_VBOX              
+        ,TYPE_BUTTON           
+        ,TYPE_ENTRY            
+        ,TYPE_HEADER_BAR       
+        ,TYPE_SCROLLED_WINDOW  
+        ,TYPE_TEXT_VIEW        
+        ,TYPE_WIDGET           
+        ,TYPE_WINDOW
+        ,TYPE_BUTTON_BOX
+        ,TYPE_STACK
+        ,TYPE_STACK_SWITCHER
+        ,TYPE_APPLICATION
+        ,TYPE_STRING
 } widget_type;
 
 /* Keyboard accelerators and action */
