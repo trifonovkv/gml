@@ -1,3 +1,1 @@
 set invisible char in entry
-implement variable count of tab in tab_insert
-implement code generation and formated functions

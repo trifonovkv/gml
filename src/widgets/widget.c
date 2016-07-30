@@ -1,147 +1,144 @@
-#include"widget.h"
+#include "gml.h"
+#include "fmtout.h"
+#include "widget.h"
 
-void widget_show_all(FILE *out, char *setting)
+void widget_show_all(char *setting)
 {
-        tab_insert(out);
-        fprintf(out, "gtk_widget_show_all(%s);\n", setting); 
+        putfun("gtk_widget_show_all", 1, setting); 
 }
 
-void widget_set_size_request(FILE *out, int width, int height)
+void widget_set_size_request(char *width, char *height)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_size_request(%s, %d, %d);\n", 
-                widget, width, height);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_size_request", 3, widget, width, height);
 }
 
-void widget_set_margin_bottom(FILE *out, int setting)
+void widget_set_margin_bottom(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_margin_bottom(%s, %d);\n", 
-                widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_margin_bottom", 2, widget, setting);
 }
 
-void widget_set_margin_top(FILE *out, int setting)
+void widget_set_margin_top(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_margin_top(%s, %d);\n", widget, setting);
+        char *widget = getsymval("this");
+                              
+        putfun("gtk_widget_set_margin_top", 2, widget, setting);
 }
 
-void widget_set_margin_end(FILE *out, int setting)
+void widget_set_margin_end(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_margin_end(%s, %d);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_margin_end", 2, widget, setting);
 }
 
-void widget_set_margin_start(FILE *out, int setting)
+void widget_set_margin_start(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_margin_start(%s, %d);\n", widget, setting);
+        char *widget = getsymval("this");
+                                 
+        putfun("gtk_widget_set_margin_start", 2, widget, setting);
 }
 
-void widget_set_valign(FILE *out, char *setting)
+void widget_set_valign(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_valign(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_valign", 2, widget, setting);
 }
 
-void widget_set_halign(FILE *out, char *setting)
+void widget_set_halign(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_halign(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_halign", 2, widget, setting);
 }
 
-void widget_set_vexpand_set(FILE *out, char *setting)
+void widget_set_vexpand_set(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_vexpand_set(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_vexpand_set", 2, widget, setting);
 }
 
-void widget_set_vexpand(FILE *out, char *setting)
+void widget_set_vexpand(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_vexpand(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_vexpand", 2, widget, setting);
 }
 
-void widget_set_hexpand_set(FILE *out, char *setting)
+void widget_set_hexpand_set(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_hexpand_set(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_hexpand_set", 2, widget, setting);
 }
 
-void widget_set_hexpand(FILE *out, char *setting)
+void widget_set_hexpand(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_hexpand(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+                                
+        putfun("gtk_widget_set_hexpand", 2, widget, setting);
 }
 
 
-void widget_set_receives_default(FILE *out, char *setting)
+void widget_set_receives_default(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_receives_default(%s, %s);\n", 
-                widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_receives_default", 2, widget, setting);
 }
 
-void widget_set_sensitive(FILE *out, char *setting)
+void widget_set_sensitive(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_sensitive(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_sensitive", 2, widget, setting);
 }
 
-void widget_set_no_show_all(FILE *out, char *setting)
+void widget_set_no_show_all(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_no_show_all(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_no_show_all", 2, widget, setting);
 }
 
-void widget_set_app_paintable(FILE *out, char *setting)
+void widget_set_app_paintable(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_app_paintable(%s, %s);\n", 
-                widget, setting);
+        char *widget = getsymval("this");
+                                
+        putfun("gtk_widget_set_app_paintable", 2, widget, setting);
 }
 
-void widget_set_can_default(FILE *out, char *setting)
+void widget_set_can_default(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_can_default(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+                              
+        putfun("gtk_widget_set_can_default", 2, widget, setting);
 }
 
-void widget_set_can_focus(FILE *out, char *setting)
+void widget_set_can_focus(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_can_focus(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+
+        putfun("gtk_widget_set_can_focus", 2, widget, setting);
 }
 
-void widget_set_visible(FILE *out, char *setting)
+void widget_set_visible(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_visible(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");
+                                  
+        putfun("gtk_widget_set_visible", 2, widget, setting);
 }
 
-void widget_set_events(FILE *out, int setting)
+void widget_set_events(char *setting)
 {
         char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_events(%s, %d);\n", widget, setting);
+
+        putfun("gtk_widget_set_events", 2, widget, setting);
 }
 
 /*
@@ -165,8 +162,7 @@ void widget_set_events(FILE *out, int setting)
  * void 
  * {
  *         char *widget = getsymval("this");
- *         tab_insert(out); 
- *         fprintf(out, "gtk_widget_add_accelerator (GtkWidget *widget,
+ *         putfun("gtk_widget_add_accelerator (GtkWidget *widget,
  *                             const gchar *accel_signal,
  *                             GtkAccelGroup *accel_group,
  *                             guint accel_key,
@@ -175,38 +171,37 @@ void widget_set_events(FILE *out, int setting)
  * }
  */
 
-void widget_set_opacity(FILE *out, float setting)
+void widget_set_opacity(char *setting)
 {
-        char *widget = getsymval("this");                   
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_opacity(%s, %f);\n", widget, setting);
+        char *widget = getsymval("this"); 
+                  
+        putfun("gtk_widget_set_opacity", 2, widget, setting);
 }
 
-void widget_set_tooltip_markup(FILE *out, char *setting)
+void widget_set_tooltip_markup(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_tooltip_markup(%s, %s);\n", 
-                widget, setting);
+        char *widget = getsymval("this");  
+                                    
+        putfun("gtk_widget_set_tooltip_markup", 2, widget, setting);
 }
 
-void widget_set_has_tootip(FILE *out, char *settng)
+void widget_set_has_tootip(char *settng)
 {
         char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_has_tooltip(%s, %s);\n", widget, settng);
+
+        putfun("gtk_widget_set_has_tooltip", 2, widget, settng);
 }
 
-void widget_set_tooltip_text(FILE *out, char *setting)
+void widget_set_tooltip_text(char *setting)
 {
-        char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_tooltip_text(%s, %s);\n", widget, setting);
+        char *widget = getsymval("this");      
+                                
+        putfun("gtk_widget_set_tooltip_text", 2, widget, setting);
 }
 
-void widget_set_name(FILE *out, char *setting)
+void widget_set_name(char *setting)
 {
         char *widget = getsymval("this");                                      
-        tab_insert(out); 
-        fprintf(out, "gtk_widget_set_name(%s, %s);\n", widget, setting);
+
+        putfun("gtk_widget_set_name", 2, widget, setting);
 }

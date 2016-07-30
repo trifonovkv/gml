@@ -1,57 +1,53 @@
-#include"stack.h"
+#include "gml.h"
+#include "fmtout.h"
+#include "stack.h"
 
-void stack_new(FILE *out, char *widget)
+void stack_new(char *widget)
 {
         syminst(TYPE_STACK, widget, widget);
         syminst(TYPE_STACK, "this", widget);
-        tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_stack_new();\n", widget);
+
+        putdef("GtkWidget *", widget, "gtk_stack_new", 0);
 }
 
-void stack_add_titled(FILE *out, char *child, char *name, char *title)
+void stack_add_titled(char *child, char *name, char *title)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_stack_add_titled(GTK_STACK(%s), %s, %s, %s);\n",
-                widget, child, name, title);
+        char *widget = wrptype("GTK_STACK", getsymval("this"));
+
+        putfun("gtk_stack_add_titled", 4, widget, child, name, title);
 }
 
-void stack_set_homogeneous(FILE *out, char *setting)
+void stack_set_homogeneous(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_stack_set_homogeneous(GTK_STACK(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_STACK", getsymval("this"));
+
+        putfun("gtk_stack_set_homogeneous", 2, widget, setting);
 }
 
-void stack_set_hhomogeneous(FILE *out, char *setting)
+void stack_set_hhomogeneous(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_stack_set_hhomogeneous(GTK_STACK(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_STACK", getsymval("this"));
+
+        putfun("gtk_stack_set_hhomogeneous", 2, widget, setting);
 }
 
-void stack_set_vhomogeneous(FILE *out, char *setting)
+void stack_set_vhomogeneous(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_stack_set_vhomogeneous(GTK_STACK(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_STACK", getsymval("this"));
+
+        putfun("gtk_stack_set_vhomogeneous", 2, widget, setting);
 }
  
-void stack_set_transition_duration(FILE *out, int setting)
+void stack_set_transition_duration(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_stack_set_transition_duration(GTK_STACK(%s), %d);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_STACK", getsymval("this"));
+
+        putfun("gtk_stack_set_transition_duration", 2, widget, setting);
 }
 
-void stack_set_transition_type(FILE *out, char *setting)
+void stack_set_transition_type(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_stack_set_transition_type(GTK_STACK(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_STACK", getsymval("this"));
+
+        putfun("gtk_stack_set_transition_type", 2, widget, setting);
 }

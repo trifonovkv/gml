@@ -1,11 +1,9 @@
-#include"gml.h"
-
 /* 
  * Create a new GtkStackSwitcher.
  */
-void stack_switcher_new(FILE *out, char *widget);
+void stack_switcher_new(char *widget);
 
 /* 
  * Sets the stack to control.
  */
-void stack_switcher_set_stack(FILE *out, char *setting);
+void stack_switcher_set_stack(char *setting);

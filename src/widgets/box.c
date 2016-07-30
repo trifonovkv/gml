@@ -1,124 +1,147 @@
-#include"box.h" 
+#include "gml.h"
+#include "box.h" 
+#include "fmtout.h"
 
-void box_set_center_widget(FILE *out, char *child)
+void box_query_child_packing(char *widget, char *child)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_center_widget(GTK_BOX(%s), %s);\n", 
-                widget, child);
+        putfun("gtk_box_query_child_packing"
+              ,6
+              ,widget
+              ,child
+              ,"&expand"
+              ,"&fill"
+              ,"&padding"
+              ,"&pack_type");
 }
 
-void box_set_pack_type(FILE *out, char *child, char *setting)
+void box_set_center_widget(char *child)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_query_child_packing(GTK_BOX(%s), %s,\
-&expand, &fill, &padding, &pack_type);\n", widget, child);
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_child_packing(GTK_BOX(%s), %s, \
-expand, fill, padding, %s);\n", widget, child, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        putfun("gtk_box_set_center_widget", 2, widget, child);
 }
 
-void box_set_expand(FILE *out, char *child, char *setting)
+void box_set_pack_type(char *child, char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_query_child_packing(GTK_BOX(%s), %s,\
-&expand, &fill, &padding, &pack_type);\n", widget, child);
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_child_packing(GTK_BOX(%s), %s, \
-%s, fill, padding, pack_type);\n", widget, child, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+
+        box_query_child_packing(widget, child);
+
+        putfun("gtk_box_set_child_packing"
+              ,6
+              ,widget
+              ,child
+              ,"expand"
+              ,"fill"
+              ,"padding"
+              ,setting);
 }
 
-void box_set_fill(FILE *out, char *child, char *setting)
+void box_set_expand(char *child, char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_query_child_packing(GTK_BOX(%s), %s,\
-&expand, &fill, &padding, &pack_type);\n", widget, child);
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_child_packing(GTK_BOX(%s), %s, \
-expand, %s, padding, pack_type);\n", widget, child, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+
+        box_query_child_packing(widget, child);
+
+        putfun("gtk_box_set_child_packing"
+              ,6
+              ,widget
+              ,child
+              ,setting
+              ,"fill"
+              ,"padding"
+              ,"pack_type");
 }
 
-void box_set_padding(FILE *out, char *child, int setting)
+void box_set_fill(char *child, char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_query_child_packing(GTK_BOX(%s), %s,\
-&expand, &fill, &padding, &pack_type);\n", widget, child);
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_child_packing(GTK_BOX(%s), %s, \
-expand, fill, %d, pack_type);\n", widget, child, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        box_query_child_packing(widget, child);
+
+        putfun("gtk_box_set_child_packing"
+              ,6
+              ,widget
+              ,child
+              ,"expand"
+              ,setting
+              ,"padding"
+              ,"pack_type");
 }
 
-void box_reorder_child(FILE *out, char *child, int setting)
+void box_set_padding(char *child, char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_reorder_child(GTK_BOX(%s), %s, %d);\n",
-                widget, child, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        box_query_child_packing(widget, child);
+
+        putfun("gtk_box_set_child_packing"
+              ,6
+              ,widget
+              ,child
+              ,"expand"
+              ,"fill"
+              ,setting
+              ,"pack_type");
 }
 
-void box_set_homogeneous(FILE *out, char *setting)
+void box_reorder_child(char *child, char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_homogeneous(GTK_BOX(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        putfun("gtk_box_reorder_child", 3, widget, child, setting);
 }
 
-void box_set_baseline_position(FILE *out, char *setting)
+void box_set_homogeneous(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_baseline_position(GTK_BOX(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        putfun("gtk_box_set_homogeneous", 2, widget, setting);
 }
 
-void box_set_spacing(FILE *out, int setting)
+void box_set_baseline_position(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_box_set_spacing(GTK_BOX(%s), %d);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        putfun("gtk_box_set_baseline_position", 2, widget, setting);
 }
 
-void box_horizontal_new(FILE *out, char *setting)
+void box_set_spacing(char *setting)
 {
-        syminst(TYPE_HBOX, setting, setting);
-        syminst(TYPE_HBOX, "this", setting);
-        tab_insert(out);
-        fprintf(out, "gboolean    expand;\n");
-        tab_insert(out);
-        fprintf(out, "gboolean    fill;\n");
-        tab_insert(out);
-        fprintf(out, "guint       padding;\n");
-        tab_insert(out);
-        fprintf(out, "GtkPackType pack_type;\n");
-        tab_insert(out);
+        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        
+        putfun("gtk_box_set_spacing", 2, widget, setting);
+}
+
+void box_horizontal_new(char *widget)
+{
+        syminst(TYPE_HBOX, widget, widget);
+        syminst(TYPE_HBOX, "this", widget);
+
+        prtstr(1, "gboolean    expand;\n");
+        prtstr(1, "gboolean    fill;\n");
+        prtstr(1, "guint       padding;\n");
+        prtstr(1, "GtkPackType pack_type;\n");
+
         char *orientation = "GTK_ORIENTATION_HORIZONTAL";
-        char *spacing = "0";
-        fprintf(out, "GtkWidget *%s=gtk_box_new(%s, %s);\n", 
-                setting, orientation, spacing);
+        char *spacing     = "0";
+
+        putdef("GtkWidget *", widget, "gtk_box_new", 2, orientation, spacing); 
 }
 
-void box_vertical_new(FILE *out, char *setting)
+void box_vertical_new(char *widget)
 {
-        syminst(TYPE_VBOX, setting, setting);
-        syminst(TYPE_VBOX, "this", setting);
-        tab_insert(out);
-        fprintf(out, "gboolean    expand;\n");
-        tab_insert(out);
-        fprintf(out, "gboolean    fill;\n");
-        tab_insert(out);
-        fprintf(out, "guint       padding;\n");
-        tab_insert(out);
-        fprintf(out, "GtkPackType pack_type;\n");
-        tab_insert(out);
+        syminst(TYPE_VBOX, widget, widget);
+        syminst(TYPE_VBOX, "this", widget);
+
+        prtstr(1, "gboolean    expand;\n");
+        prtstr(1, "gboolean    fill;\n");
+        prtstr(1, "guint       padding;\n");
+        prtstr(1, "GtkPackType pack_type;\n");
+
         char *orientation = "GTK_ORIENTATION_VERTICAL";
-        char *spacing = "0";
-        fprintf(out, "GtkWidget *%s=gtk_box_new(%s, %s);\n", 
-                setting, orientation, spacing);
+        char *spacing     = "0";
+
+        putdef("GtkWidget *", widget, "gtk_box_new", 2, orientation, spacing); 
 }
 

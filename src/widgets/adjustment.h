@@ -1,9 +1,7 @@
-#include"gml.h"
-
 /*
  * Creates a new GtkAdjustment.
  */
-void adjustment_new(FILE *out, char *widget);
+void adjustment_new(char *widget);
 
 /*
  * Sets the GtkAdjustment value. The value is clamped to lie between “lower” and
@@ -11,7 +9,7 @@ void adjustment_new(FILE *out, char *widget);
  * Note that for adjustments which are used in a GtkScrollbar, the effective
  * range of allowed values goes from “lower” to “upper” - “page_size”.
  */
-void adjustment_set_value(FILE *out, double setting);
+void adjustment_set_value(char *setting);
 
 /*
  * Updates the “value” property to ensure that the range between lower and upper
@@ -19,7 +17,7 @@ void adjustment_set_value(FILE *out, double setting);
  * the range is larger than the page size, then only the start of it will be in
  * the current page. A “changed” signal will be emitted if the value is changed.
  */
-void adjustment_clamp_page(FILE *out, double lower, double upper);
+void adjustment_clamp_page(char *lower, char *upper);
 
 /*
  * Sets all properties of the adjustment at once.
@@ -27,12 +25,12 @@ void adjustment_clamp_page(FILE *out, double lower, double upper);
  * gtk_adjustment_set_lower() for an alternative way of compressing multiple
  * emissions of “changed” into one.
  */
-void adjustment_configure(FILE *out, double value,
-                                     double lower,
-                                     double upper,
-                                     double step_increment,
-                                     double page_increment,
-                                     double page_size);
+void adjustment_configure(char *value,
+                                     char *lower,
+                                     char *upper,
+                                     char *step_increment,
+                                     char *page_increment,
+                                     char *page_size);
 
 /*
  * Sets the minimum value of the adjustment.
@@ -46,14 +44,14 @@ void adjustment_configure(FILE *out, double value,
  * change, or using gtk_adjustment_configure() has the same effect of
  * compressing “changed” emissions.
  */
-void adjustment_set_lower(FILE *out, double setting);
+void adjustment_set_lower(char *setting);
 
 /*
  * Sets the page increment of the adjustment.
  * See gtk_adjustment_set_lower() about how to compress multiple emissions of
  * the “changed” signal when setting multiple adjustment properties.
  */
-void adjustment_set_page_increment(FILE *out, double setting);
+void adjustment_set_page_increment(char *setting);
 
 /*
  * Sets the page size of the adjustment.
@@ -61,14 +59,14 @@ void adjustment_set_page_increment(FILE *out, double setting);
  * the GtkAdjustment::changed signal when setting multiple adjustment
  * properties.
  */
-void adjustment_set_page_size(FILE *out, double setting);
+void adjustment_set_page_size(char *setting);
 
 /*
  * Sets the step increment of the adjustment.
  * See gtk_adjustment_set_lower() about how to compress multiple emissions of
  * the “changed” signal when setting multiple adjustment properties.
  */
-void adjustment_set_step_increment(FILE *out, double setting);
+void adjustment_set_step_increment(char *setting);
 
 /*
  * Sets the maximum value of the adjustment.
@@ -77,4 +75,4 @@ void adjustment_set_step_increment(FILE *out, double setting);
  * See gtk_adjustment_set_lower() about how to compress multiple emissions of
  * the “changed” signal when setting multiple adjustment properties.
  */
-void adjustment_set_upper(FILE *out, double setting);
+void adjustment_set_upper(char *setting);

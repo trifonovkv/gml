@@ -1,18 +1,21 @@
-#include"stack_switcher.h"
+#include "gml.h"
+#include "fmtout.h"
+#include "stack_switcher.h"
 
-void stack_switcher_new(FILE *out, char *widget)
+void stack_switcher_new(char *widget)
 {
         syminst(TYPE_STACK_SWITCHER, widget, widget);
         syminst(TYPE_STACK_SWITCHER, "this", widget);
-        tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_stack_switcher_new();\n", widget);
+
+        putdef("GtkWidget *", widget, "gtk_stack_switcher_new", 0);
 }
 
-void stack_switcher_set_stack(FILE *out, char *setting)
+void stack_switcher_set_stack(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-"gtk_stack_switcher_set_stack(GTK_STACK_SWITCHER(%s), GTK_STACK(%s));\n",
-                widget, setting);
+        char *widget = wrptype("GTK_STACK_SWITCHER", getsymval("this"));
+        
+        putfun("gtk_stack_switcher_set_stack"
+              ,2
+              ,widget
+              ,wrptype("GTK_STACK", setting));
 }

@@ -1,9 +1,9 @@
 #ifndef GIL_H
 #define GIL_H
 
-#include<stdio.h>  /* FILE */
-#include<stdlib.h> /* malloc */
-#include<string.h> /* strlen */
+#include <stdio.h>  /* FILE */
+#include <stdlib.h> /* malloc */
+#include <string.h> /* strlen */
 
 extern FILE *yyin;
 extern FILE *yyout;
@@ -60,14 +60,14 @@ extern symrec *sym_table;
 
 void    accels_add      (char *action_name, char *accel_key);
 char*   append_flag     (char *flags, char *or, char *flag);
-void    tab_insert      (FILE *out);
-void    main_start      (FILE *out);
-void    main_end        (FILE *out);
-void    include_insert  (FILE *out, char *include);
+void    tab_insert      ();
+void    main_start      ();
+void    main_end        ();
+void    include_insert  (char *include);
 void    block_close     (char *start);
-void    signal_connect  (FILE *out, char *signal, char *handler, char *data);
-void    container_add   (FILE *out, char *widget);
-void    button_box_new  (FILE *out, char *widget);
+void    signal_connect  (char *signal, char *handler, char *data);
+void    container_add   (char *widget);
+void    button_box_new  (char *widget);
 
 widget_type getsymtype  (char *sym_name);
 symrec*     getsym      (char *sym_name);

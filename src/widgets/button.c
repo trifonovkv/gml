@@ -1,66 +1,61 @@
-#include"button.h" 
+#include "gml.h"
+#include "fmtout.h"
+#include "button.h" 
 
-void button_new(FILE *out, char *setting)
+void button_new(char *widget)
 {
-        syminst(TYPE_BUTTON, setting, setting);
-        syminst(TYPE_BUTTON, "this", setting);
-        tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_button_new();\n", setting);
+        syminst(TYPE_BUTTON, widget, widget);
+        syminst(TYPE_BUTTON, "this", widget);
+
+        putdef("GtkWidget *", widget, "gtk_button_new", 0);
 } 
 
-void button_set_relief(FILE *out, char *setting)
+void button_set_relief(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_relief(GTK_BUTTON(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+
+        putfun("gtk_button_set_relief", 2, widget, setting);
 }
 
-void button_set_label(FILE *out, char *setting) 
+void button_set_label(char *setting) 
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_label(GTK_BUTTON(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+        
+        putfun("gtk_button_set_label", 2, widget, setting);
 }
 
-void button_set_use_underline(FILE *out, char *setting)
+void button_set_use_underline(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_use_underline(GTK_BUTTON(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+        
+        putfun("gtk_button_set_use_underline", 2, widget, setting);
 }
 
-void button_set_focus_on_click(FILE *out, char *setting)
+void button_set_focus_on_click(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_focus_on_click(GTK_BUTTON(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+
+        putfun("gtk_button_set_focus_on_click", 2, widget, setting);
 }
 
-void button_set_image(FILE *out, char *setting)
+void button_set_image(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_image(GTK_BUTTON(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+
+        putfun("gtk_button_set_image", 2, widget, setting);
 }
 
-void button_set_image_position(FILE *out, char *setting)
+void button_set_image_position(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_image_position(GTK_BUTTON(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+
+        putfun("gtk_button_set_image_position", 2,widget, setting);
 }
 
-void button_set_always_show_image(FILE *out, char *setting)
+void button_set_always_show_image(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_button_set_always_show_image(GTK_BUTTON(%s), %s);\n",
-                widget, setting);
+        char *widget = wrptype("GTK_BUTTON", getsymval("this"));
+
+        putfun("gtk_button_set_always_show_image", 2, widget, setting);
 }
 

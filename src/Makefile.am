@@ -10,6 +10,7 @@ gml_SOURCES =                                 \
 								gml.c                         \
 								gml_bison.y                   \
 								gml_flex.l                    \
+								fmtout.c                      \
 								widgets/window.c              \
 								widgets/box.c                 \
 								widgets/entry.c               \

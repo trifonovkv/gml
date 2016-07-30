@@ -1,10 +1,8 @@
-#include"gml.h" 
-
 /*
  * Creates a new GtkBox.
  */
-void box_horizontal_new(FILE *out, char *setting);
-void box_vertical_new(FILE *out, char *setting);
+void box_horizontal_new (char *widget);
+void box_vertical_new   (char *widget);
 
 /*
  *
@@ -71,13 +69,13 @@ void box_vertical_new(FILE *out, char *setting);
  * Sets the “homogeneous” property of box , controlling whether or not all 
  * children of box are given equal space in the box.
  */
-void box_set_homogeneous(FILE *out, char *setting);
+void box_set_homogeneous(char *setting);
 
 /* 
  * Sets the “spacing” property of box , which is the number of pixels to 
  * place between children of box .
  */
-void box_set_spacing(FILE *out, int setting);
+void box_set_spacing(char *setting);
 
 /*
  * Moves child to a new position in the list of box children. The list 
@@ -89,15 +87,15 @@ void box_set_spacing(FILE *out, int setting);
  * packed just after all other widgets of the same packing type that appear 
  * earlier in the list.
  */
-void box_reorder_child(FILE *out, char *child, int setting);
+void box_reorder_child(char *child, char *setting);
 
 /* 
  * Sets the way child is packed into box.
  */
-void box_set_pack_type(FILE *out, char *child, char *setting);
-void box_set_expand(FILE *out, char *child, char *setting);
-void box_set_fill(FILE *out, char *child, char *setting);
-void box_set_padding(FILE *out, char *child, int setting);
+void box_set_pack_type  (char *child, char *setting);
+void box_set_expand     (char *child, char *setting);
+void box_set_fill       (char *child, char *setting);
+void box_set_padding    (char *child, char *setting);
 
 /* 
  * Sets the baseline position of a box. This affects only horizontal boxes 
@@ -106,12 +104,12 @@ void box_set_padding(FILE *out, char *child, int setting);
  * parent then position is used to allocate the baseline wrt the extra space 
  * available.
  */
-void box_set_baseline_position(FILE *out, char *setting);
+void box_set_baseline_position(char *setting);
 
 /* 
  * Sets a center widget; that is a child widget that will be centered with 
  * respect to the full width of the box, even if the children at either side 
  * take up different amounts of space.
  */
-void box_set_center_widget(FILE *out, char *child);
+void box_set_center_widget(char *child);
 

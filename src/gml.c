@@ -1,5 +1,6 @@
-#include"gml.h"
-#include"widgets/application.h"
+#include "gml.h"
+#include "fmtout.h"
+#include "widgets/application.h"
 
 symrec *sym_table;
 
@@ -21,34 +22,27 @@ char *append_flag(char *flags, char *or, char *flag)
         return flags;
 }
 
-void tab_insert(FILE *out)
+void main_start()
 {
-        fprintf(out, "\t");
+        prtstr(2
+              ,"static void activate(GtkApplication *app,"
+              ," gpointer user_data)\n{\n");
 }
 
-void main_start(FILE *out)
+void main_end()
 {
-        fprintf(out, 
-"static void activate(GtkApplication *app, gpointer user_data)\n");
-        fprintf(out, "{\n");
+        prtstr(1, "}\n\nint main(int argc, char **argv)\n{\n");
+        tabinc(1);
+        prtstr(1, "int status;\n");
+
+        application();
+
+        prtstr(1, "return status;\n}\n");
 }
 
-void main_end(FILE *out)
+void include_insert(char *include)
 {
-
-        fprintf(out, "}\n\nint main(int argc, char **argv)\n{\n");
-        tab_insert(out);
-        fprintf(out, "int status;\n");
-
-        application(out);
-
-        tab_insert(out);
-        fprintf(out, "return status;\n}\n");
-}
-
-void include_insert(FILE *out, char *include)
-{
-        fprintf(out, "#include%s\n", include);
+        prtstr(3, "#include", include, "\n");
 }
 
 void block_close(char *start)
@@ -56,30 +50,33 @@ void block_close(char *start)
         symdelto(start);
 }
 
-void signal_connect(FILE *out, char *signal, char *handler, char *data)
+void signal_connect(char *signal, char *handler, char *data)
 {
         char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "g_signal_connect(%s, %s, G_CALLBACK(%s), %s);\n",
-                widget, signal, handler, data);
+        putfun("g_signal_connect"
+              ,4
+              ,widget
+              ,signal
+              ,wrptype("G_CALLBACK", handler)
+              ,data);
 }
 
-void container_add(FILE *out, char *widget)
+void container_add(char *widget)
 {
-        char *container = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_container_add(GTK_CONTAINER(%s), %s);\n",
-                container, widget);
+        char *container = wrptype("GTK_CONTAINER", getsymval("this"));
+        putfun("gtk_container_add"
+              ,2
+              ,container
+              ,widget);
 }
 
-void button_box_new(FILE *out, char *widget)
+void button_box_new(char *widget)
 {
         syminst(TYPE_BUTTON_BOX, widget, widget);
         syminst(TYPE_BUTTON_BOX, "this", widget);
         char *setting = "GTK_ORIENTATION_HORIZONTAL";
-        tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_button_box_new(%s);\n",
-                widget, setting);
+
+        putdef("GtkWidget *", widget, "gtk_button_box_new", 1, setting);
 }
 
 widget_type getsymtype(char *sym_name)
@@ -157,11 +154,14 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        include_insert(yyout, "<gtk/gtk.h>");
-        include_insert(yyout, "\"handlers.h\"");
-        main_start(yyout);
+        include_insert("<gtk/gtk.h>");
+        include_insert("\"handlers.h\"");
+        prtstr(1, "\n");
+        main_start();
+        tabinc(1);
         int result = yyparse();
-        main_end(yyout);
+        tabdec(1);
+        main_end();
         
         fclose(yyin);
         fclose(yyout);

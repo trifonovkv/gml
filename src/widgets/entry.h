@@ -1,17 +1,15 @@
-#include"gml.h"
-
-void editable_set_editable(FILE *out, char *setting);
+void editable_set_editable(char *setting);
 
 /*
  * Creates a new entry.
  */
-void entry_new(FILE *out, char *widget);
+void entry_new(char *widget);
  
 /* 
  * Sets the text in the widget to the given value, replacing the current 
  * contents.
  */
-void entry_set_text(FILE *out, char *setting);
+void entry_set_text(char *setting);
 
 /* 
  * Sets whether the contents of the entry are visible or not. When visibility 
@@ -26,7 +24,7 @@ void entry_set_text(FILE *out, char *setting);
  * methods about the purpose of this entry, in addition to setting visibility 
  * to FALSE.
  */
-void entry_set_visibility(FILE *out, char *setting);
+void entry_set_visibility(char *setting);
 
 /* 
  * void
@@ -50,7 +48,7 @@ void entry_set_visibility(FILE *out, char *setting);
  * current contents are longer than the given length, then they will be 
  * truncated to fit.
  */
-void entry_set_max_length(FILE *out, int setting);
+void entry_set_max_length(char *setting);
 
 /* 
  * If setting is TRUE, pressing Enter in the entry will activate the default 
@@ -62,12 +60,12 @@ void entry_set_max_length(FILE *out, int setting);
  * default() on the window containing the entry, in the default handler for 
  * the “activate” signal.)
  */
-void entry_set_activates_default(FILE *out, char *setting);
+void entry_set_activates_default(char *setting);
 
 /* 
  * Sets whether the entry has a beveled frame around it.
  */
-void entry_set_has_frame(FILE *out, char *setting);
+void entry_set_has_frame(char *setting);
 
 /* 
  * gtk_entry_set_width_chars ()
@@ -89,14 +87,14 @@ void entry_set_has_frame(FILE *out, char *setting);
 /* 
  * Sets the desired maximum width in characters of entry .
  */
-void entry_set_max_width_chars(FILE *out, int setting);
+void entry_set_max_width_chars(char *setting);
 
 /* 
  * Sets the alignment for the contents of the entry. This controls the 
  * horizontal positioning of the contents when the displayed text is shorter 
  * than the width of the entry.
  */
-void entry_set_alignment(FILE *out, float setting);
+void entry_set_alignment(char *setting);
 
 /* 
  * Sets text to be displayed in entry when it is empty and unfocused. This can 
@@ -107,12 +105,12 @@ void entry_set_alignment(FILE *out, float setting);
  * initial focus in a window. Sometimes this can be worked around by delaying 
  * the initial focus setting until the first key event arrives.
  */
-void entry_set_placeholder_text(FILE *out, char *setting);
+void entry_set_placeholder_text(char *setting);
 
 /* 
  * Sets whether the text is overwritten when typing in the GtkEntry.
  */
-void entry_set_overwrite_mode(FILE *out, char *setting);
+void entry_set_overwrite_mode(char *setting);
 
 /* 
  * gtk_entry_set_icon_from_icon_name ()
@@ -212,4 +210,4 @@ void entry_set_overwrite_mode(FILE *out, char *setting);
  * Sets the “input-purpose” property which can be used by on-screen keyboards 
  * and other input methods to adjust their behaviour.
  */
-void entry_set_input_purpose(FILE *out, char *setting);
+void entry_set_input_purpose(char *setting);

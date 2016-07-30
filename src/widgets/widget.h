@@ -1,6 +1,4 @@
-#include"gml.h"
-
-void widget_show_all(FILE *out, char *setting);
+void widget_show_all(char *setting);
 
 /*
  * Sets the minimum size of a widget; that is, the widget’s size request 
@@ -38,7 +36,7 @@ void widget_show_all(FILE *out, char *setting);
  *   height height widget should request, or -1 to unset
  */
 // need separate width from height
-void widget_set_size_request(FILE *out, int width, int height);
+void widget_set_size_request(char *width, char *height);
 
 /*
  * Sets the bottom margin of widget . See the “margin-bottom” property.
@@ -48,7 +46,7 @@ void widget_set_size_request(FILE *out, int width, int height);
  *   widget a GtkWidget
  *   margin the bottom margin
  */
-void widget_set_margin_bottom(FILE *out, int setting);
+void widget_set_margin_bottom(char *setting);
 
 /*
  * Sets the top margin of widget . See the “margin-top” property.
@@ -58,7 +56,7 @@ void widget_set_margin_bottom(FILE *out, int setting);
  *   widget a GtkWidget
  *   margin the top margin
  */
-void widget_set_margin_top(FILE *out, int setting);
+void widget_set_margin_top(char *setting);
 
 /*
  * Sets the end margin of widget . See the “margin-end” property.
@@ -68,7 +66,7 @@ void widget_set_margin_top(FILE *out, int setting);
  *   widget a GtkWidget
  *   margin the end margin
  */
-void widget_set_margin_end(FILE *out, int setting);
+void widget_set_margin_end(char *setting);
 
 /*
  * Sets the start margin of widget . See the “margin-start” property.
@@ -78,7 +76,7 @@ void widget_set_margin_end(FILE *out, int setting);
  *   widget a GtkWidget
  *   margin the start margin
  */
-void widget_set_margin_start(FILE *out, int setting);
+void widget_set_margin_start(char *setting);
 
 /*
  * Members
@@ -101,7 +99,7 @@ void widget_set_margin_start(FILE *out, int setting);
  *   widget a GtkWidget
  *   align the vertical alignment
  */
-void widget_set_valign(FILE *out, char *setting);
+void widget_set_valign(char *setting);
 
 /*
  * Sets the horizontal alignment of widget . See the “halign” property.
@@ -111,7 +109,7 @@ void widget_set_valign(FILE *out, char *setting);
  *   widget a GtkWidget
  *   align the horizontal alignment
  */
-void widget_set_halign(FILE *out, char *setting);
+void widget_set_halign(char *setting);
 
 /*
  * Sets whether the vexpand flag (see gtk_widget_get_vexpand()) will be used.
@@ -123,7 +121,7 @@ void widget_set_halign(FILE *out, char *setting);
  *   widget the widget
  *   set value for vexpand-set property
  */
-void widget_set_vexpand_set(FILE *out, char *setting);
+void widget_set_vexpand_set(char *setting);
 
 /*
  * Sets whether the widget would like any available extra vertical space.
@@ -135,7 +133,7 @@ void widget_set_vexpand_set(FILE *out, char *setting);
  *   widget the widget
  *   expand whether to expand
  */
-void widget_set_vexpand(FILE *out, char *setting);
+void widget_set_vexpand(char *setting);
 
 /*
  * Sets whether the hexpand flag (see gtk_widget_get_hexpand()) will be used.
@@ -156,7 +154,7 @@ void widget_set_vexpand(FILE *out, char *setting);
  *   widget the widget
  *   set value for hexpand-set property
  */
-void widget_set_hexpand_set(FILE *out, char *setting);
+void widget_set_hexpand_set(char *setting);
 
 /*
  * Sets whether the widget would like any available extra horizontal space. 
@@ -187,7 +185,7 @@ void widget_set_hexpand_set(FILE *out, char *setting);
  *   widget the widget
  *   expand whether to expand
  */
-void widget_set_hexpand(FILE *out, char *setting);
+void widget_set_hexpand(char *setting);
 
 /*
  * Specifies whether widget will be treated as the default widget within its 
@@ -200,7 +198,7 @@ void widget_set_hexpand(FILE *out, char *setting);
  *   widget a GtkWidget
  *   receives_default whether or not widget can be a default widget.
  */
-void widget_set_receives_default(FILE *out, char *setting);
+void widget_set_receives_default(char *setting);
 
 /*
  * Sets the sensitivity of a widget. A widget is sensitive if the user can 
@@ -213,7 +211,7 @@ void widget_set_receives_default(FILE *out, char *setting);
  *   widget a GtkWidget 
  *   sensitive TRUE to make the widget sensitive
  */
-void widget_set_sensitive(FILE *out, char *setting);
+void widget_set_sensitive(char *setting);
 
 /*
  * Sets the “no-show-all” property, which determines whether calls to 
@@ -227,7 +225,7 @@ void widget_set_sensitive(FILE *out, char *setting);
  *   widget a GtkWidget
  *   no_show_all the new value for the “no-show-all” property
  */
-void widget_set_no_show_all(FILE *out, char *setting);
+void widget_set_no_show_all(char *setting);
 
 /*
  * Sets whether the application intends to draw on the widget in an “draw” 
@@ -247,7 +245,7 @@ void widget_set_no_show_all(FILE *out, char *setting);
  *   widget a GtkWidget
  *   app_paintable TRUE if the application will paint on the widget
  */
-void widget_set_app_paintable(FILE *out, char *setting);
+void widget_set_app_paintable(char *setting);
 
 /*
  * Specifies whether widget can be a default widget. 
@@ -258,7 +256,7 @@ void widget_set_app_paintable(FILE *out, char *setting);
  *   widget a GtkWidget
  *   can_default whether or not widget can be a default widget.
  */
-void widget_set_can_default(FILE *out, char *setting);
+void widget_set_can_default(char *setting);
 
 /*
  * Specifies whether widget can own the input focus. 
@@ -269,7 +267,7 @@ void widget_set_can_default(FILE *out, char *setting);
  *   widget a GtkWidget
  *   can_focus whether or not widget can own the input focus.
  */
-void widget_set_can_focus(FILE *out, char *setting);
+void widget_set_can_focus(char *setting);
 
 /*
  * Sets the visibility state of widget . Note that setting this to TRUE doesn’t 
@@ -283,7 +281,7 @@ void widget_set_can_focus(FILE *out, char *setting);
  *   widget a GtkWidget
  *   visible whether the widget should be shown or not
  */
-void widget_set_visible(FILE *out, char *setting);
+void widget_set_visible(char *setting);
 
 /*
  * Sets the event mask (see GdkEventMask) for a widget. The event mask 
@@ -334,7 +332,7 @@ void widget_set_visible(FILE *out, char *setting);
  * GDK_SMOOTH_SCROLL_MASK        receive smooth scrolling events. Since 3.4
  * GDK_ALL_EVENTS_MASK           the combination of all the above event masks.
  */
-void widget_set_events(FILE *out, int setting);
+void widget_set_events(char *setting);
 
 /*
  *Installs an accelerator for this widget in accel_group that causes accel_
@@ -382,7 +380,7 @@ void widget_set_events(FILE *out, int setting);
  *   widget a GtkWidget
  *   opacity desired opacity, between 0 and 1
  */
-void widget_set_opacity(FILE *out, float setting);
+void widget_set_opacity(char *setting);
 
 /*
  * Sets markup as the contents of the tooltip, which is marked up with 
@@ -398,7 +396,7 @@ void widget_set_opacity(FILE *out, float setting);
  *   widget a GtkWidget
  *   markup the contents of the tooltip for widget , or NULL.
  */
-void widget_set_tooltip_markup(FILE *out, char *setting);
+void widget_set_tooltip_markup(char *setting);
 
 /*
  * Sets the has-tooltip property on widget to has_tooltip . See “has-tooltip” 
@@ -409,7 +407,7 @@ void widget_set_tooltip_markup(FILE *out, char *setting);
  *   widget a GtkWidget
  *   has_tooltip whether or not widget has a tooltip.
  */
-void widget_set_has_tootip(FILE *out, char *settng);
+void widget_set_has_tootip(char *settng);
 
 /*
  * Sets text as the contents of the tooltip. This function will take care of 
@@ -423,7 +421,7 @@ void widget_set_has_tootip(FILE *out, char *settng);
  *   widget a GtkWidget
  *   text the contents of the tooltip for widget.
  */
-void widget_set_tooltip_text(FILE *out, char *setting);
+void widget_set_tooltip_text(char *setting);
 
 /*
  * Widgets can be named, which allows you to refer to them from a CSS file. 
@@ -441,4 +439,4 @@ void widget_set_tooltip_text(FILE *out, char *setting);
  *   widget a GtkWidget
  *   name name for the widget
  */
-void widget_set_name(FILE *out, char *setting);
+void widget_set_name(char *setting);

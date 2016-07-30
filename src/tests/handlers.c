@@ -8,7 +8,12 @@ void quit_activated(GSimpleAction *action,
         g_application_quit (G_APPLICATION (app));
 }
 
-void print_hello(GtkWidget *widget, gpointer data)
+/*
+ *void fmtout.hello(GtkWidget *widget, gpointer data)
+ */
+void print_hello(GSimpleAction *action,
+                 GVariant      *parameter,
+                 gpointer       app)
 {
         g_print ("Hello World\n");
 }

@@ -1,77 +1,66 @@
-#include"header_bar.h"
+#include "gml.h"
+#include "fmtout.h"
+#include "header_bar.h"
 
-void header_bar_new(FILE *out, char *widget) 
+void header_bar_new(char *widget) 
 {
         syminst(TYPE_HEADER_BAR, widget, widget);
         syminst(TYPE_HEADER_BAR, "this", widget);
-        tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_header_bar_new();\n", widget);
+
+        putdef("GtkWidget *", widget, "gtk_header_bar_new", 0);
 }
 
-void header_bar_set_title(FILE *out, char *string)
+void header_bar_set_title(char *string)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_header_bar_set_title(GTK_HEADER_BAR(%s), %s);\n", 
-                widget, string);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_set_title", 2, widget, string);
 }
  
-void header_bar_set_subtitle(FILE *out, char *string)
+void header_bar_set_subtitle(char *string)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_header_bar_set_subtitle(GTK_HEADER_BAR(%s), %s);\n",
-                widget, string);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_set_subtitle", 2, widget, string);
 }
  
-void header_bar_set_has_subtitle(FILE *out, char *setting)
+void header_bar_set_has_subtitle(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-                "gtk_header_bar_set_has_subtitle(GTK_HEADER_BAR(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_set_has_subtitle", 2, widget, setting);
 }
 
-void header_bar_set_custom_title(FILE *out, char *title_widget)
+void header_bar_set_custom_title(char *title_widget)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-                "gtk_header_bar_set_custom_title(GTK_HEADER_BAR(%s), %s);\n", 
-                widget, title_widget);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_set_custom_title", 2, widget, title_widget);
 }
 
-void header_bar_pack_start(FILE *out, char *child)
+void header_bar_pack_start(char *child)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_header_bar_pack_start(GTK_HEADER_BAR(%s), %s);\n",
-                widget, child);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_pack_start", 2, widget, child);
 }
 
-void header_bar_pack_end(FILE *out, char *child)
+void header_bar_pack_end(char *child)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_header_bar_pack_end(GTK_HEADER_BAR(%s), %s);\n",
-                widget, child);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_pack_end", 2, widget, child);
 }
 
-void header_bar_set_show_close_button(FILE *out, char *setting)
+void header_bar_set_show_close_button(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-              "gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(%s), %s);\n",
-              widget, setting);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+        putfun("gtk_header_bar_set_show_close_button", 2, widget, setting);
 }
 
-void header_bar_set_decoration_layout(FILE *out, char *string)
+void header_bar_set_decoration_layout(char *string)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-              "gtk_header_bar_set_decoration_layout(GTK_HEADER_BAR(%s), %s);\n",
-              widget, string);
+        char *widget = wrptype("GTK_HEADER_BAR", getsymval("this"));
+
+        putfun("gtk_header_bar_set_decoration_layout", 2, widget, string);
 }

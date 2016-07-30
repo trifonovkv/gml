@@ -1,137 +1,116 @@
-#include"text_view.h"
+#include "gml.h"
+#include "fmtout.h"
+#include "text_view.h"
 
-void text_view_new(FILE *out, char *widget)
+void text_view_new(char *widget)
 {
         syminst(TYPE_TEXT_VIEW, widget, widget);
         syminst(TYPE_TEXT_VIEW, "this", widget);
-        tab_insert(out);
-        fprintf(out, "GtkWidget *%s=gtk_text_view_new();\n", widget);
+
+        putdef("GtkWidget *", widget, "gtk_text_view_new", 0);
 }
 
-void text_view_set_border_window_size(FILE *out, char *type, int size)
+void text_view_set_border_window_size(char *type, char *size)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-"gtk_text_view_set_border_window_size(GTK_TEXT_VIEW(%s), %s, %d);\n", 
-                widget, type, size);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_border_window_size", 3, widget, type, size);
 }
 
-void text_view_set_wrap_mode(FILE *out, char *setting)
+void text_view_set_wrap_mode(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_wrap_mode", 2, widget, setting);
 }
 
-void text_view_set_editable(FILE *out, char *setting)
+void text_view_set_editable(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_editable(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_editable", 2, widget, setting);
 }
 
-void text_view_set_cursor_visible(FILE *out, char *setting)
+void text_view_set_cursor_visible(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-                "gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_cursor_visible", 2, widget, setting);
 }
 
-void text_view_set_overwrite(FILE *out, char *setting)
+void text_view_set_overwrite(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_overwrite(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_overwrite", 2, widget, setting);
 }
 
-void text_view_set_pixels_above_lines(FILE *out, int setting)
+void text_view_set_pixels_above_lines(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-"gtk_text_view_set_pixels_above_lines(GTK_TEXT_VIEW(%s), %d);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_pixels_above_lines", 2, widget, setting);
 }
 
-void text_view_set_pixels_below_lines(FILE *out, int setting)
+void text_view_set_pixels_below_lines(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-"gtk_text_view_set_pixels_below_lines(GTK_TEXT_VIEW(%s), %d);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_pixels_below_lines", 2, widget, setting);
 }
 
-void text_view_set_pixels_inside_wrap(FILE *out, int setting)
+void text_view_set_pixels_inside_wrap(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-"gtk_text_view_set_pixels_inside_wrap(GTK_TEXT_VIEW(%s), %d);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_pixels_inside_wrap", 2, widget, setting);
 }
 
-void text_view_set_justification(FILE *out, char *setting)
+void text_view_set_justification(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-                "gtk_text_view_set_justification(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_justification", 2, widget, setting);
 }
 
-void text_view_set_left_margin(FILE *out, int setting)
+void text_view_set_left_margin(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_left_margin(GTK_TEXT_VIEW(%s), %d);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_left_margin", 2, widget, setting);
 }
 
-void text_view_set_right_margin(FILE *out, int setting)
+void text_view_set_right_margin(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-                "gtk_text_view_set_right_margin(GTK_TEXT_VIEW(%s), %d);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_right_margin", 2, widget, setting);
 }
 
-void text_view_set_indent(FILE *out, int setting)
+void text_view_set_indent(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_indent(GTK_TEXT_VIEW(%s), %d);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_indent", 2, widget, setting);
 }
 
-void text_view_set_accepts_tab(FILE *out, char *setting)
+void text_view_set_accepts_tab(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_accepts_tab(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        
+        putfun("gtk_text_view_set_accepts_tab", 2, widget, setting);
 }
 
-void text_view_set_input_purpose(FILE *out, char *setting)
+void text_view_set_input_purpose(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, 
-                "gtk_text_view_set_input_purpose(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_input_purpose", 2, widget, setting);
 }
 
-void text_view_set_input_hints(FILE *out, char *setting)
+void text_view_set_input_hints(char *setting)
 {
-        char *widget = getsymval("this");
-        tab_insert(out);
-        fprintf(out, "gtk_text_view_set_input_hints(GTK_TEXT_VIEW(%s), %s);\n", 
-                widget, setting);
+        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+
+        putfun("gtk_text_view_set_input_hints", 2, widget, setting);
 }

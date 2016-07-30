@@ -1,6 +1,4 @@
-#include"gml.h"
-
-void application(FILE *out);
+void application();
 
 void application_set_name(char *name);
 
@@ -15,4 +13,4 @@ void application_set_id(char *id);
  * To remove all accelerators for an action, use an empty, zero-terminated
  * array for accels .
  */
-void application_set_accels_for_action(FILE *out, char *action, char *accels);
+void application_set_accels_for_action(char *action, char *accels);

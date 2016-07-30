@@ -1,5 +1,3 @@
-#include"gml.h"
-
 /*
  * Sets a custom titlebar for window.
  * If you set a custom titlebar, GTK+ will do its best to convince the window
@@ -7,13 +5,13 @@
  * this function may not work for a window that is already visible, so you set
  * the titlebar before calling gtk_widget_show().
  */
-void window_set_titlebar(FILE *out, char *titlebar);
+void window_set_titlebar(char *titlebar);
 
 /* 
  * Like gtk_window_set_default_size(), but width and height are interpreted in 
  * terms of the base size and increment set with gtk_window_set_geometry_hints.
  */
-void window_set_default_geometry(FILE *out, int width, int height);
+void window_set_default_geometry(char *width, char *height);
 
 /* 
  * If setting is TRUE, then window will request that it’s titlebar should be 
@@ -26,7 +24,7 @@ void window_set_default_geometry(FILE *out, int width, int height);
  * affected by this. The application is in full control of their content and 
  * visibility anyway.
  */
-void window_set_hide_titlebar_when_maximized(FILE *out, char *setting);
+void window_set_hide_titlebar_when_maximized(char *setting);
 
 /* 
  * Asks to keep window above, so that it stays on top. Note that you shouldn’t 
@@ -45,7 +43,7 @@ void window_set_hide_titlebar_when_maximized(FILE *out, char *setting);
  * the above state is mainly meant for user preferences and should not be 
  * used by applications e.g. for drawing attention to their dialogs.
  */
-void window_set_keep_above(FILE *out, char *setting);
+void window_set_keep_above(char *setting);
 
 /* 
  * Asks to keep window below, so that it stays in bottom. Note that you 
@@ -64,7 +62,7 @@ void window_set_keep_above(FILE *out, char *setting);
  * the above state is mainly meant for user preferences and should not be used 
  * by applications e.g. for drawing attention to their dialogs.
  */
-void window_set_keep_below(FILE *out, char *setting);
+void window_set_keep_below(char *setting);
 
 /* 
  * Startup notification identifiers are used by desktop environment to track 
@@ -77,7 +75,7 @@ void window_set_keep_below(FILE *out, char *setting);
  * 
  * This function is only useful on X11, not with other GTK+ targets.
  */
-void window_set_startup_id(FILE *out, char *string);
+void window_set_startup_id(char *string);
 
 /* 
  * This function is only useful on X11, not with other GTK+ targets.
@@ -92,7 +90,7 @@ void window_set_startup_id(FILE *out, char *string);
  * since the WM can use the title to identify the window when restoring the 
  * session.
  */
-void window_set_role(FILE *out, char *string);
+void window_set_role(char *string);
 
 /* 
  * Sets the icon for the window from a named themed icon. See the docs for 
@@ -101,23 +99,23 @@ void window_set_role(FILE *out, char *string);
  * Note that this has nothing to do with the WM_ICON_NAME property which is 
  * mentioned in the ICCCM.
  */
-void window_set_icon_name(FILE *out, char *string);
+void window_set_icon_name(char *string);
 
 /* 
  * Sets the “mnemonics-visible” property.
  */
-void window_set_mnemonics_visible(FILE *out, char *setting);
+void window_set_mnemonics_visible(char *setting);
 
 /* 
  * Sets the “focus-visible” property.
  */
-void window_set_focus_visible(FILE *out, char *setting);
+void window_set_focus_visible(char *setting);
 
 /*
  * Creates a new GtkWindow, which is a toplevel window that can contain other 
  * widgets. 
  */
-void window_new(FILE *out, char *widget);
+void window_new(char *widget);
 
 /* 
  * Sets the title of the GtkWindow. The title of a window will be displayed in 
@@ -127,13 +125,13 @@ void window_new(FILE *out, char *widget);
  * this window from other windows they may have open. A good title might 
  * include the application name and current document filename, for example.
  */
-void window_set_title(FILE *out, char *setting);
+void window_set_title(char *setting);
 
 /* 
  * Sets whether the user can resize a window. Windows are user resizable by 
  * default.
  */
-void window_set_resizable(FILE *out, char *setting);
+void window_set_resizable(char *setting);
 
 /* 
  * Sets a window modal or non-modal. Modal windows prevent interaction with 
@@ -142,7 +140,7 @@ void window_set_resizable(FILE *out, char *setting);
  * transient for the parent; most window managers will then disallow lowering 
  * the dialog below the parent.
  */
-void window_set_modal(FILE *out, char *setting);
+void window_set_modal(char *setting);
 
 /* 
  * Sets the default size of a window. If the window’s “natural” size (its size 
@@ -151,7 +149,7 @@ void window_set_modal(FILE *out, char *setting);
  * window (gtk_window_set_geometry_hints() can be used to set these explicitly),
  * the default size will be clamped to the nearest permitted size.
  */
-void window_set_default_size(FILE *out, int width, int height);
+void window_set_default_size(char *width, char *height);
 
 /* 
  * Window gravity defines the meaning of coordinates passed to 
@@ -160,14 +158,14 @@ void window_set_default_size(FILE *out, int width, int height);
  * The default window gravity is GDK_GRAVITY_NORTH_WEST which will typically 
  * “do what you mean.”
  */
-void window_set_gravity(FILE *out, char *setting);
+void window_set_gravity(char *setting);
 
 /* 
  * Sets a position constraint for this window. If the old or new constraint is 
  * GTK_WIN_POS_CENTER_ALWAYS, this will also cause the window to be 
  * repositioned to satisfy the new constraint.
  */
-void window_set_position(FILE *out, char *setting);
+void window_set_position(char *setting);
 
 /* 
  * If setting is TRUE, then destroying the transient parent of window will 
@@ -175,7 +173,7 @@ void window_set_position(FILE *out, char *setting);
  * persist beyond the lifetime of the main window they're associated with, 
  * for example.
  */
-void window_set_destroy_with_parent(FILE *out, char *setting);
+void window_set_destroy_with_parent(char *setting);
 
 /* 
  * By default, windows are decorated with a title bar, resize controls, etc. 
@@ -186,7 +184,7 @@ void window_set_destroy_with_parent(FILE *out, char *setting);
  * any effect when called on a window that is already visible, so you should 
  * call it before calling gtk_widget_show().
  */
-void window_set_decorated(FILE *out, char *setting);
+void window_set_decorated(char *setting);
 
 /* 
  * By default, windows have a close button in the window frame. Some window 
@@ -196,7 +194,7 @@ void window_set_decorated(FILE *out, char *setting);
  * this function may not have any effect when called on a window that is 
  * already visible, so you should call it before calling gtk_widget_show().
  */
-void window_set_deletable(FILE *out, char *setting);
+void window_set_deletable(char *setting);
 
 /* 
  * By setting the type hint for the window, you allow the window manager to 
@@ -205,13 +203,13 @@ void window_set_deletable(FILE *out, char *setting);
  * 
  * This function should be called before the window becomes visible.
  */
-void window_set_type_hint(FILE *out, char *setting);
+void window_set_type_hint(char *setting);
 
 /* 
  * Windows may set a hint asking the desktop environment not to display the 
  * window in the task bar. This function sets this hint.
  */
-void window_set_skip_taskbar_hint(FILE *out, char *setting);
+void window_set_skip_taskbar_hint(char *setting);
 
 /* 
  * Windows may set a hint asking the desktop environment not to display the 
@@ -219,30 +217,30 @@ void window_set_skip_taskbar_hint(FILE *out, char *setting);
  * desktop navigation tool such as a workspace switcher that displays a 
  * thumbnail representation of the windows on the screen.)
  */
-void window_set_skip_pager_hint(FILE *out, char *setting);
+void window_set_skip_pager_hint(char *setting);
 
 /* 
  * Windows may set a hint asking the desktop environment to draw the users 
  * attention to the window. This function sets this hint.
  */
-void window_set_urgency_hint(FILE *out, char *setting);
+void window_set_urgency_hint(char *setting);
 
 /* 
  * Windows may set a hint asking the desktop environment not to receive the 
  * input focus. This function sets this hint.
  */
-void window_set_accept_focus(FILE *out, char *setting);
+void window_set_accept_focus(char *setting);
 
 /* 
  * Windows may set a hint asking the desktop environment not to receive the 
  * input focus when the window is mapped. This function sets this hint.
  */
-void window_set_focus_on_map(FILE *out, char *setting);
+void window_set_focus_on_map(char *setting);
 
 /*
  * Sets or unsets the GtkApplication associated with the window.
  * The application will be kept alive for at least as long as the window is
  * open.
  */
-void window_set_application(FILE *out, char *setting);
+void window_set_application(char *setting);
 

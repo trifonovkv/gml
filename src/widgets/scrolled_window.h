@@ -1,5 +1,3 @@
-#include"gml.h"
-
 /* 
  * Creates a new scrolled window.
  * The two arguments are the scrolled window’s adjustments; these will be
@@ -7,7 +5,7 @@
  * with the child. Usually you want to pass NULL for the adjustments, which
  * will cause the scrolled window to create them for you.
  */
-void scrolled_window_new(FILE *out, char *widget);
+void scrolled_window_new(char *widget);
 
 /*  
  * Sets the scrollbar policy for the horizontal and vertical scrollbars.
@@ -19,7 +17,7 @@ void scrolled_window_new(FILE *out, char *widget);
  * the slider part of the bar would be smaller than the trough — the display is
  * larger than the page size).
  */
-void scrolled_window_set_policy(FILE *out, char *hscroolbar, char *vscrollbar);
+void scrolled_window_set_policy(char *hscroolbar, char *vscrollbar);
 
 /* 
  * Sets the placement of the contents with respect to the scrollbars for the
@@ -33,40 +31,40 @@ void scrolled_window_set_policy(FILE *out, char *hscroolbar, char *vscrollbar);
  * See also gtk_scrolled_window_get_placement() and
  * gtk_scrolled_window_unset_placement().
  */
-void scrolled_window_set_placement(FILE *out, char *setting);
+void scrolled_window_set_placement(char *setting);
 
 /*  
  * Changes the type of shadow drawn around the contents of scrolled_window .
  */
-void scrolled_window_set_shadow_type(FILE *out, char *setting);
+void scrolled_window_set_shadow_type(char *setting);
 
 /*
  * Sets the GtkAdjustment for the horizontal scrollbar.
  */
-void scrolled_window_set_hadjustment(FILE *out, char *setting);
+void scrolled_window_set_hadjustment(char *setting);
 
 /*
  * Sets the GtkAdjustment for the vertical scrollbar.
  */
-void scrolled_window_set_vadjustment(FILE *out, char *setting);
+void scrolled_window_set_vadjustment(char *setting);
 
 /*  
  * Sets the minimum width that scrolled_window should keep visible. Note that
  * this can and (usually will) be smaller than the minimum size of the content.
  */
-void scrolled_window_set_min_content_width(FILE *out, int setting);
+void scrolled_window_set_min_content_width(char *setting);
 
 /*  
  * Sets the minimum height that scrolled_window should keep visible. Note that
  * this can and (usually will) be smaller than the minimum size of the content.
  */
-void scrolled_window_set_min_content_height(FILE *out, int setting);
+void scrolled_window_set_min_content_height(char *setting);
 
 /*  
  * Turns kinetic scrolling on or off. Kinetic scrolling only applies to devices
  * with source GDK_SOURCE_TOUCHSCREEN.
  */
-void scrolled_window_set_kinetic_scrolling(FILE *out, char *setting);
+void scrolled_window_set_kinetic_scrolling(char *setting);
 
 /*  
  * Changes the behaviour of scrolled_window wrt. to the initial event that
@@ -81,9 +79,9 @@ void scrolled_window_set_kinetic_scrolling(FILE *out, char *setting);
  * 
  * This setting only has an effect if kinetic scrolling is enabled.
  */
-void scrolled_window_set_capture_button_press(FILE *out, char *setting);
+void scrolled_window_set_capture_button_press(char *setting);
 
 /* 
  * Enables or disables overlay scrolling for this scrolled window.
  */
-void scrolled_window_set_overlay_scrolling(FILE *out, char *setting);
+void scrolled_window_set_overlay_scrolling(char *setting);

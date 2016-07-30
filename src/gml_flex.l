@@ -12,8 +12,8 @@ void comment();
 %%
 
 "/*"                  comment();
-{DIGIT}+              yylval.int_val=atoi(yytext);    return NUMBER; 
-{DIGIT}+\.{DIGIT}+    yylval.float_val=atof(yytext);  return FLOAT;
+{DIGIT}+              yylval.string=strdup(yytext);    return NUMBER; 
+{DIGIT}+\.{DIGIT}+    yylval.string=strdup(yytext);    return FLOAT;
 APPLICATION           return APPLICATION;
 STACK                 return STACK;
 STACK_SWITCHER        return STACK_SWITCHER;
