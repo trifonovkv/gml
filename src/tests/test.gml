@@ -20,7 +20,7 @@ BUTTON button
 ;
 
 TEXT_VIEW text_view
-  SET Border_window_size GTK_TEXT_WINDOW_TOP 100
+  SET Border_window_size GTK_TEXT_WINDOW_TOP 10
   SET Wrap_mode GTK_WRAP_WORD
   SET Cursor_visible FALSE
   SET Overwrite TRUE
@@ -30,7 +30,7 @@ TEXT_VIEW text_view
   SET Justification GTK_JUSTIFY_LEFT
   SET Left_margin 100
   SET Right_margin 100
-  SET Indent 100
+  SET Indent 10
   SET Accepts_tab FALSE
   SET Input_hints GTK_INPUT_HINT_NO_SPELLCHECK
 ;
@@ -43,7 +43,7 @@ SCROLLED_WINDOW scrolled_window
   SET Placement GTK_CORNER_BOTTOM_RIGHT    
   SET Shadow_type  GTK_SHADOW_OUT 
   SET Min_content_width 1
-  SET Min_content_height 1000
+  SET Min_content_height 10
   SET Kinetic_scrolling TRUE
   SET Capture_button_press TRUE
   SET Overlay_scrolling TRUE
@@ -57,7 +57,7 @@ SCROLLED_WINDOW scrolled_window2
   SET Placement GTK_CORNER_BOTTOM_RIGHT    
   SET Shadow_type  GTK_SHADOW_OUT 
   SET Min_content_width 1
-  SET Min_content_height 1000
+  SET Min_content_height 10
   SET Kinetic_scrolling TRUE
   SET Capture_button_press TRUE
   SET Overlay_scrolling TRUE
@@ -94,10 +94,60 @@ HEADER_BAR header_bar
 */
 ;
 
+BUTTON button1
+  SET Label "button1"
+  SIGNAL "clicked" print_hello
+;
+
+BUTTON button2
+  SET Label "button2"
+  SIGNAL "clicked" print_hello
+;
+
+BUTTON button3
+  SET Label "button3"
+  SIGNAL "clicked" print_hello
+;
+
+BUTTON button4
+  SET Label "button4"
+  SIGNAL "clicked" print_hello
+;
+
+BUTTON button5
+  SET Label "button5"
+  SIGNAL "clicked" print_hello
+;
+
+BUTTON button6
+  SET Label "button6"
+  SIGNAL "clicked" print_hello
+;
+
+HBUTTONBOX hbuttonbox
+  SET Box_layout GTK_BUTTONBOX_START
+  ADD button1
+  ADD button2
+  ADD button3
+  SET Child_non_homogeneous button2 TRUE
+;
+
+VBUTTONBOX vbuttonbox
+  SET Box_layout GTK_BUTTONBOX_EDGE
+  ADD button4
+  ADD button5
+;
+
+/*
+SET Child_secondary button6 TRUE 
+*/
+
 VBOX vbox
   CMN Visible TRUE
   ADD header_bar
   ADD stack
+  ADD hbuttonbox
+  ADD vbuttonbox
 ;
 
 WINDOW window
@@ -110,4 +160,6 @@ WINDOW window
 */
   ADD vbox
 ;
+
+
 

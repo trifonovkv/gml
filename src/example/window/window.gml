@@ -3,7 +3,7 @@ BUTTON button
   SIGNAL "clicked" print_hello
 ; 
 
-BUTTONBOX button_box
+HBUTTONBOX button_box
   ADD button
 ;
 

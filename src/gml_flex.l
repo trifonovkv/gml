@@ -25,13 +25,18 @@ ENTRY                 return ENTRY;
 HBOX                  return HBOX;
 VBOX                  return VBOX;
 BUTTON                return BUTTON;
-BUTTONBOX             return BUTTONBOX;
 WINDOW                return WINDOW;
 SET                   return SET;
 ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 CMN                   return COMMON;
+HBUTTONBOX            return HBUTTONBOX;
+VBUTTONBOX            return VBUTTONBOX; 
+
+Box_layout            return BOX_LAYOUT; 
+Child_secondary       return CHILD_SECONDARY;
+Child_non_homogeneous return CHILD_NON_HOMOGENEOUS;
 
 Title                 return TITLE;
 Editable              return EDITABLE;

@@ -1,19 +1,20 @@
 %{
-#include<string.h>
-#include"gml.h"
-#include"widgets/shared.h"
-#include"widgets/widget.h"
-#include"widgets/window.h"
-#include"widgets/entry.h"
-#include"widgets/box.h"
-#include"widgets/button.h"
-#include"widgets/header_bar.h"
-#include"widgets/scrolled_window.h"
-#include"widgets/adjustment.h"
-#include"widgets/text_view.h"
-#include"widgets/stack.h"
-#include"widgets/stack_switcher.h"
-#include"widgets/application.h"
+#include <string.h>
+#include "gml.h"
+#include "widgets/shared.h"
+#include "widgets/widget.h"
+#include "widgets/window.h"
+#include "widgets/entry.h"
+#include "widgets/box.h"
+#include "widgets/button.h"
+#include "widgets/header_bar.h"
+#include "widgets/scrolled_window.h"
+#include "widgets/adjustment.h"
+#include "widgets/text_view.h"
+#include "widgets/stack.h"
+#include "widgets/stack_switcher.h"
+#include "widgets/application.h"
+#include "widgets/button_box.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -31,10 +32,7 @@ int yywrap()
 int yylex();
 
 %}
-%token INCLUDE 
-%token SET ADD SIGNAL PACK COMMON
-%token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR OR
-%token HBOX VBOX BUTTON BUTTONBOX WINDOW 
+%token HBUTTONBOX VBUTTONBOX BOX_LAYOUT CHILD_SECONDARY CHILD_NON_HOMOGENEOUS 
 
 %token SKIP_PAGER 
 
@@ -79,30 +77,23 @@ int yylex();
 
 %token APPLICATION APP_ID APP_FLAGS ACCELS_FOR_ACTION
 
+%token INCLUDE 
+%token SET ADD SIGNAL PACK COMMON
+%token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR OR
+%token HBOX VBOX BUTTON WINDOW 
+
 %union
 {
-        int   int_val;
-        char  char_val;
         char  *string;
-        float float_val;
 }
 
 %type <string>    IDENTIFIER STRING flags NUMBER FLOAT
-/*
- *%type <int_val>   NUMBER
- *%type <char_val>  CHAR
- *%type <float_val> FLOAT
- */
-
 %%
 
 main:
         APPLICATION IDENTIFIER params SEMICOLON commands
-        {
-                application_set_name($2);
-        }
-        |
-        commands
+                                                   { application_set_name($2); }
+        | commands
         ;
         
 commands: 
@@ -112,7 +103,8 @@ commands:
 command:
           window
         | button
-        | button_box
+        | hbutton_box
+        | vbutton_box
         | vbox
         | hbox
         | entry
@@ -124,26 +116,15 @@ command:
         | stack_switcher
         ;
 
-adds:
-        | adds add
+bbox_child_sets:
+        | bbox_child_sets bbox_child_set
         ;
 
-add:
-        ADD IDENTIFIER 
-        {
-                container_add($2);
-        }
-        ;
-
-stack_adds:
-        | stack_adds stack_add
-        ;
-
-stack_add:
-        ADD TITLED IDENTIFIER STRING STRING
-        {
-                stack_add_titled($3, $4, $5);
-        }
+bbox_child_set:
+        SET CHILD_SECONDARY IDENTIFIER IDENTIFIER
+                                     { button_box_set_child_secondary($3, $4); }
+        | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
+                               { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
 hb_packs:
@@ -151,148 +132,90 @@ hb_packs:
         ;
 
 hb_pack:
-        ADD PACK_START IDENTIFIER
-        {
-                header_bar_pack_start($3);
-        }
-        |
-        ADD PACK_END IDENTIFIER
-        {
-                header_bar_pack_end($3);
-        }
+        ADD PACK_START IDENTIFIER                 { header_bar_pack_start($3); }
+        | ADD PACK_END IDENTIFIER                   { header_bar_pack_end($3); }
+        ;
+
+stack_adds:
+        | stack_adds stack_add
+        ;
+
+stack_add:
+        ADD TITLED IDENTIFIER STRING STRING    { stack_add_titled($3, $4, $5); }
+        ;
+
+adds:
+        | adds add
+        ;
+
+add:
+        ADD IDENTIFIER                                    { container_add($2); }
+        ;
+
+hbutton_box:
+        HBUTTONBOX IDENTIFIER                           { hbutton_box_new($2); }
+        commons params adds bbox_child_sets SEMICOLON       { block_close($2); }
+        ;
+
+vbutton_box:
+        VBUTTONBOX IDENTIFIER                           { vbutton_box_new($2); }
+        commons params adds packs SEMICOLON                 { block_close($2); }
         ;
 
 stack:
-        STACK IDENTIFIER
-        {
-                stack_new($2);
-        } 
-        commons params packs stack_adds adds SEMICOLON
-        {
-                block_close($2);
-        }
+        STACK IDENTIFIER                                      { stack_new($2); }
+        commons params packs stack_adds adds SEMICOLON      { block_close($2); }
         ;
 
 stack_switcher:
-        STACK_SWITCHER IDENTIFIER
-        {
-                stack_switcher_new($2);
-        }
-        commons params packs SEMICOLON
-        {
-                block_close($2);
-        }
+        STACK_SWITCHER IDENTIFIER                    { stack_switcher_new($2); }
+        commons params packs SEMICOLON                      { block_close($2); }
         ;
 
 text_view:
-        TEXT_VIEW IDENTIFIER
-        {
-                text_view_new($2);
-        } 
-        commons params SEMICOLON
-        {
-                block_close($2);
-        }
+        TEXT_VIEW IDENTIFIER                              { text_view_new($2); }
+        commons params SEMICOLON                            { block_close($2); }
         ;
 
 adjustment:
-        ADJUSTMENT IDENTIFIER 
-        {
-                adjustment_new($2);
-        } 
-        params SEMICOLON
-        {
-                block_close($2);
-        }
+        ADJUSTMENT IDENTIFIER                            { adjustment_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 scrolled_window:
-        SCROLLED_WINDOW IDENTIFIER
-        {
-                scrolled_window_new($2);
-        }
-        commons params adds SEMICOLON
-        {
-                block_close($2);
-        }
+        SCROLLED_WINDOW IDENTIFIER                  { scrolled_window_new($2); }
+        commons params adds SEMICOLON                       { block_close($2); }
         ;      
 
 header_bar:
-        HEADER_BAR IDENTIFIER
-        {
-                header_bar_new($2); 
-        }
-        commons params hb_packs SEMICOLON
-        {
-                block_close($2);
-        }
+        HEADER_BAR IDENTIFIER                            { header_bar_new($2); }
+        commons params hb_packs SEMICOLON                   { block_close($2); }
         ;
 
 entry:
-        ENTRY IDENTIFIER
-        {
-                entry_new($2);
-        } 
-        commons params SEMICOLON
-        {
-                block_close($2);
-        }
+        ENTRY IDENTIFIER                                      { entry_new($2); }
+        commons params SEMICOLON                            { block_close($2); }
         ;      
 
 hbox:
-        HBOX IDENTIFIER
-        {
-                box_horizontal_new($2);
-        }
-        commons params adds packs SEMICOLON
-        {
-                block_close($2);
-        }
+        HBOX IDENTIFIER                              { box_horizontal_new($2); }
+        commons params adds packs SEMICOLON                 { block_close($2); }
         ;
 
 vbox:
-        VBOX IDENTIFIER
-        {
-                box_vertical_new($2);
-        }
-        commons params adds packs SEMICOLON
-        {
-                block_close($2);
-        }
+        VBOX IDENTIFIER                                { box_vertical_new($2); }
+        commons params adds packs SEMICOLON                 { block_close($2); }
         ;
 
 button:
-        BUTTON IDENTIFIER
-        {
-                button_new($2);
-        }
-        commons params signals SEMICOLON
-        {
-                block_close($2);
-        }
-        ;
-
-button_box:
-        BUTTONBOX IDENTIFIER 
-        {
-                button_box_new($2);
-        }
-        commons adds packs SEMICOLON
-        {
-                block_close($2);
-        }
+        BUTTON IDENTIFIER                                    { button_new($2); }
+        commons params signals SEMICOLON                    { block_close($2); }
         ;
 
 window:
-        WINDOW IDENTIFIER
-        {
-                window_new($2);
-        } 
-        commons params adds signals SEMICOLON 
-        {
-                widget_show_all($2);
-                block_close($2);
-        }
+        WINDOW IDENTIFIER                                    { window_new($2); }
+        commons params adds signals SEMICOLON           { widget_show_all($2);
+                                                              block_close($2); }
         ;
 
 packs:
@@ -309,45 +232,27 @@ pack:
         ;
 
 set_pack_center:
-        PACK IDENTIFIER CENTER
-        {
-                box_set_center_widget($2);
-        }
+        PACK IDENTIFIER CENTER                    { box_set_center_widget($2); }
         ;
 
 set_pack_type:
-        PACK IDENTIFIER PACK_TYPE IDENTIFIER
-        {
-                box_set_pack_type($2, $4);
-        }
+        PACK IDENTIFIER PACK_TYPE IDENTIFIER      { box_set_pack_type($2, $4); }
         ;
 
 set_pack_expand:
-        PACK IDENTIFIER EXPAND IDENTIFIER
-        {
-                box_set_expand($2, $4);
-        }
+        PACK IDENTIFIER EXPAND IDENTIFIER            { box_set_expand($2, $4); }
         ;
 
 set_pack_fill:
-        PACK IDENTIFIER FILL IDENTIFIER
-        {
-                box_set_fill($2, $4);
-        }
+        PACK IDENTIFIER FILL IDENTIFIER                { box_set_fill($2, $4); }
         ;
 
 set_pack_padding:
-        PACK IDENTIFIER PADDING NUMBER
-        {
-                box_set_padding($2, $4);
-        }
+        PACK IDENTIFIER PADDING NUMBER              { box_set_padding($2, $4); }
         ;
 
 set_pack_position:
-        PACK IDENTIFIER POSITION NUMBER
-        {
-                box_reorder_child($2, $4);
-        }
+        PACK IDENTIFIER POSITION NUMBER           { box_reorder_child($2, $4); }
         ;
         
 params:
@@ -448,658 +353,395 @@ param:
         | set_application_accels_for_action
         | set_application_flags
         | set_application_id
+        | set_button_box_layout
+        ;
+
+set_button_box_layout:
+        SET BOX_LAYOUT IDENTIFIER                 { button_box_set_layout($3); }
         ;
 
 set_application_flags:
-        SET APP_FLAGS flags
-        {
-                application_set_flags($3);
-        }
+        SET APP_FLAGS flags                       { application_set_flags($3); }
         ;
 
 set_application_id: 
-        SET APP_ID STRING
-        {
-                application_set_id($3);
-        }
+        SET APP_ID STRING                            { application_set_id($3); }
         ;
 
 set_application_accels_for_action:
-        SET ACCELS_FOR_ACTION IDENTIFIER STRING
-        {
-                accels_add($3, $4);
-        }
+        SET ACCELS_FOR_ACTION IDENTIFIER STRING          { accels_add($3, $4); }
         ;
 
 set_stack_switcher_stack:
-        SET STACK_SWITCHER_STACK IDENTIFIER
-        {
-                stack_switcher_set_stack($3);
-        }
+        SET STACK_SWITCHER_STACK IDENTIFIER    { stack_switcher_set_stack($3); }
         ;
 
 set_stack_hhomogeneous:
-        SET HHOMOGENEOUS IDENTIFIER
-        {
-                stack_set_hhomogeneous($3);
-        }
+        SET HHOMOGENEOUS IDENTIFIER              { stack_set_hhomogeneous($3); }
         ;
 
 set_stack_vhomogeneous:
-        SET VHOMOGENEOUS IDENTIFIER
-        {
-                stack_set_vhomogeneous($3);
-        }
+        SET VHOMOGENEOUS IDENTIFIER              { stack_set_vhomogeneous($3); }
         ;
 
 set_stack_transition_duration:
-        SET TRANSITION_DURATION NUMBER
-        {
-                stack_set_transition_duration($3);
-        }
+        SET TRANSITION_DURATION NUMBER    { stack_set_transition_duration($3); }
         ;
 
 set_stack_transition_type:
-        SET TRANSITION_TYPE IDENTIFIER
-        {
-                stack_set_transition_type($3);
-        }
+        SET TRANSITION_TYPE IDENTIFIER        { stack_set_transition_type($3); }
         ;
 
 set_text_view_border_window_size:
-        SET BORDER_WINDOW_SIZE IDENTIFIER NUMBER
-        {
-                text_view_set_border_window_size($3, $4);
-        }
+        SET BORDER_WINDOW_SIZE IDENTIFIER NUMBER 
+                                   { text_view_set_border_window_size($3, $4); }
         ;
 
 set_text_view_wrap_mode:
-        SET WRAP_MODE IDENTIFIER
-        {
-                text_view_set_wrap_mode($3);
-        }
+        SET WRAP_MODE IDENTIFIER                { text_view_set_wrap_mode($3); }
         ;
 
 set_text_view_cursor_visible:
-        SET CURSOR_VISIBLE IDENTIFIER
-        {
-                text_view_set_cursor_visible($3);
-        }
+        SET CURSOR_VISIBLE IDENTIFIER      { text_view_set_cursor_visible($3); }
         ;
 
 set_text_view_overwrite:
-        SET OVERWRITE IDENTIFIER
-        {
-                text_view_set_overwrite($3);
-        }
+        SET OVERWRITE IDENTIFIER                { text_view_set_overwrite($3); }
         ;
 
 set_text_view_pixels_above_lines:
-        SET PIXELS_ABOVE_LINES NUMBER
-        {
-                text_view_set_pixels_above_lines($3);
-        }
+        SET PIXELS_ABOVE_LINES NUMBER  { text_view_set_pixels_above_lines($3); }
         ;
 
 set_text_view_pixels_below_lines:
-        SET PIXELS_BELOW_LINES NUMBER
-        {
-                text_view_set_pixels_below_lines($3);
-        }
+        SET PIXELS_BELOW_LINES NUMBER  { text_view_set_pixels_below_lines($3); }
         ;
 
 set_text_view_pixels_inside_wrap:
-        SET PIXELS_INSIDE_WRAP NUMBER
-        {
-                text_view_set_pixels_inside_wrap($3);
-        }
+        SET PIXELS_INSIDE_WRAP NUMBER  { text_view_set_pixels_inside_wrap($3); }
         ;
 
 set_text_view_justification:
-        SET JUSTIFICATION IDENTIFIER
-        {
-                text_view_set_justification($3);
-        }
+        SET JUSTIFICATION IDENTIFIER        { text_view_set_justification($3); }
         ;
 
 set_text_view_left_margin:
-        SET LEFT_MARGIN NUMBER
-        {
-                text_view_set_left_margin($3);
-        }
+        SET LEFT_MARGIN NUMBER                { text_view_set_left_margin($3); }
         ;
 
 set_text_view_right_margin:
-        SET RIGHT_MARGIN NUMBER
-        {
-                text_view_set_right_margin($3);
-        }
+        SET RIGHT_MARGIN NUMBER              { text_view_set_right_margin($3); }
         ;
 
 set_text_view_indent:
-        SET INDENT NUMBER
-        {
-                text_view_set_indent($3);
-        }
+        SET INDENT NUMBER                          { text_view_set_indent($3); }
         ;
 
 set_text_view_accepts_tab:
-        SET ACCEPTS_TAB IDENTIFIER
-        {
-                text_view_set_accepts_tab($3);
-        }
+        SET ACCEPTS_TAB IDENTIFIER            { text_view_set_accepts_tab($3); }
         ;
 
 set_text_view_input_hints:
-        SET INPUT_HINTS IDENTIFIER
-        {
-                text_view_set_input_hints($3);
-        }
+        SET INPUT_HINTS IDENTIFIER            { text_view_set_input_hints($3); }
         ;
 
 set_adjustment_value:
-        SET VALUE FLOAT 
-        {
-                adjustment_set_value($3);
-        }
+        SET VALUE FLOAT                            { adjustment_set_value($3); }
         ;
 
 set_adjustment_clamp_page:
-        SET CLAMP_PAGE FLOAT FLOAT
-        {
-                adjustment_clamp_page($3, $4);
-        }
+        SET CLAMP_PAGE FLOAT FLOAT            { adjustment_clamp_page($3, $4); }
         ;
 
 set_adjustment_configure:
         SET CONFIGURE FLOAT FLOAT FLOAT FLOAT FLOAT FLOAT
-        {
-                adjustment_configure($3, $4, $5, $6, $7, $8);
-        }
+                               { adjustment_configure($3, $4, $5, $6, $7, $8); }
         ;
 
 set_adjustment_lower:
-        SET LOWER FLOAT
-        {
-                adjustment_set_lower($3);
-        }
+        SET LOWER FLOAT                            { adjustment_set_lower($3); }
         ;
 
 set_adjustment_page_increment:
-        SET PAGE_INCREMENT FLOAT
-        {
-                adjustment_set_page_increment($3);
-        }
+        SET PAGE_INCREMENT FLOAT          { adjustment_set_page_increment($3); }
         ;
 
 set_adjustment_page_size:
-        SET PAGE_SIZE FLOAT
-        {
-                adjustment_set_page_size($3);
-        }
+        SET PAGE_SIZE FLOAT                    { adjustment_set_page_size($3); }
         ;
 
 set_adjustment_step_increment:
-        SET STEP_INCREMENT FLOAT
-        {
-                adjustment_set_step_increment($3);
-        }
+        SET STEP_INCREMENT FLOAT          { adjustment_set_step_increment($3); }
         ;
 
 set_adjustment_upper:
-        SET UPPER FLOAT
-        {
-                adjustment_set_upper($3);
-        }
+        SET UPPER FLOAT                            { adjustment_set_upper($3); }
         ;
 
 set_scrolled_window_policy:
-        SET POLICY IDENTIFIER IDENTIFIER 
-        {
-                scrolled_window_set_policy($3, $4);
-        }
+        SET POLICY IDENTIFIER IDENTIFIER { scrolled_window_set_policy($3, $4); }
         ;
 
 set_scrolled_window_placement:
-        SET PLACEMENT IDENTIFIER
-        {
-                scrolled_window_set_placement($3);
-        }
+        SET PLACEMENT IDENTIFIER          { scrolled_window_set_placement($3); }
         ;
 
 set_scrolled_window_shadow_type:
-        SET SHADOW_TYPE IDENTIFIER
-        {
-                scrolled_window_set_shadow_type($3);
-        }
+        SET SHADOW_TYPE IDENTIFIER      { scrolled_window_set_shadow_type($3); }
         ;
 
 set_scrolled_window_hadjustment:
-        SET HADJUSTMENT IDENTIFIER
-        {
-                scrolled_window_set_hadjustment($3);
-        }
+        SET HADJUSTMENT IDENTIFIER      { scrolled_window_set_hadjustment($3); }
         ;
 
 set_scrolled_window_vadjustment:
-        SET VADJUSTMENT IDENTIFIER
-        {
-                scrolled_window_set_vadjustment($3);
-        }
+        SET VADJUSTMENT IDENTIFIER      { scrolled_window_set_vadjustment($3); }
         ;
 
 set_scrolled_window_min_content_width:
-        SET MIN_CONTENT_WIDTH NUMBER
-        {
-                scrolled_window_set_min_content_width($3);
-        }
+        SET MIN_CONTENT_WIDTH NUMBER 
+                                  { scrolled_window_set_min_content_width($3); }
         ;
 
 set_scrolled_window_min_content_height:
         SET MIN_CONTENT_HEIGHT NUMBER
-        {
-                scrolled_window_set_min_content_height($3);
-        }
+                                 { scrolled_window_set_min_content_height($3); }
         ;
 
 set_scrolled_window_kinetic_scrolling:
         SET KINETIC_SCROLLING IDENTIFIER
-        {
-                scrolled_window_set_kinetic_scrolling($3);
-        }
+                                  { scrolled_window_set_kinetic_scrolling($3); }
         ;
 
 set_scrolled_window_capture_button_press:
         SET CAPTURE_BUTTON_PRESS IDENTIFIER
-        {
-                scrolled_window_set_capture_button_press($3);
-        }
+                               { scrolled_window_set_capture_button_press($3); }
         ;
 
 set_scrolled_window_overlay_scrolling:
         SET OVERLAY_SCROLLING IDENTIFIER
-        {
-                scrolled_window_set_overlay_scrolling($3);
-        }
+                                  { scrolled_window_set_overlay_scrolling($3); }
         ;
  
 set_header_bar_subtitle:
-        SET SUBTITLE STRING 
-        {
-                header_bar_set_subtitle($3);
-        }
+        SET SUBTITLE STRING                     { header_bar_set_subtitle($3); }
         ;
 
 set_header_bar_has_subtitle:
-        SET HAS_SUBTITLE IDENTIFIER
-        {
-                header_bar_set_has_subtitle($3);
-        }
+        SET HAS_SUBTITLE IDENTIFIER         { header_bar_set_has_subtitle($3); }
         ;
 
 set_header_bar_custom_title:
-        SET CUSTOM_TITLE IDENTIFIER
-        {
-                header_bar_set_custom_title($3);
-        }
+        SET CUSTOM_TITLE IDENTIFIER         { header_bar_set_custom_title($3); }
         ;
 
 set_header_bar_show_close_button:
         SET SHOW_CLOSE_BUTTON IDENTIFIER
-        {
-                header_bar_set_show_close_button($3);
-        }
+                                       { header_bar_set_show_close_button($3); }
         ;
 
 set_header_bar_decoration_layout:
-        SET DECORATION_LAYOUT STRING
-        {
-                header_bar_set_decoration_layout($3);
-        }
+        SET DECORATION_LAYOUT STRING   { header_bar_set_decoration_layout($3); }
         ;
 
 set_button_relief:
-        SET RELIEF IDENTIFIER
-        {
-                button_set_relief($3);
-        }
+        SET RELIEF IDENTIFIER                         { button_set_relief($3); }
         ;
 
 set_button_label:
-        SET LABEL STRING
-        {
-                button_set_label($3);
-        }
+        SET LABEL STRING                               { button_set_label($3); }
         ;
 
 set_button_use_underline:
-        SET USE_UNDERLINE IDENTIFIER
-        {
-                button_set_use_underline($3);
-        }
+        SET USE_UNDERLINE IDENTIFIER           { button_set_use_underline($3); }
         ;
 
 set_button_focus_on_click:
-        SET FOCUS_ON_CLICK IDENTIFIER
-        {
-                button_set_focus_on_click($3);
-        }
+        SET FOCUS_ON_CLICK IDENTIFIER         { button_set_focus_on_click($3); }
         ;
 
 set_button_image:
-        SET IMAGE IDENTIFIER
-        {
-                button_set_image($3);
-        }
+        SET IMAGE IDENTIFIER                           { button_set_image($3); }
         ;
 
 set_button_image_position:
-        SET IMAGE_POSITION IDENTIFIER
-        {
-                button_set_image_position($3);
-        }
+        SET IMAGE_POSITION IDENTIFIER         { button_set_image_position($3); }
         ;
 
 set_button_always_show_image:
-        SET ALWAYS_SHOW_IMAGE IDENTIFIER
-        {
-                button_set_always_show_image($3);
-        }
+        SET ALWAYS_SHOW_IMAGE IDENTIFIER   { button_set_always_show_image($3); }
         ;
 
 set_entry_placeholder_text:
-        SET PLACEHOLDER_TEXT STRING
-        {
-                entry_set_placeholder_text($3);
-        }
+        SET PLACEHOLDER_TEXT STRING          { entry_set_placeholder_text($3); }
         ;
 
 set_entry_text:
-        SET TEXT STRING
-        {
-                entry_set_text($3);
-        }
+        SET TEXT STRING                                  { entry_set_text($3); }
         ;
 
 set_entry_activates_default:
-        SET ACTIVATES_DEFAULT IDENTIFIER
-        {
-                entry_set_activates_default($3);
-        }
+        SET ACTIVATES_DEFAULT IDENTIFIER    { entry_set_activates_default($3); }
         ;
 
 set_entry_overwrite_mode:
-        SET OVERWRITE_MODE IDENTIFIER
-        {
-                entry_set_overwrite_mode($3);
-        }
+        SET OVERWRITE_MODE IDENTIFIER          { entry_set_overwrite_mode($3); }
         ;
 
 set_entry_has_frame:
-        SET HAS_FRAME IDENTIFIER
-        {
-                entry_set_has_frame($3);
-        }
+        SET HAS_FRAME IDENTIFIER                    { entry_set_has_frame($3); }
         ;
 
 set_entry_visibility:
-        SET VISIBILITY IDENTIFIER
-        {
-                entry_set_visibility($3);    
-        }
+        SET VISIBILITY IDENTIFIER                  { entry_set_visibility($3); }
         ;
 
 set_entry_alignment:
-        SET ALIGNMENT FLOAT
-        {
-                entry_set_alignment($3);
-        }
+        SET ALIGNMENT FLOAT                         { entry_set_alignment($3); }
         ;
 
 set_entry_width_chars:
-        SET WIDTH_CHARS NUMBER
-        {
-                entry_set_max_width_chars($3);
-        }
+        SET WIDTH_CHARS NUMBER                { entry_set_max_width_chars($3); }
         ;
 
 set_entry_max_length:
-        SET MAX_LENGTH NUMBER
-        {
-                entry_set_max_length($3);
-        }
+        SET MAX_LENGTH NUMBER                      { entry_set_max_length($3); }
         ;
 
 set_box_baseline:
-        SET BASELINE IDENTIFIER
-        {
-                box_set_baseline_position($3);
-        }
+        SET BASELINE IDENTIFIER               { box_set_baseline_position($3); }
         ;
 
 set_box_spacing:
-        SET SPACING NUMBER
-        {
-                box_set_spacing($3);
-        }
+        SET SPACING NUMBER                              { box_set_spacing($3); }
         ;
 
 set_window_titlebar:
-        SET TITLEBAR IDENTIFIER
-        {
-                window_set_titlebar($3);
-        }
+        SET TITLEBAR IDENTIFIER                     { window_set_titlebar($3); }
         ;
 
 set_window_decorated:
-        SET DECORATED IDENTIFIER
-        {
-                window_set_decorated($3);
-        }
+        SET DECORATED IDENTIFIER                   { window_set_decorated($3); }
         ;
 
 set_window_default_geometry:
         SET DEFAULT_GEOMETRY NUMBER NUMBER
-        {
-                window_set_default_geometry($3, $4);
-        }
+                                        { window_set_default_geometry($3, $4); }
         ;
 
 set_window_hide_titlebar_when_maximized:
         SET HIDE_TITLEBAR_WHEN_MAXIMIZED IDENTIFIER
-        {
-                window_set_hide_titlebar_when_maximized($3);
-        }
+                                { window_set_hide_titlebar_when_maximized($3); }
         ;
 
 set_window_keep_above:
-        SET KEEP_ABOVE IDENTIFIER
-        {
-                window_set_keep_above($3);
-        }
+        SET KEEP_ABOVE IDENTIFIER                 { window_set_keep_above($3); }
         ;
 
 set_window_keep_below:
-        SET KEEP_BELOW IDENTIFIER
-        {
-                window_set_keep_below($3);
-        }
+        SET KEEP_BELOW IDENTIFIER                 { window_set_keep_below($3); }
         ;
 
 set_window_startup_id:
-        SET STARTUP_ID STRING
-        {
-                window_set_startup_id($3);
-        }
+        SET STARTUP_ID STRING                     { window_set_startup_id($3); }
         ;
 
 set_window_role:
-        SET ROLE STRING
-        {
-                window_set_role($3);
-        }
+        SET ROLE STRING                                 { window_set_role($3); }
         ;
 
 set_window_icon_name:
-        SET ICON_NAME STRING
-        {
-                window_set_icon_name($3);
-        }
+        SET ICON_NAME STRING                       { window_set_icon_name($3); }
         ;
 
 set_window_mnemonics_visible:
-        SET MNEMONICS_VISIBLE IDENTIFIER
-        {
-                window_set_mnemonics_visible($3);
-        }
+        SET MNEMONICS_VISIBLE IDENTIFIER   { window_set_mnemonics_visible($3); }
         ;
 
 set_window_focus_visible:
-        SET FOCUS_VISIBLE IDENTIFIER
-        {
-                window_set_focus_visible($3);
-        }
+        SET FOCUS_VISIBLE IDENTIFIER           { window_set_focus_visible($3); }
         ;
 
 set_window_skip_taskbar_hint:
-        SET SKIP_TASKBAR_HINT IDENTIFIER
-        {
-                window_set_skip_taskbar_hint($3);
-        }
+        SET SKIP_TASKBAR_HINT IDENTIFIER   { window_set_skip_taskbar_hint($3); }
         ;
 
 set_window_skip_pager_hint:
-        SET SKIP_PAGER_HINT IDENTIFIER
-        {
-                window_set_skip_pager_hint($3);
-        }
+        SET SKIP_PAGER_HINT IDENTIFIER       { window_set_skip_pager_hint($3); }
         ;
 
 set_window_urgency_hint:
-        SET URGENCY_HINT IDENTIFIER
-        {
-                window_set_urgency_hint($3);
-        }
+        SET URGENCY_HINT IDENTIFIER             { window_set_urgency_hint($3); }
         ;
 
 set_window_gravity:
-        SET GRAVITY IDENTIFIER
-        {
-                window_set_gravity($3);
-        }
+        SET GRAVITY IDENTIFIER                       { window_set_gravity($3); }
         ;
 
 
 set_window_type_hint:
-        SET TYPE_HINT IDENTIFIER
-        {
-                window_set_type_hint($3);
-        }
+        SET TYPE_HINT IDENTIFIER                   { window_set_type_hint($3); }
         ;
 
 set_window_position:
-        SET POSITION IDENTIFIER
-        {
-                window_set_position($3);
-        }
+        SET POSITION IDENTIFIER                     { window_set_position($3); }
         ;
 
 set_window_skip_pager:
-        SET SKIP_PAGER IDENTIFIER
-        {
-                window_set_skip_pager_hint($3);
-        }
+        SET SKIP_PAGER IDENTIFIER            { window_set_skip_pager_hint($3); }
         ;
 
 set_window_modal:
-        SET MODAL IDENTIFIER
-        {
-                window_set_modal($3);
-        }
+        SET MODAL IDENTIFIER                           { window_set_modal($3); }
         ;
 
 set_window_focus_on_map:
-        SET FOCUS_ON_MAP IDENTIFIER
-        {
-                window_set_focus_on_map($3);
-        }
+        SET FOCUS_ON_MAP IDENTIFIER             { window_set_focus_on_map($3); }
         ; 
 
 set_window_skip_taskbar:
-        SET SKIP_TASKBAR IDENTIFIER
-        {
-                window_set_skip_taskbar_hint($3);
-        }
+        SET SKIP_TASKBAR IDENTIFIER        { window_set_skip_taskbar_hint($3); }
         ;
 
 set_window_destroy_with_parent:
         SET DESTROY_WITH_PARENT IDENTIFIER
-        {
-                window_set_destroy_with_parent($3);
-        }
+                                         { window_set_destroy_with_parent($3); }
         ;
 
 set_window_accept_focus:
-        SET ACCEPT_FOCUS IDENTIFIER
-        {
-                window_set_accept_focus($3);
-        }
+        SET ACCEPT_FOCUS IDENTIFIER             { window_set_accept_focus($3); }
         ;
 
 set_window_urgent:
-        SET URGENT IDENTIFIER
-        {
-                window_set_urgency_hint($3);
-        }
+        SET URGENT IDENTIFIER                   { window_set_urgency_hint($3); }
         ;
 
 set_window_deletable:
-        SET DELETABLE IDENTIFIER
-        {
-                window_set_deletable($3);
-        }
+        SET DELETABLE IDENTIFIER                   { window_set_deletable($3); }
         ;
 
 set_window_resizable:
-        SET RESIZABLE IDENTIFIER
-        {
-                window_set_resizable($3);
-        }
+        SET RESIZABLE IDENTIFIER                   { window_set_resizable($3); }
         ;
 
 set_window_default_size:
-        SET DEFAULT_SIZE NUMBER NUMBER
-        {
-                window_set_default_size($3, $4);
-        }
+        SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
 
 set_title:
-        SET TITLE STRING 
-        {
-                set_title($3);
-        }
+        SET TITLE STRING                                      { set_title($3); }
         ;
 
 set_homogeneous:
-        SET HOMOGENEOUS IDENTIFIER
-        {
-                set_homogeneous($3);
-        }
+        SET HOMOGENEOUS IDENTIFIER                      { set_homogeneous($3); }
         ;
 
 set_input_purpose:
-        SET INPUT_PURPOSE IDENTIFIER
-        {
-                set_input_purpose($3);
-        }
+        SET INPUT_PURPOSE IDENTIFIER                  { set_input_purpose($3); }
         ;
 
 set_editable:
-        SET EDITABLE IDENTIFIER
-        {
-                set_editable($3);
-        }
+        SET EDITABLE IDENTIFIER                            { set_editable($3); }
         ;
 
 commons:
@@ -1133,164 +775,95 @@ common:
         ;
 
 widget_set_size_request:
-        COMMON SIZE_REQUEST NUMBER NUMBER
-        {
-                widget_set_size_request($3, $4);
-        }
+        COMMON SIZE_REQUEST NUMBER NUMBER   { widget_set_size_request($3, $4); }
         ;
 
 widget_set_margin_bottom:
-        COMMON MARGIN_BOTTOM NUMBER
-        {
-                widget_set_margin_bottom($3);
-        }
+        COMMON MARGIN_BOTTOM NUMBER            { widget_set_margin_bottom($3); }
         ;
 
 widget_set_margin_top:
-        COMMON MARGIN_TOP NUMBER
-        {
-                widget_set_margin_top($3);
-        }
+        COMMON MARGIN_TOP NUMBER                  { widget_set_margin_top($3); }
         ;
 
 widget_set_margin_end:
-        COMMON MARGIN_END NUMBER
-        {
-                widget_set_margin_end($3);
-        }
+        COMMON MARGIN_END NUMBER                  { widget_set_margin_end($3); }
         ;
 
 widget_set_margin_start:
-        COMMON MARGIN_START NUMBER
-        {
-                widget_set_margin_start($3);
-        }
+        COMMON MARGIN_START NUMBER              { widget_set_margin_start($3); }
         ;
 
 widget_set_valign:
-        COMMON VALIGN IDENTIFIER
-        {
-                widget_set_valign($3);
-        }
+        COMMON VALIGN IDENTIFIER                      { widget_set_valign($3); }
         ;
 
 widget_set_halign:
-        COMMON HALIGN IDENTIFIER
-        {
-                widget_set_halign($3);
-        }
+        COMMON HALIGN IDENTIFIER                      { widget_set_halign($3); }
         ;
 
 widget_set_vexpand_set:
-        COMMON VEXPAND_SET IDENTIFIER
-        {
-                widget_set_vexpand_set($3);
-        }
+        COMMON VEXPAND_SET IDENTIFIER            { widget_set_vexpand_set($3); }
         ;
 
 widget_set_vexpand:
-        COMMON VEXPAND IDENTIFIER
-        {
-                widget_set_vexpand($3);
-        }
+        COMMON VEXPAND IDENTIFIER                    { widget_set_vexpand($3); }
         ;
 
 widget_set_hexpand_set:
-        COMMON HEXPAND_SET IDENTIFIER
-        {
-                widget_set_hexpand_set($3);
-        }
+        COMMON HEXPAND_SET IDENTIFIER            { widget_set_hexpand_set($3); }
         ;
 
 widget_set_hexpand:
-        COMMON HEXPAND IDENTIFIER
-        {
-                widget_set_hexpand($3);
-        }
+        COMMON HEXPAND IDENTIFIER                    { widget_set_hexpand($3); }
         ;
 
 widget_set_receives_default:
-        COMMON RECEIVES_DEFAULT IDENTIFIER
-        {
-                widget_set_receives_default($3);
-        }
+        COMMON RECEIVES_DEFAULT IDENTIFIER  { widget_set_receives_default($3); }
         ;
 
 widget_set_sensitive:
-        COMMON SENSITIVE IDENTIFIER
-        {
-                widget_set_sensitive($3);
-        }
+        COMMON SENSITIVE IDENTIFIER                { widget_set_sensitive($3); }
         ;
 
 widget_set_no_show_all:
-        COMMON NO_SHOW_ALL IDENTIFIER
-        {
-                widget_set_no_show_all($3);
-        }
+        COMMON NO_SHOW_ALL IDENTIFIER            { widget_set_no_show_all($3); }
         ;
 
 widget_set_app_paintable:
-        COMMON APP_PAINTABLE IDENTIFIER
-        {
-                widget_set_app_paintable($3);
-        }
+        COMMON APP_PAINTABLE IDENTIFIER        { widget_set_app_paintable($3); }
         ;
 
 widget_set_can_default:
-        COMMON CAN_DEFAULT IDENTIFIER
-        {
-                widget_set_can_default($3);
-        }
+        COMMON CAN_DEFAULT IDENTIFIER            { widget_set_can_default($3); }
         ;
 
 widget_set_can_focus:
-        COMMON CAN_FOCUS IDENTIFIER
-        {
-                widget_set_can_focus($3);
-        }
+        COMMON CAN_FOCUS IDENTIFIER                { widget_set_can_focus($3); }
         ;
 
 widget_set_visible:
-        COMMON VISIBLE IDENTIFIER
-        {
-                widget_set_visible($3);
-        }
+        COMMON VISIBLE IDENTIFIER                    { widget_set_visible($3); }
         ;
 
 widget_set_opacity:
-        COMMON OPACITY FLOAT
-        {
-                widget_set_opacity($3);
-        }
+        COMMON OPACITY FLOAT                         { widget_set_opacity($3); }
         ;
 
 widget_set_tooltip_markup:
-        COMMON TOOLTIP_MARKUP STRING
-        {
-                widget_set_tooltip_markup($3);
-        }
+        COMMON TOOLTIP_MARKUP STRING          { widget_set_tooltip_markup($3); }
         ;
 
 widget_set_has_tootip:
-        COMMON HAS_TOOLTIP IDENTIFIER
-        {
-                widget_set_has_tootip($3);
-        }
+        COMMON HAS_TOOLTIP IDENTIFIER             { widget_set_has_tootip($3); }
         ;
 
 widget_set_tooltip_text:
-        COMMON TOOLTIP_TEXT STRING
-        {
-                widget_set_tooltip_text($3);
-        }
+        COMMON TOOLTIP_TEXT STRING              { widget_set_tooltip_text($3); }
         ;
 
 widget_set_name:
-        COMMON NAME STRING
-        {
-                widget_set_name($3);
-        }
+        COMMON NAME STRING                              { widget_set_name($3); }
         ;
 
 signals:
@@ -1298,26 +871,13 @@ signals:
         ;
         
 signal:
-        SIGNAL STRING IDENTIFIER IDENTIFIER
-        {
-                signal_connect($2, $3, $4);
-        }
-        | SIGNAL STRING IDENTIFIER
-        {
-                signal_connect($2, $3, "NULL");
-        }
+        SIGNAL STRING IDENTIFIER IDENTIFIER      { signal_connect($2, $3, $4); }
+        | SIGNAL STRING IDENTIFIER           { signal_connect($2, $3, "NULL"); }
         ;
 
 flags:
-        IDENTIFIER
-        {
-                $$ = $1;
-        }
-        |
-        flags OR IDENTIFIER 
-        {
-                $$ = append_flag($$, " | ", $3);
-        }
+        IDENTIFIER                                                  { $$ = $1; }
+        | flags OR IDENTIFIER               { $$ = append_flag($$, " | ", $3); }
         ;
 %%
 

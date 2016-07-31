@@ -70,15 +70,6 @@ void container_add(char *widget)
               ,widget);
 }
 
-void button_box_new(char *widget)
-{
-        syminst(TYPE_BUTTON_BOX, widget, widget);
-        syminst(TYPE_BUTTON_BOX, "this", widget);
-        char *setting = "GTK_ORIENTATION_HORIZONTAL";
-
-        putdef("GtkWidget *", widget, "gtk_button_box_new", 1, setting);
-}
-
 widget_type getsymtype(char *sym_name)
 {
         symrec *sym = getsym(sym_name);
@@ -154,8 +145,8 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        include_insert("<gtk/gtk.h>");
-        include_insert("\"handlers.h\"");
+        include_insert(" <gtk/gtk.h>");
+        include_insert(" \"handlers.h\"");
         prtstr(1, "\n");
         main_start();
         tabinc(1);
