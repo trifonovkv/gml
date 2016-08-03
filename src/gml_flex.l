@@ -33,6 +33,20 @@ PACK                  return PACK;
 CMN                   return COMMON;
 HBUTTONBOX            return HBUTTONBOX;
 VBUTTONBOX            return VBUTTONBOX; 
+COMBO_BOX             return COMBO_BOX;
+COMBO_BOX_ENTRY       return COMBO_BOX_ENTRY;
+
+Wrap_width            return WRAP_WIDTH;
+Row_span_column       return ROW_SPAN_COLUMN;
+Column_span_column    return COLUMN_SPAN_COLUMN;
+Active                return ACTIVE; 
+Id_column             return ID_COLUMN;
+Active_id             return ACTIVE_ID; 
+Model                 return MODEL; 
+Focus_on_click        return FOCUS_ON_CLICK;
+Button_sensitivity    return BUTTON_SENSITIVITY;
+Entry_text_column     return ENTRY_TEXT_COLUMN; 
+Popup_fixed_width     return POPUP_FIXED_WIDTH;
 
 Box_layout            return BOX_LAYOUT; 
 Child_secondary       return CHILD_SECONDARY;

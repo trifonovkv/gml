@@ -15,6 +15,7 @@
 #include "widgets/stack_switcher.h"
 #include "widgets/application.h"
 #include "widgets/button_box.h"
+#include "widgets/combo_box.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -32,6 +33,10 @@ int yywrap()
 int yylex();
 
 %}
+%token COMBO_BOX COMBO_BOX_ENTRY WRAP_WIDTH ROW_SPAN_COLUMN COLUMN_SPAN_COLUMN 
+%token ACTIVE ID_COLUMN ACTIVE_ID MODEL BUTTON_SENSITIVITY ENTRY_TEXT_COLUMN 
+%token POPUP_FIXED_WIDTH 
+
 %token HBUTTONBOX VBUTTONBOX BOX_LAYOUT CHILD_SECONDARY CHILD_NON_HOMOGENEOUS 
 
 %token SKIP_PAGER 
@@ -114,6 +119,8 @@ command:
         | text_view
         | stack
         | stack_switcher
+        | combo_box_new
+        | combo_box_new_with_entry
         ;
 
 bbox_child_sets:
@@ -152,6 +159,16 @@ add:
         ADD IDENTIFIER                                    { container_add($2); }
         ;
 
+combo_box_new:
+        COMBO_BOX IDENTIFIER                              { combo_box_new($2); }
+        commons params SEMICOLON                            { block_close($2); }
+        ;
+
+combo_box_new_with_entry:
+        COMBO_BOX_ENTRY IDENTIFIER             { combo_box_new_with_entry($2); }
+        commons params SEMICOLON                            { block_close($2); }
+        ;
+
 hbutton_box:
         HBUTTONBOX IDENTIFIER                           { hbutton_box_new($2); }
         commons params adds bbox_child_sets SEMICOLON       { block_close($2); }
@@ -159,7 +176,7 @@ hbutton_box:
 
 vbutton_box:
         VBUTTONBOX IDENTIFIER                           { vbutton_box_new($2); }
-        commons params adds packs SEMICOLON                 { block_close($2); }
+        commons params adds bbox_child_sets SEMICOLON       { block_close($2); }
         ;
 
 stack:
@@ -264,6 +281,7 @@ param:
         | set_homogeneous
         | set_input_purpose
         | set_title
+        | set_focus_on_click
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -305,7 +323,6 @@ param:
         | set_button_relief
         | set_button_label
         | set_button_use_underline
-        | set_button_focus_on_click
         | set_button_image
         | set_button_image_position
         | set_button_always_show_image
@@ -354,6 +371,60 @@ param:
         | set_application_flags
         | set_application_id
         | set_button_box_layout
+        | set_combo_box_wrap_width
+        | set_combo_box_row_span_column
+        | set_combo_box_column_span_column
+        | set_combo_box_active
+        | set_combo_box_id_column
+        | set_combo_box_active_id
+        | set_combo_box_model
+        | set_combo_box_button_sensitivity
+        | set_combo_box_entry_text_column
+        | set_combo_box_popup_fixed_width
+        ;
+
+set_combo_box_wrap_width:
+        SET WRAP_WIDTH NUMBER                  { combo_box_set_wrap_width($3); }
+        ;
+
+set_combo_box_row_span_column:
+        SET ROW_SPAN_COLUMN NUMBER        { combo_box_set_row_span_column($3); }
+        ;
+
+set_combo_box_column_span_column:
+        SET COLUMN_SPAN_COLUMN NUMBER
+                                       { combo_box_set_column_span_column($3); }
+        ;
+
+set_combo_box_active:
+        SET ACTIVE NUMBER                          { combo_box_set_active($3); }
+        ;
+
+set_combo_box_id_column:
+        SET ID_COLUMN NUMBER                    { combo_box_set_id_column($3); }
+        ;
+
+set_combo_box_active_id:
+        SET ACTIVE_ID STRING                    { combo_box_set_active_id($3); }
+        ;
+
+set_combo_box_model:
+        SET MODEL IDENTIFIER                        { combo_box_set_model($3); }
+        ;
+
+set_combo_box_button_sensitivity:
+        SET BUTTON_SENSITIVITY IDENTIFIER 
+                                       { combo_box_set_button_sensitivity($3); }
+        ;
+
+set_combo_box_entry_text_column:
+        SET ENTRY_TEXT_COLUMN NUMBER
+                                        { combo_box_set_entry_text_column($3); }
+        ;
+
+set_combo_box_popup_fixed_width:
+        SET POPUP_FIXED_WIDTH IDENTIFIER 
+                                        { combo_box_set_popup_fixed_width($3); }
         ;
 
 set_button_box_layout:
@@ -556,10 +627,6 @@ set_button_use_underline:
         SET USE_UNDERLINE IDENTIFIER           { button_set_use_underline($3); }
         ;
 
-set_button_focus_on_click:
-        SET FOCUS_ON_CLICK IDENTIFIER         { button_set_focus_on_click($3); }
-        ;
-
 set_button_image:
         SET IMAGE IDENTIFIER                           { button_set_image($3); }
         ;
@@ -742,6 +809,10 @@ set_input_purpose:
 
 set_editable:
         SET EDITABLE IDENTIFIER                            { set_editable($3); }
+        ;
+
+set_focus_on_click:
+        SET FOCUS_ON_CLICK IDENTIFIER                { set_focus_on_click($3); }
         ;
 
 commons:

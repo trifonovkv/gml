@@ -14,6 +14,7 @@ int yyparse(void);
 typedef enum
 {
         TYPE_NONE
+        ,TYPE_STRING
         ,TYPE_ADJUSTMENT        
         ,TYPE_HBOX              
         ,TYPE_VBOX              
@@ -28,7 +29,8 @@ typedef enum
         ,TYPE_STACK
         ,TYPE_STACK_SWITCHER
         ,TYPE_APPLICATION
-        ,TYPE_STRING
+        ,TYPE_COMBO_BOX
+        ,TYPE_COMBO_BOX_ENTRY
 } widget_type;
 
 /* Keyboard accelerators and action */

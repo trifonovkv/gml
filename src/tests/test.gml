@@ -136,11 +136,28 @@ VBUTTONBOX vbuttonbox
   SET Box_layout GTK_BUTTONBOX_EDGE
   ADD button4
   ADD button5
+  SET Child_secondary button5 TRUE 
 ;
 
+COMBO_BOX combobox
+;
+
+COMBO_BOX_ENTRY comboboxentry
+  CMN Sensitive FALSE
+  SET Wrap_width 1
 /*
-SET Child_secondary button6 TRUE 
+  SET Row_span_column 2
+  SET Column_span_column 2
+  SET Active_id "koko"
+  SET Model                 
 */
+  SET Active 1
+  SET Id_column 1            
+  SET Focus_on_click TRUE
+  SET Button_sensitivity GTK_SENSITIVITY_AUTO
+  SET Entry_text_column 1
+  SET Popup_fixed_width TRUE
+;
 
 VBOX vbox
   CMN Visible TRUE
@@ -148,6 +165,8 @@ VBOX vbox
   ADD stack
   ADD hbuttonbox
   ADD vbuttonbox
+  ADD combobox
+  ADD comboboxentry
 ;
 
 WINDOW window
