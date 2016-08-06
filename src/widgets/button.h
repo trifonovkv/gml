@@ -1,3 +1,15 @@
+/* 
+ * Creates a new button containing an icon from the current icon theme.
+ * 
+ * If the icon name isn’t known, a “broken image” icon will be displayed
+ * instead. If the current icon theme is changed, the icon will be updated
+ * appropriately.
+ * 
+ * This function is a convenience wrapper around gtk_button_new() and
+ * gtk_button_set_image().
+ */
+void button_new_from_icon_name(char *widget, char *icon_name, char *size);
+
 /*
  * Creates a new GtkButton widget. To add a child widget to the button, 
  * use gtk_container_add().

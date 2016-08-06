@@ -30,5 +30,6 @@ AC_CONFIG_FILES([Makefile
                   src/example/window/Makefile
                   src/example/header_bar/Makefile
                   src/example/scrolled_window/Makefile
+                  src/example/widget_factory/Makefile
                   src/tests/Makefile])
 AC_OUTPUT

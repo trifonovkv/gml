@@ -25,6 +25,7 @@ ENTRY                 return ENTRY;
 HBOX                  return HBOX;
 VBOX                  return VBOX;
 BUTTON                return BUTTON;
+BUTTON_FROM_ICON_NAME return BUTTON_FROM_ICON_NAME;
 WINDOW                return WINDOW;
 SET                   return SET;
 ADD                   return ADD;
@@ -136,6 +137,8 @@ Focus_on_click        return FOCUS_ON_CLICK;
 Image                 return IMAGE;
 Image_position        return IMAGE_POSITION;
 Always_show_image     return ALWAYS_SHOW_IMAGE;
+Icon_name             return ICON_NAME;
+Size                  return SIZE;
 
 Subtitle              return SUBTITLE;
 Has_subtitle          return HAS_SUBTITLE;

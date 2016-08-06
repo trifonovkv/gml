@@ -60,8 +60,8 @@ int yylex();
 %token SENSITIVE NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS VISIBLE 
 %token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME 
 
-%token RELIEF LABEL USE_UNDERLINE FOCUS_ON_CLICK IMAGE IMAGE_POSITION
-%token ALWAYS_SHOW_IMAGE 
+%token BUTTON BUTTON_FROM_ICON_NAME RELIEF LABEL USE_UNDERLINE FOCUS_ON_CLICK 
+%token ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
 
 %token HEADER_BAR SUBTITLE HAS_SUBTITLE CUSTOM_TITLE SHOW_CLOSE_BUTTON
 %token DECORATION_LAYOUT PACK_START PACK_END 
@@ -85,14 +85,14 @@ int yylex();
 %token INCLUDE 
 %token SET ADD SIGNAL PACK COMMON
 %token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR OR
-%token HBOX VBOX BUTTON WINDOW 
+%token HBOX VBOX WINDOW 
 
 %union
 {
         char  *string;
 }
 
-%type <string>    IDENTIFIER STRING flags NUMBER FLOAT
+%type <string>    IDENTIFIER STRING flags NUMBER FLOAT icon_name size
 %%
 
 main:
@@ -121,6 +121,14 @@ command:
         | stack_switcher
         | combo_box_new
         | combo_box_new_with_entry
+        | button_new_from_icon_name
+        ;
+
+icon_name:
+        SET ICON_NAME STRING                                        { $$ = $3; }
+        ;
+size:
+        SET SIZE IDENTIFIER                                         { $$ = $3; }
         ;
 
 bbox_child_sets:
@@ -157,6 +165,12 @@ adds:
 
 add:
         ADD IDENTIFIER                                    { container_add($2); }
+        ;
+
+button_new_from_icon_name:
+        BUTTON_FROM_ICON_NAME IDENTIFIER icon_name size  
+                                      { button_new_from_icon_name($2, $3, $4); }
+        commons params signals SEMICOLON                    { block_close($2); }
         ;
 
 combo_box_new:

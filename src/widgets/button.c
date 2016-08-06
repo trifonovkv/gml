@@ -2,6 +2,19 @@
 #include "fmtout.h"
 #include "button.h" 
 
+void button_new_from_icon_name(char *widget, char *icon_name, char *size)
+{
+        syminst(TYPE_BUTTON, widget, widget);
+        syminst(TYPE_BUTTON, "this", widget);
+
+        putdef("GtkWidget *"
+              ,widget
+              ,"gtk_button_new_from_icon_name"
+              ,2
+              ,icon_name
+              ,size);
+}
+
 void button_new(char *widget)
 {
         syminst(TYPE_BUTTON, widget, widget);

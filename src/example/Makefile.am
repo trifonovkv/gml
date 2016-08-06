@@ -4,6 +4,7 @@ SUBDIRS =                     \
 				header_bar            \
 				scrolled_window       \
 				window                \
+				widget_factory        \
 				$(NULL)
 
 CLEANFILES = *~

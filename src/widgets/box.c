@@ -4,6 +4,15 @@
 
 void box_query_child_packing(char *widget, char *child)
 {
+        if(getsymval("box") == NULL) {
+                syminst(TYPE_STRING, "box", "box");
+
+                prtstr(1, "gboolean    expand;\n");
+                prtstr(1, "gboolean    fill;\n");
+                prtstr(1, "guint       padding;\n");
+                prtstr(1, "GtkPackType pack_type;\n");
+        }
+
         putfun("gtk_box_query_child_packing"
               ,6
               ,widget
@@ -118,10 +127,12 @@ void box_horizontal_new(char *widget)
         syminst(TYPE_HBOX, widget, widget);
         syminst(TYPE_HBOX, "this", widget);
 
-        prtstr(1, "gboolean    expand;\n");
-        prtstr(1, "gboolean    fill;\n");
-        prtstr(1, "guint       padding;\n");
-        prtstr(1, "GtkPackType pack_type;\n");
+        /*
+         * prtstr(1, "gboolean    expand;\n");
+         * prtstr(1, "gboolean    fill;\n");
+         * prtstr(1, "guint       padding;\n");
+         * prtstr(1, "GtkPackType pack_type;\n");
+         */
 
         char *orientation = "GTK_ORIENTATION_HORIZONTAL";
         char *spacing     = "0";
@@ -133,11 +144,6 @@ void box_vertical_new(char *widget)
 {
         syminst(TYPE_VBOX, widget, widget);
         syminst(TYPE_VBOX, "this", widget);
-
-        prtstr(1, "gboolean    expand;\n");
-        prtstr(1, "gboolean    fill;\n");
-        prtstr(1, "guint       padding;\n");
-        prtstr(1, "GtkPackType pack_type;\n");
 
         char *orientation = "GTK_ORIENTATION_VERTICAL";
         char *spacing     = "0";
