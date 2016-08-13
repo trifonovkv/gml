@@ -25,6 +25,9 @@ void button_box_set_layout(char *setting)
         char *widget = wrptype("GTK_BUTTON_BOX", getsymval("this"));
 
         putfun("gtk_button_box_set_layout", 2, widget, setting);
+
+        free(widget);
+        free(setting);
 }
 
 void button_box_set_child_secondary(char *child, char *setting)
@@ -32,6 +35,9 @@ void button_box_set_child_secondary(char *child, char *setting)
         char *widget = wrptype("GTK_BUTTON_BOX", getsymval("this"));
 
         putfun("gtk_button_box_set_child_secondary", 3, widget, child, setting);
+
+        free(widget);
+        free(setting);
 }
 
 void button_box_set_child_non_homogeneous(char *child, char *setting)
@@ -39,9 +45,12 @@ void button_box_set_child_non_homogeneous(char *child, char *setting)
         char *widget = wrptype("GTK_BUTTON_BOX", getsymval("this"));
 
         putfun("gtk_button_box_set_child_non_homogeneous"
-              ,3
-              ,widget
-              ,child
-              ,setting);
+              , 3
+              , widget
+              , child
+              , setting);
+
+        free(widget);
+        free(setting);
 }
 

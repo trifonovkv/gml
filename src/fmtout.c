@@ -67,13 +67,31 @@ char* concat(char *s1, char *s2)
 
 char* wrptype(char *type, char *var)
 {
-        char *result;
+        if ((type == NULL) || (var == NULL)) {
+                fprintf(stderr, "wrptype() failed: type or var is NULL\n");
+                exit(1);
+        }
 
-        result = concat(type, "("); 
-        result = concat(result, var);
-        result = concat(result, ")");
+        size_t len1 = strlen(type);
+        size_t len2 = strlen("(");
+        size_t len3 = strlen(var);
+        size_t len4 = strlen(")");
 
-        return result;
+        size_t n = len1 + len2 + len3 + len4 + 1;
+
+        char *dest = calloc(n, sizeof(char));
+
+        if(!dest) {
+            fprintf(stderr, "calloc() failed: insufficient memory!\n");
+            exit(1);
+        }
+
+        strncat(dest, type, len1);
+        strncat(dest, "(",  len2);
+        strncat(dest, var,  len3);
+        strncat(dest, ")",  len4);
+
+        return dest;
 }
 
 void putdef(char *type, char *var, char *func_name, int n_args, ...)

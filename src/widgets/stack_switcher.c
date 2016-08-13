@@ -13,9 +13,13 @@ void stack_switcher_new(char *widget)
 void stack_switcher_set_stack(char *setting)
 {
         char *widget = wrptype("GTK_STACK_SWITCHER", getsymval("this"));
+        char *stack  = wrptype("GTK_STACK", setting);
         
         putfun("gtk_stack_switcher_set_stack"
-              ,2
-              ,widget
-              ,wrptype("GTK_STACK", setting));
+              , 2
+              , widget
+              , stack);
+
+        free(widget);
+        free(stack);
 }

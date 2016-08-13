@@ -60,6 +60,7 @@ typedef struct symrec symrec;
 /* The symbol table: a chain of 'struct symrec'. */
 extern symrec *sym_table;
 
+void    prtlst          ();
 void    accels_add      (char *action_name, char *accel_key);
 char*   append_flag     (char *flags, char *or, char *flag);
 void    tab_insert      ();

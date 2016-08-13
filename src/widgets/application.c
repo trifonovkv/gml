@@ -17,9 +17,9 @@ void application()
         if (app_flags == NULL)
                 app_flags = "G_APPLICATION_FLAGS_NONE";
 
-        putdef("GtkApplication *", app_name, "gtk_application_new",2 
-                                                                  ,app_id
-                                                                  ,app_flags);
+        putdef("GtkApplication *", app_name, "gtk_application_new", 2 
+                                                                  , app_id
+                                                                  , app_flags);
         
         prtstr(1, "const gchar *accels[2]={ NULL, NULL };\n");
 
@@ -30,34 +30,34 @@ void application()
         tabinc(1);
         for (ptr = accels_table; ptr != NULL; ptr = (accels *)ptr->next) {
                 prtstr(5
-                      ,"{ \""
-                      ,ptr->action
-                      ,"_action\","
-                      ,ptr->action
-                      ,", NULL, NULL, NULL },\n");
+                      , "{ \""
+                      , ptr->action
+                      , "_action\","
+                      , ptr->action
+                      , ", NULL, NULL, NULL },\n");
         }
         tabdec(1);
         prtstr(1, "};\n");
 
         prtstr(5
-              ,"g_action_map_add_action_entries(G_ACTION_MAP("
-              ,app_name
-              ,"), app_entries, G_N_ELEMENTS(app_entries), "
-              ,app_name
-              ,");\n");
+              , "g_action_map_add_action_entries(G_ACTION_MAP("
+              , app_name
+              , "), app_entries, G_N_ELEMENTS(app_entries), "
+              , app_name
+              , ");\n");
 
         for (ptr = accels_table; ptr != NULL; ptr = (accels *)ptr->next)
                 application_set_accels_for_action(ptr->action, ptr->key);
 
         prtstr(3 
-              ,"g_signal_connect("
-              ,app_name
-              ,", \"activate\", G_CALLBACK(activate), NULL);\n");
+              , "g_signal_connect("
+              , app_name
+              , ", \"activate\", G_CALLBACK(activate), NULL);\n");
 
         prtstr(3 
-              ,"status=g_application_run(G_APPLICATION("
-              ,app_name
-              ,"), argc, argv);\n");
+              , "status=g_application_run(G_APPLICATION("
+              , app_name
+              , "), argc, argv);\n");
 
         prtstr(3, "g_object_unref(", app_name, ");\n");
 }
@@ -83,9 +83,12 @@ void application_set_accels_for_action(char *action, char *accels)
         prtstr(3, "accels[0]=", accels, ";\n");
         prtstr(1, "accels[1]=NULL;\n");
         prtstr(5
-              ,"gtk_application_set_accels_for_action("
-              ,app_name
-              ,", \"app."
-              ,action
-              ,"_action\", accels);\n");
+              , "gtk_application_set_accels_for_action("
+              , app_name
+              , ", \"app."
+              , action
+              , "_action\", accels);\n");
+
+        free(action);
+        free(accels);
 }

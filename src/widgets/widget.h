@@ -1,4 +1,4 @@
-void widget_show_all(char *setting);
+void widget_show_all(char *widget);
 
 /*
  * Sets the minimum size of a widget; that is, the widget’s size request 
@@ -407,7 +407,7 @@ void widget_set_tooltip_markup(char *setting);
  *   widget a GtkWidget
  *   has_tooltip whether or not widget has a tooltip.
  */
-void widget_set_has_tootip(char *settng);
+void widget_set_has_tootip(char *setting);
 
 /*
  * Sets text as the contents of the tooltip. This function will take care of 

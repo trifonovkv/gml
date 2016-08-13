@@ -4,13 +4,42 @@
 
 symrec *sym_table;
 
+void prtlst()
+{
+        symrec *ptr = sym_table;
+        
+        printf("\n");
+        printf("%-20s%-20s%-20s\n", "Name", "Value", "Next");
+        printf("------------------------------------------------------------");
+        printf("\n");
+
+        while (ptr != NULL) {
+                printf("%-20s%-20s%-20p\n", ptr->name, ptr->value, ptr->next);
+                ptr = ptr->next;
+        }
+}
+
+
+void freelist()
+{
+        symrec *ptr = sym_table;
+        symrec *tmp;
+
+        while (ptr != NULL) {
+                tmp = ptr;
+                ptr = (symrec *)ptr->next; 
+                free(tmp);
+        }
+
+        sym_table = ptr;
+}
+
+
 void accels_add(char *action_name, char *accel_key)
 {
         accels *ptr = (accels *)malloc(sizeof(accels));
-        ptr->action = (char *)malloc(strlen(action_name) + 1);
-        strcpy(ptr->action, action_name);
-        ptr->key = (char *)malloc(strlen(accel_key) + 1);
-        strcpy(ptr->key, accel_key);
+        ptr->action = action_name;
+        ptr->key = accel_key;
         ptr->next = (struct accels *)accels_table;
         accels_table = ptr;
 }
@@ -25,8 +54,8 @@ char *append_flag(char *flags, char *or, char *flag)
 void main_start()
 {
         prtstr(2
-              ,"static void activate(GtkApplication *app,"
-              ," gpointer user_data)\n{\n");
+              , "static void activate(GtkApplication *app,"
+              , " gpointer user_data)\n{\n");
 }
 
 void main_end()
@@ -53,21 +82,28 @@ void block_close(char *start)
 void signal_connect(char *signal, char *handler, char *data)
 {
         char *widget = getsymval("this");
+        char *callback = wrptype("G_CALLBACK", handler);
+
         putfun("g_signal_connect"
-              ,4
-              ,widget
-              ,signal
-              ,wrptype("G_CALLBACK", handler)
-              ,data);
+              , 4
+              , widget
+              , signal
+              , callback
+              , data);
+
+        free(callback);
 }
 
 void container_add(char *widget)
 {
         char *container = wrptype("GTK_CONTAINER", getsymval("this"));
+
         putfun("gtk_container_add"
-              ,2
-              ,container
-              ,widget);
+              , 2
+              , container
+              , widget);
+        
+        free(container);
 }
 
 widget_type getsymtype(char *sym_name)
@@ -88,21 +124,22 @@ char *getsymval(char *sym_name)
 
 void symdelto(char *sym_name)
 {
-        symrec *ptr = sym_table;
         symrec *tmp;
-        while (ptr != NULL) {
+        symrec *ptr = sym_table;
+        
+        while ((ptr != NULL) && (strcmp(ptr->name, sym_name) != 0)) {
                 tmp = ptr;
-                ptr = (symrec *)ptr->next; 
+                ptr = (symrec *)ptr->next;
                 free(tmp);
-                if (strcmp(ptr->name, sym_name) == 0) 
-                        break; 
         }
+
         sym_table = ptr;
 }
 
 void syminst(widget_type sym_type, char *sym_name, char *sym_value)
 { 
         symrec *s = getsym(sym_name);
+
         if (s == NULL)
                 putsym(sym_type, sym_name, sym_value);
         else 
@@ -113,10 +150,8 @@ symrec *putsym(widget_type sym_type, char *sym_name, char *sym_value)
 {
         symrec *ptr = (symrec *)malloc(sizeof(symrec));
         ptr->type = sym_type;
-        ptr->name = (char *)malloc(strlen(sym_name) + 1);
-        strcpy(ptr->name, sym_name);
-        ptr->value = (char *)malloc(strlen(sym_value) + 1);
-        strcpy(ptr->value, sym_value);
+        ptr->name =  sym_name;
+        ptr->value = sym_value;
         ptr->next = (struct symrec *)sym_table;
         sym_table = ptr;
         return ptr;
@@ -124,9 +159,13 @@ symrec *putsym(widget_type sym_type, char *sym_name, char *sym_value)
 
 symrec *getsym(char *sym_name)
 {
+        if (sym_name == NULL)
+                return NULL;
+
         symrec *ptr;
+
         for (ptr = sym_table; ptr != NULL; ptr = (symrec *)ptr->next)
-                if (strcmp(ptr->name, sym_name) == 0)
+                if ((ptr->name != NULL) && (strcmp(ptr->name, sym_name) == 0))
                         return ptr;
         return NULL;
 }
@@ -135,12 +174,12 @@ symrec *getsym(char *sym_name)
 int main(int argc, char *argv[])
 {
         yyin = fopen(argv[1], "r");
-        if(yyin == NULL) {
+        if (yyin == NULL) {
                 printf("Error opening file\n");
                 exit(1);
         } 
         yyout = fopen(argv[2], "w");
-        if(yyout == NULL) {
+        if (yyout == NULL) {
                 printf("Error opening file\n");
                 exit(1);
         }
@@ -153,10 +192,12 @@ int main(int argc, char *argv[])
         int result = yyparse();
         tabdec(1);
         main_end();
-        
+
         fclose(yyin);
         fclose(yyout);
 
+        freelist();
+      
         return result;
 }
 
