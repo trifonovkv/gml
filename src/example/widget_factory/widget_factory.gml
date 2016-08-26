@@ -1,8 +1,67 @@
-COMBO_BOX_ENTRY combo_box_entry
+HBOX hbox4v2
+;
+
+COMBO_BOX_TEXT combobox5
+  SIGNAL "show" combobox2_show 
+;
+
+COMBO_BOX_TEXT combobox4
+  SIGNAL "show" combobox2_show 
+;
+
+COMBO_BOX_TEXT combobox3
+  SIGNAL "show" combobox2_show 
+;
+
+HBOX hbox3v2
+  ADD combobox3
+  ADD combobox4
+  ADD combobox5
+;
+
+ENTRY entry3
+  SET Text "entry"
+  CMN Hexpand TRUE
+;
+
+BUTTON button
+  SIGNAL "show" button_show
+;
+
+HBOX hbox2v2
+  ADD entry3
+  ADD button
+  STYLE Add_class "linked"
+  SIGNAL "show" hbox_show
+;
+
+ENTRY entry2
+  SET Text "entry"
+  CMN Sensitive FALSE
+;
+
+ENTRY entry
+  SIGNAL "show" entry_show
+  SIGNAL "icon-release" on_entry_icon_release
+;
+
+COMBO_BOX_TEXT_ENTRY combobox2
+  SIGNAL "show" combobox_show
+  CMN Sensitive FALSE
+;
+
+COMBO_BOX_TEXT_ENTRY combobox
+  SIGNAL "show" combobox_show
 ;
 
 VBOX vbox2h1
-  ADD combo_box_entry
+  ADD combobox
+  ADD combobox2
+  ADD entry
+  ADD entry2
+  ADD hbox2v2
+  ADD hbox3v2
+  ADD hbox4v2
 ;
 
 HBOX hbox1v1

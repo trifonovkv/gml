@@ -1,6 +1,7 @@
 %{
 #include <string.h>
 #include "gml.h"
+#include "style_context.h"
 #include "widgets/shared.h"
 #include "widgets/widget.h"
 #include "widgets/window.h"
@@ -16,6 +17,7 @@
 #include "widgets/application.h"
 #include "widgets/button_box.h"
 #include "widgets/combo_box.h"
+#include "widgets/combo_box_text.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -33,6 +35,10 @@ int yywrap()
 int yylex();
 
 %}
+%token STYLE ADD_CLASS
+
+%token COMBO_BOX_TEXT COMBO_BOX_TEXT_ENTRY
+
 %token COMBO_BOX COMBO_BOX_ENTRY WRAP_WIDTH ROW_SPAN_COLUMN COLUMN_SPAN_COLUMN 
 %token ACTIVE ID_COLUMN ACTIVE_ID MODEL BUTTON_SENSITIVITY ENTRY_TEXT_COLUMN 
 %token POPUP_FIXED_WIDTH 
@@ -92,20 +98,20 @@ int yylex();
         char  *string;
 }
 
-%type <string>    IDENTIFIER STRING flags NUMBER FLOAT icon_name size
+%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
 %%
 
 main:
-        APPLICATION IDENTIFIER params SEMICOLON commands
+        APPLICATION IDENTIFIER params SEMICOLON widgets
                                                    { application_set_name($2); }
-        | commands
+        | widgets
         ;
         
-commands: 
-        | commands command
+widgets: 
+        | widgets widget
         ;
 
-command:
+widget:
           window
         | button
         | hbutton_box
@@ -121,7 +127,30 @@ command:
         | stack_switcher
         | combo_box_new
         | combo_box_new_with_entry
+        | combo_box_text_new
+        | combo_box_text_new_with_entry
         | button_new_from_icon_name
+        ;
+
+
+params: 
+        | params param
+        ;
+
+param:
+          common
+        | set
+        | add
+        | signal
+        | pack
+        | bbox_child_set
+        | hb_pack
+        | stack_add
+        | style
+        ;
+
+style:
+        STYLE ADD_CLASS STRING                  { style_context_add_class($3); }
         ;
 
 icon_name:
@@ -131,10 +160,6 @@ size:
         SET SIZE IDENTIFIER                                         { $$ = $3; }
         ;
 
-bbox_child_sets:
-        | bbox_child_sets bbox_child_set
-        ;
-
 bbox_child_set:
         SET CHILD_SECONDARY IDENTIFIER IDENTIFIER
                                      { button_box_set_child_secondary($3, $4); }
@@ -142,70 +167,64 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
-hb_packs:
-        | hb_packs hb_pack
-        ;
-
 hb_pack:
         ADD PACK_START IDENTIFIER                 { header_bar_pack_start($3); }
         | ADD PACK_END IDENTIFIER                   { header_bar_pack_end($3); }
-        ;
-
-stack_adds:
-        | stack_adds stack_add
         ;
 
 stack_add:
         ADD TITLED IDENTIFIER STRING STRING    { stack_add_titled($3, $4, $5); }
         ;
 
-adds:
-        | adds add
-        ;
-
-add:
-        ADD IDENTIFIER                                    { container_add($2); }
-        ;
-
 button_new_from_icon_name:
         BUTTON_FROM_ICON_NAME IDENTIFIER icon_name size  
                                       { button_new_from_icon_name($2, $3, $4); }
-        commons params signals SEMICOLON                    { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+combo_box_text_new:
+        COMBO_BOX_TEXT IDENTIFIER                    { combo_box_text_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+combo_box_text_new_with_entry:
+        COMBO_BOX_TEXT_ENTRY IDENTIFIER   { combo_box_text_new_with_entry($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 combo_box_new:
         COMBO_BOX IDENTIFIER                              { combo_box_new($2); }
-        commons params SEMICOLON                            { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 combo_box_new_with_entry:
         COMBO_BOX_ENTRY IDENTIFIER             { combo_box_new_with_entry($2); }
-        commons params SEMICOLON                            { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 hbutton_box:
         HBUTTONBOX IDENTIFIER                           { hbutton_box_new($2); }
-        commons params adds bbox_child_sets SEMICOLON       { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 vbutton_box:
         VBUTTONBOX IDENTIFIER                           { vbutton_box_new($2); }
-        commons params adds bbox_child_sets SEMICOLON       { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 stack:
         STACK IDENTIFIER                                      { stack_new($2); }
-        commons params packs stack_adds adds SEMICOLON      { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 stack_switcher:
         STACK_SWITCHER IDENTIFIER                    { stack_switcher_new($2); }
-        commons params packs SEMICOLON                      { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 text_view:
         TEXT_VIEW IDENTIFIER                              { text_view_new($2); }
-        commons params SEMICOLON                            { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 adjustment:
@@ -215,42 +234,38 @@ adjustment:
 
 scrolled_window:
         SCROLLED_WINDOW IDENTIFIER                  { scrolled_window_new($2); }
-        commons params adds SEMICOLON                       { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;      
 
 header_bar:
         HEADER_BAR IDENTIFIER                            { header_bar_new($2); }
-        commons params hb_packs SEMICOLON                   { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 entry:
         ENTRY IDENTIFIER                                      { entry_new($2); }
-        commons params SEMICOLON                            { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;      
 
 hbox:
         HBOX IDENTIFIER                              { box_horizontal_new($2); }
-        commons params adds packs SEMICOLON                 { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 vbox:
         VBOX IDENTIFIER                                { box_vertical_new($2); }
-        commons params adds packs SEMICOLON                 { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 button:
         BUTTON IDENTIFIER                                    { button_new($2); }
-        commons params signals SEMICOLON                    { block_close($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 window:
         WINDOW IDENTIFIER                                    { window_new($2); }
-        commons params adds signals SEMICOLON           { widget_show_all($2);
+        params SEMICOLON                                { widget_show_all($2);
                                                               block_close($2); }
-        ;
-
-packs:
-        | packs pack
         ;
 
 pack:
@@ -285,12 +300,8 @@ set_pack_padding:
 set_pack_position:
         PACK IDENTIFIER POSITION NUMBER           { box_reorder_child($2, $4); }
         ;
-        
-params:
-        | params param
-        ;
 
-param:
+set:
           set_editable
         | set_homogeneous
         | set_input_purpose
@@ -829,8 +840,8 @@ set_focus_on_click:
         SET FOCUS_ON_CLICK IDENTIFIER                { set_focus_on_click($3); }
         ;
 
-commons:
-        | commons common
+add:
+        ADD IDENTIFIER                                    { container_add($2); }
         ;
 
 common:
@@ -950,15 +961,13 @@ widget_set_tooltip_text:
 widget_set_name:
         COMMON NAME STRING                              { widget_set_name($3); }
         ;
+       
 
-signals:
-        | signals signal 
-        ;
-        
 signal:
         SIGNAL STRING IDENTIFIER IDENTIFIER      { signal_connect($2, $3, $4); }
         | SIGNAL STRING IDENTIFIER           { signal_connect($2, $3, "NULL"); }
         ;
+
 
 flags:
         IDENTIFIER                                                  { $$ = $1; }

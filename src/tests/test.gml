@@ -66,13 +66,6 @@ SCROLLED_WINDOW scrolled_window2
   ADD text_view2
 ;
 STACK stack
-/*
-  SET Homogeneous TRUE
-  SET Hhomogeneous TRUE
-  SET Vhomogeneous TRUE  
-  SET Transition_duration 8
-  SET Transition_type GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT
-*/
   ADD Titled scrolled_window "test" "test"
   ADD Titled scrolled_window2 "test2" "test2"
 ;
@@ -84,14 +77,6 @@ STACK_SWITCHER stack_switcher
 HEADER_BAR header_bar
   CMN Visible TRUE
   SET Custom_title stack_switcher
-/*
-  SET Show_close_button TRUE
-  SET Header_bar_title "Header bar"
-  SET Subtitle "Subtitle" 
-  SET Has_subtitle TRUE
-  SET Decoration_layout "menu:minimize,maximize,close"
-  ADD Pack_end button
-*/
 ;
 
 BUTTON button1
@@ -145,18 +130,15 @@ COMBO_BOX combobox
 COMBO_BOX_ENTRY comboboxentry
   CMN Sensitive FALSE
   SET Wrap_width 1
-/*
-  SET Row_span_column 2
-  SET Column_span_column 2
-  SET Active_id "koko"
-  SET Model                 
-*/
   SET Active 1
   SET Id_column 1            
   SET Focus_on_click TRUE
   SET Button_sensitivity GTK_SENSITIVITY_AUTO
   SET Entry_text_column 1
   SET Popup_fixed_width TRUE
+;
+
+COMBO_BOX_TEXT_ENTRY comboboxtextentry
 ;
 
 VBOX vbox
@@ -167,16 +149,12 @@ VBOX vbox
   ADD vbuttonbox
   ADD combobox
   ADD comboboxentry
+  ADD comboboxtextentry
 ;
 
 WINDOW window
   SET Default_size 720 404
   SET Title "Example Application"
-/*
-  SET Titlebar vbox
-  SET Titlebar header_bar
-  SIGNAL "destroy" gtk_main_quit
-*/
   ADD vbox
 ;
 

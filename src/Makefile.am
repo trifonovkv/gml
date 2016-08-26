@@ -11,6 +11,7 @@ gml_SOURCES =                                 \
 								gml_bison.y                   \
 								gml_flex.l                    \
 								fmtout.c                      \
+								style_context.c               \
 								widgets/window.c              \
 								widgets/box.c                 \
 								widgets/entry.c               \
@@ -25,6 +26,7 @@ gml_SOURCES =                                 \
 								widgets/application.c         \
 								widgets/button_box.c          \
 								widgets/combo_box.c           \
+								widgets/combo_box_text.c      \
 								$(NULL)
 
 noinst_HEADERS = gml.h

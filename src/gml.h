@@ -31,6 +31,9 @@ typedef enum
         ,TYPE_APPLICATION
         ,TYPE_COMBO_BOX
         ,TYPE_COMBO_BOX_ENTRY
+        ,TYPE_COMBO_BOX_TEXT
+        ,TYPE_COMBO_BOX_TEXT_ENTRY
+        ,TYPE_STYLE_CONTEXT
 } widget_type;
 
 /* Keyboard accelerators and action */

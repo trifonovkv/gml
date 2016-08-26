@@ -14,6 +14,7 @@ void comment();
 "/*"                  comment();
 {DIGIT}+              yylval.string=strdup(yytext);    return NUMBER; 
 {DIGIT}+\.{DIGIT}+    yylval.string=strdup(yytext);    return FLOAT;
+STYLE                 return STYLE;
 APPLICATION           return APPLICATION;
 STACK                 return STACK;
 STACK_SWITCHER        return STACK_SWITCHER;
@@ -36,6 +37,10 @@ HBUTTONBOX            return HBUTTONBOX;
 VBUTTONBOX            return VBUTTONBOX; 
 COMBO_BOX             return COMBO_BOX;
 COMBO_BOX_ENTRY       return COMBO_BOX_ENTRY;
+COMBO_BOX_TEXT        return COMBO_BOX_TEXT;
+COMBO_BOX_TEXT_ENTRY  return COMBO_BOX_TEXT_ENTRY;
+
+Add_class             return ADD_CLASS;
 
 Wrap_width            return WRAP_WIDTH;
 Row_span_column       return ROW_SPAN_COLUMN;
