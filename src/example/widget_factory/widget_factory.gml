@@ -1,4 +1,15 @@
+LABEL label1
+  SET Text "label"
+;
+
+LABEL label2
+  SET Text "label"
+;
+
 HBOX hbox4v2
+  SET Spacing 20
+  ADD label1
+  ADD label2
 ;
 
 COMBO_BOX_TEXT combobox5

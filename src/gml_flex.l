@@ -39,8 +39,28 @@ COMBO_BOX             return COMBO_BOX;
 COMBO_BOX_ENTRY       return COMBO_BOX_ENTRY;
 COMBO_BOX_TEXT        return COMBO_BOX_TEXT;
 COMBO_BOX_TEXT_ENTRY  return COMBO_BOX_TEXT_ENTRY;
+LABEL                 return LABEL;
 
 Add_class             return ADD_CLASS;
+
+Pattern               return PATTERN; 
+Justify               return JUSTIFY;
+Xalign                return XALIGN; 
+Yalign                return YALIGN;
+Ellipsize             return ELLIPSIZE; 
+Width_chars           return WIDTH_CHARS;
+Max_width_chars       return MAX_WIDTH_CHARS;
+Line_wrap             return LINE_WRAP;
+Line_wrap_mode        return LINE_WRAP_MODE;
+Lines                 return LINES;
+Select_region         return SELECT_REGION;
+Selectable            return SELECTABLE;
+Text_with_mnemonic    return TEXT_WITH_MNEMONIC;
+Label_text            return LABEL_TEXT;
+Label_use_markup      return LABEL_USE_MARKUP;
+Single_line_mode      return SINGLE_LINE_MODE;
+Angle                 return ANGLE;
+Track_visited_links   return TRACK_VISITED_LINKS;
 
 Wrap_width            return WRAP_WIDTH;
 Row_span_column       return ROW_SPAN_COLUMN;
@@ -101,7 +121,6 @@ Pack_type             return PACK_TYPE;
 Center                return CENTER;
 
 Max_length            return MAX_LENGTH;
-Width_chars           return WIDTH_CHARS;
 Alignment             return ALIGNMENT;
 Placeholder_text      return PLACEHOLDER_TEXT;
 Text                  return TEXT;
@@ -136,7 +155,7 @@ Tooltip_text          return TOOLTIP_TEXT;
 Name                  return NAME;
 
 Relief                return RELIEF;
-Label                 return LABEL; 
+Label                 return LABEL_BUTTON; 
 Use_underline         return USE_UNDERLINE;
 Focus_on_click        return FOCUS_ON_CLICK;
 Image                 return IMAGE;

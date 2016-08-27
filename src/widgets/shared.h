@@ -6,6 +6,40 @@
 #include "header_bar.h"
 #include "button.h"
 #include "combo_box.h"
+#include "label.h"
+
+void set_use_underline(char *setting)
+{
+        widget_type type = getsymtype("this");
+
+        if (type == TYPE_BUTTON) {
+                button_set_use_underline(setting); 
+        } else if (type == TYPE_LABEL) {
+                label_set_use_underline(setting);
+        }
+}
+
+void set_width_chars(char *setting)
+{
+        widget_type type = getsymtype("this");
+
+        if (type == TYPE_ENTRY) {
+                entry_set_max_width_chars(setting);
+        } else if (type == TYPE_LABEL) {
+                label_set_width_chars(setting); 
+        }
+}
+
+void set_text(char *setting)
+{
+        widget_type type = getsymtype("this");
+
+        if (type == TYPE_LABEL) {
+                label_set_text(setting);
+        } else if (type == TYPE_ENTRY) {
+                entry_set_text(setting);
+        }
+}
 
 void set_focus_on_click(char *string)
 {

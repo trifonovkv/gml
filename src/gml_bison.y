@@ -18,6 +18,7 @@
 #include "widgets/button_box.h"
 #include "widgets/combo_box.h"
 #include "widgets/combo_box_text.h"
+#include "widgets/label.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -35,6 +36,10 @@ int yywrap()
 int yylex();
 
 %}
+%token LABEL PATTERN JUSTIFY XALIGN YALIGN ELLIPSIZE MAX_WIDTH_CHARS LINE_WRAP 
+%token LINE_WRAP_MODE LINES SELECT_REGION SELECTABLE TEXT_WITH_MNEMONIC 
+%token LABEL_TEXT  LABEL_USE_MARKUP SINGLE_LINE_MODE ANGLE TRACK_VISITED_LINKS 
+
 %token STYLE ADD_CLASS
 
 %token COMBO_BOX_TEXT COMBO_BOX_TEXT_ENTRY
@@ -66,8 +71,8 @@ int yylex();
 %token SENSITIVE NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS VISIBLE 
 %token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME 
 
-%token BUTTON BUTTON_FROM_ICON_NAME RELIEF LABEL USE_UNDERLINE FOCUS_ON_CLICK 
-%token ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
+%token BUTTON BUTTON_FROM_ICON_NAME RELIEF LABEL_BUTTON USE_UNDERLINE 
+%token FOCUS_ON_CLICK ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
 
 %token HEADER_BAR SUBTITLE HAS_SUBTITLE CUSTOM_TITLE SHOW_CLOSE_BUTTON
 %token DECORATION_LAYOUT PACK_START PACK_END 
@@ -125,13 +130,13 @@ widget:
         | text_view
         | stack
         | stack_switcher
-        | combo_box_new
-        | combo_box_new_with_entry
-        | combo_box_text_new
-        | combo_box_text_new_with_entry
+        | combo_box
+        | combo_box_with_entry
+        | combo_box_text
+        | combo_box_text_with_entry
         | button_new_from_icon_name
+        | label
         ;
-
 
 params: 
         | params param
@@ -149,15 +154,15 @@ param:
         | style
         ;
 
-style:
-        STYLE ADD_CLASS STRING                  { style_context_add_class($3); }
-        ;
-
 icon_name:
         SET ICON_NAME STRING                                        { $$ = $3; }
         ;
 size:
         SET SIZE IDENTIFIER                                         { $$ = $3; }
+        ;
+
+style:
+        STYLE ADD_CLASS STRING                  { style_context_add_class($3); }
         ;
 
 bbox_child_set:
@@ -176,28 +181,33 @@ stack_add:
         ADD TITLED IDENTIFIER STRING STRING    { stack_add_titled($3, $4, $5); }
         ;
 
+label:
+        LABEL IDENTIFIER                                      { label_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
 button_new_from_icon_name:
         BUTTON_FROM_ICON_NAME IDENTIFIER icon_name size  
                                       { button_new_from_icon_name($2, $3, $4); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
-combo_box_text_new:
+combo_box_text:
         COMBO_BOX_TEXT IDENTIFIER                    { combo_box_text_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
-combo_box_text_new_with_entry:
+combo_box_text_with_entry:
         COMBO_BOX_TEXT_ENTRY IDENTIFIER   { combo_box_text_new_with_entry($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
-combo_box_new:
+combo_box:
         COMBO_BOX IDENTIFIER                              { combo_box_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
-combo_box_new_with_entry:
+combo_box_with_entry:
         COMBO_BOX_ENTRY IDENTIFIER             { combo_box_new_with_entry($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -306,7 +316,10 @@ set:
         | set_homogeneous
         | set_input_purpose
         | set_title
+        | set_text
         | set_focus_on_click
+        | set_width_chars
+        | set_use_underline
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -337,17 +350,14 @@ set:
         | set_box_spacing
         | set_box_baseline
         | set_entry_max_length
-        | set_entry_width_chars
         | set_entry_alignment
         | set_entry_placeholder_text
-        | set_entry_text
         | set_entry_activates_default
         | set_entry_overwrite_mode
         | set_entry_has_frame
         | set_entry_visibility
         | set_button_relief
         | set_button_label
-        | set_button_use_underline
         | set_button_image
         | set_button_image_position
         | set_button_always_show_image
@@ -406,6 +416,92 @@ set:
         | set_combo_box_button_sensitivity
         | set_combo_box_entry_text_column
         | set_combo_box_popup_fixed_width
+        | set_label_pattern
+        | set_label_justify
+        | set_label_xalign
+        | set_label_yalign
+        | set_label_ellipsize
+        | set_label_max_width_chars
+        | set_label_line_wrap
+        | set_label_line_wrap_mode
+        | set_label_lines
+        | set_label_region
+        | set_label_selectable
+        | set_label_text_with_mnemonic
+        | set_label_label
+        | set_label_use_markup
+        | set_label_single_line_mode
+        | set_label_angle
+        | set_label_track_visited_links
+        ;
+
+set_label_pattern:
+        SET PATTERN STRING                            { label_set_pattern($3); }
+        ;
+
+set_label_justify:
+        SET JUSTIFY IDENTIFIER                        { label_set_justify($3); }
+        ;
+
+set_label_xalign:
+        SET XALIGN FLOAT                               { label_set_xalign($3); }
+        ;
+
+set_label_yalign:
+        SET YALIGN FLOAT                               { label_set_yalign($3); }
+        ;
+
+set_label_ellipsize:
+        SET ELLIPSIZE IDENTIFIER                    { label_set_ellipsize($3); }
+        ;
+
+set_label_max_width_chars:
+        SET MAX_WIDTH_CHARS NUMBER            { label_set_max_width_chars($3); }
+        ;
+
+set_label_line_wrap:
+        SET LINE_WRAP IDENTIFIER                    { label_set_line_wrap($3); }
+        ;
+
+set_label_line_wrap_mode:
+        SET LINE_WRAP_MODE IDENTIFIER          { label_set_line_wrap_mode($3); }
+        ;
+
+set_label_lines:
+        SET LINES NUMBER                                { label_set_lines($3); }
+        ;
+
+set_label_region:
+        SET SELECT_REGION NUMBER NUMBER         { label_select_region($3, $4); }
+        ;
+
+set_label_selectable:
+        SET SELECTABLE IDENTIFIER                  { label_set_selectable($3); }
+        ;
+
+set_label_text_with_mnemonic:
+        SET TEXT_WITH_MNEMONIC STRING      { label_set_text_with_mnemonic($3); }
+        ;
+
+set_label_label:
+        SET LABEL_TEXT  STRING                          { label_set_label($3); }
+        ;
+
+set_label_use_markup:
+        SET LABEL_USE_MARKUP IDENTIFIER            { label_set_use_markup($3); }
+        ;
+
+set_label_single_line_mode:
+        SET SINGLE_LINE_MODE IDENTIFIER      { label_set_single_line_mode($3); }
+        ;
+
+set_label_angle:
+        SET ANGLE FLOAT                                 { label_set_angle($3); }
+        ;
+
+set_label_track_visited_links:
+        SET TRACK_VISITED_LINKS IDENTIFIER 
+                                          { label_set_track_visited_links($3); }
         ;
 
 set_combo_box_wrap_width:
@@ -645,11 +741,7 @@ set_button_relief:
         ;
 
 set_button_label:
-        SET LABEL STRING                               { button_set_label($3); }
-        ;
-
-set_button_use_underline:
-        SET USE_UNDERLINE IDENTIFIER           { button_set_use_underline($3); }
+        SET LABEL_BUTTON STRING                        { button_set_label($3); }
         ;
 
 set_button_image:
@@ -666,10 +758,6 @@ set_button_always_show_image:
 
 set_entry_placeholder_text:
         SET PLACEHOLDER_TEXT STRING          { entry_set_placeholder_text($3); }
-        ;
-
-set_entry_text:
-        SET TEXT STRING                                  { entry_set_text($3); }
         ;
 
 set_entry_activates_default:
@@ -690,10 +778,6 @@ set_entry_visibility:
 
 set_entry_alignment:
         SET ALIGNMENT FLOAT                         { entry_set_alignment($3); }
-        ;
-
-set_entry_width_chars:
-        SET WIDTH_CHARS NUMBER                { entry_set_max_width_chars($3); }
         ;
 
 set_entry_max_length:
@@ -819,6 +903,16 @@ set_window_resizable:
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
+
+set_use_underline:
+        SET USE_UNDERLINE IDENTIFIER                  { set_use_underline($3); }
+        ;
+
+set_width_chars:
+        SET WIDTH_CHARS NUMBER                          { set_width_chars($3); }
+
+set_text:
+        SET TEXT STRING                                        { set_text($3); }
 
 set_title:
         SET TITLE STRING                                      { set_title($3); }

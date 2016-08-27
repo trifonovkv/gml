@@ -3,6 +3,30 @@ APPLICATION application
   SET Accels_for_action print_hello "<Ctrl>P"
 ;
 
+LABEL label
+  CMN Hexpand TRUE
+  CMN Vexpand TRUE
+  SET Text "Test label alsfjalskfdalskdfjalskfjalsfkjaslfjalsfjalsjfalsfjalsjdf"
+  SET Pattern "___ "             
+  SET Justify GTK_JUSTIFY_FILL
+  SET Xalign 0.7
+  SET Yalign 0.7              
+  SET Ellipsize PANGO_ELLIPSIZE_END
+  SET Width_chars 10 
+  SET Max_width_chars 3 
+  SET Lines 2
+  SET Line_wrap FALSE
+  SET Line_wrap_mode PANGO_WRAP_WORD
+  SET Selectable FALSE
+  SET Select_region 10 20
+  SET Text_with_mnemonic "_C"
+  SET Label_text "https://ya.ru"
+  SET Label_use_markup TRUE
+  SET Single_line_mode TRUE
+  SET Angle 45.0
+  SET Track_visited_links TRUE
+;
+
 ADJUSTMENT adjustment
   SET Value 10.86
   SET Clamp_page 3.3 5.5
@@ -150,6 +174,7 @@ VBOX vbox
   ADD combobox
   ADD comboboxentry
   ADD comboboxtextentry
+  ADD label
 ;
 
 WINDOW window
