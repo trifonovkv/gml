@@ -7,6 +7,19 @@
 #include "button.h"
 #include "combo_box.h"
 #include "label.h"
+#include "adjustment.h"
+#include "spin_button.h"
+
+void set_value(char *setting)
+{
+        widget_type type = getsymtype("this");
+
+        if (type == TYPE_SPIN_BUTTON) {
+                spin_button_set_value(setting);
+        } else if (type == TYPE_ADJUSTMENT) {
+                adjustment_set_value(setting);
+        }
+}
 
 void set_use_underline(char *setting)
 {

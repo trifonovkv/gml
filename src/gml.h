@@ -35,6 +35,7 @@ typedef enum
         ,TYPE_COMBO_BOX_TEXT_ENTRY
         ,TYPE_STYLE_CONTEXT
         ,TYPE_LABEL
+        ,TYPE_SPIN_BUTTON
 } widget_type;
 
 /* Keyboard accelerators and action */

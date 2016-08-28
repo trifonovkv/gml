@@ -1,8 +1,25 @@
-LABEL label1
-  SET Text "label"
+ADJUSTMENT adjustment
+  SET Upper 100.0
+  SET Lower 1.0
+  SET Value 50.0
+  SET Step_increment 1.0
+  SET Page_increment 10.0
+;
+
+SPIN_BUTTON spin_button2
+  CMN Sensitive FALSE
+;
+
+SPIN_BUTTON spin_button1
+  SET Adjustment adjustment
 ;
 
 LABEL label2
+  SET Text "label"
+  CMN Sensitive FALSE
+;
+
+LABEL label1
   SET Text "label"
 ;
 
@@ -10,17 +27,22 @@ HBOX hbox4v2
   SET Spacing 20
   ADD label1
   ADD label2
+  ADD spin_button1
+  ADD spin_button2
 ;
 
 COMBO_BOX_TEXT combobox5
+  CMN Hexpand TRUE 
   SIGNAL "show" combobox2_show 
 ;
 
 COMBO_BOX_TEXT combobox4
+  CMN Hexpand TRUE 
   SIGNAL "show" combobox2_show 
 ;
 
 COMBO_BOX_TEXT combobox3
+  CMN Hexpand TRUE 
   SIGNAL "show" combobox2_show 
 ;
 
@@ -66,6 +88,7 @@ COMBO_BOX_TEXT_ENTRY combobox
 ;
 
 VBOX vbox2h1
+  SET Spacing 10
   ADD combobox
   ADD combobox2
   ADD entry
@@ -76,10 +99,12 @@ VBOX vbox2h1
 ;
 
 HBOX hbox1v1
+  SET Spacing 10
   ADD vbox2h1
 ;
 
 VBOX vbox1
+  SET Spacing 10
   ADD hbox1v1
 ;
 

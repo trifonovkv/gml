@@ -33,16 +33,21 @@ ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 CMN                   return COMMON;
-HBUTTONBOX            return HBUTTONBOX;
-VBUTTONBOX            return VBUTTONBOX; 
-COMBO_BOX             return COMBO_BOX;
-COMBO_BOX_ENTRY       return COMBO_BOX_ENTRY;
-COMBO_BOX_TEXT        return COMBO_BOX_TEXT;
-COMBO_BOX_TEXT_ENTRY  return COMBO_BOX_TEXT_ENTRY;
-LABEL                 return LABEL;
+
+SPIN_BUTTON           return SPIN_BUTTON;
+Adjustment            return SET_ADJUSTMENT; 
+Digits                return DIGITS; 
+Increments            return INCREMENTS;
+Range                 return RANGE;
+Update_policy         return UPDATE_POLICY;
+Numeric               return NUMERIC;
+Spin                  return SPIN;
+Wrap                  return WRAP;
+Snap_to_ticks         return SNAP_TO_TICKS;
 
 Add_class             return ADD_CLASS;
 
+LABEL                 return LABEL;
 Pattern               return PATTERN; 
 Justify               return JUSTIFY;
 Xalign                return XALIGN; 
@@ -62,6 +67,10 @@ Single_line_mode      return SINGLE_LINE_MODE;
 Angle                 return ANGLE;
 Track_visited_links   return TRACK_VISITED_LINKS;
 
+COMBO_BOX             return COMBO_BOX;
+COMBO_BOX_ENTRY       return COMBO_BOX_ENTRY;
+COMBO_BOX_TEXT        return COMBO_BOX_TEXT;
+COMBO_BOX_TEXT_ENTRY  return COMBO_BOX_TEXT_ENTRY;
 Wrap_width            return WRAP_WIDTH;
 Row_span_column       return ROW_SPAN_COLUMN;
 Column_span_column    return COLUMN_SPAN_COLUMN;
@@ -74,6 +83,8 @@ Button_sensitivity    return BUTTON_SENSITIVITY;
 Entry_text_column     return ENTRY_TEXT_COLUMN; 
 Popup_fixed_width     return POPUP_FIXED_WIDTH;
 
+HBUTTONBOX            return HBUTTONBOX;
+VBUTTONBOX            return VBUTTONBOX; 
 Box_layout            return BOX_LAYOUT; 
 Child_secondary       return CHILD_SECONDARY;
 Child_non_homogeneous return CHILD_NON_HOMOGENEOUS;

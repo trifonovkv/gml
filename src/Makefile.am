@@ -28,6 +28,7 @@ gml_SOURCES =                                 \
 								widgets/combo_box.c           \
 								widgets/combo_box_text.c      \
 								widgets/label.c               \
+								widgets/spin_button.c         \
 								$(NULL)
 
 noinst_HEADERS = gml.h

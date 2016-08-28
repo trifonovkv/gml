@@ -19,6 +19,7 @@
 #include "widgets/combo_box.h"
 #include "widgets/combo_box_text.h"
 #include "widgets/label.h"
+#include "widgets/spin_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -36,6 +37,9 @@ int yywrap()
 int yylex();
 
 %}
+%token SPIN_BUTTON SET_ADJUSTMENT DIGITS INCREMENTS RANGE UPDATE_POLICY
+%token NUMERIC SPIN WRAP SNAP_TO_TICKS
+
 %token LABEL PATTERN JUSTIFY XALIGN YALIGN ELLIPSIZE MAX_WIDTH_CHARS LINE_WRAP 
 %token LINE_WRAP_MODE LINES SELECT_REGION SELECTABLE TEXT_WITH_MNEMONIC 
 %token LABEL_TEXT  LABEL_USE_MARKUP SINGLE_LINE_MODE ANGLE TRACK_VISITED_LINKS 
@@ -136,6 +140,7 @@ widget:
         | combo_box_text_with_entry
         | button_new_from_icon_name
         | label
+        | spin_button
         ;
 
 params: 
@@ -179,6 +184,11 @@ hb_pack:
 
 stack_add:
         ADD TITLED IDENTIFIER STRING STRING    { stack_add_titled($3, $4, $5); }
+        ;
+
+spin_button:
+        SPIN_BUTTON IDENTIFIER                          { spin_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 label:
@@ -320,6 +330,7 @@ set:
         | set_focus_on_click
         | set_width_chars
         | set_use_underline
+        | set_value
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -376,7 +387,6 @@ set:
         | set_scrolled_window_kinetic_scrolling
         | set_scrolled_window_capture_button_press
         | set_scrolled_window_overlay_scrolling
-        | set_adjustment_value
         | set_adjustment_clamp_page
         | set_adjustment_configure
         | set_adjustment_lower
@@ -433,6 +443,51 @@ set:
         | set_label_single_line_mode
         | set_label_angle
         | set_label_track_visited_links
+        | set_spin_button_adjustment
+        | set_spin_button_digits
+        | set_spin_button_increments
+        | set_spin_button_range
+        | set_spin_button_update_policy
+        | set_spin_button_numeric
+        | set_spin_button_spin
+        | set_spin_button_wrap
+        | set_spin_button_snap_to_ticks
+        ;
+
+set_spin_button_adjustment:
+        SET SET_ADJUSTMENT IDENTIFIER        { spin_button_set_adjustment($3); }
+        ;
+
+set_spin_button_digits:
+        SET DIGITS NUMBER                        { spin_button_set_digits($3); }
+        ;
+
+set_spin_button_increments:
+        SET INCREMENTS FLOAT FLOAT       { spin_button_set_increments($3, $4); }
+        ;
+
+set_spin_button_range:
+        SET RANGE FLOAT FLOAT                 { spin_button_set_range($3, $4); }
+        ;
+
+set_spin_button_update_policy:
+        SET UPDATE_POLICY IDENTIFIER      { spin_button_set_update_policy($3); }
+        ;
+
+set_spin_button_numeric:
+        SET NUMERIC IDENTIFIER                  { spin_button_set_numeric($3); }
+        ;
+
+set_spin_button_spin:
+        SET SPIN IDENTIFIER FLOAT                  { spin_button_spin($3, $4); }
+        ;
+
+set_spin_button_wrap:
+        SET WRAP IDENTIFIER                        { spin_button_set_wrap($3); }
+        ;
+
+set_spin_button_snap_to_ticks:
+        SET SNAP_TO_TICKS IDENTIFIER      { spin_button_set_snap_to_ticks($3); }
         ;
 
 set_label_pattern:
@@ -635,10 +690,6 @@ set_text_view_accepts_tab:
 
 set_text_view_input_hints:
         SET INPUT_HINTS IDENTIFIER            { text_view_set_input_hints($3); }
-        ;
-
-set_adjustment_value:
-        SET VALUE FLOAT                            { adjustment_set_value($3); }
         ;
 
 set_adjustment_clamp_page:
@@ -902,6 +953,10 @@ set_window_resizable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_value:
+        SET VALUE FLOAT                                       { set_value($3); }
         ;
 
 set_use_underline:

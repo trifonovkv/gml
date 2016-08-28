@@ -3,6 +3,29 @@ APPLICATION application
   SET Accels_for_action print_hello "<Ctrl>P"
 ;
 
+ADJUSTMENT adjustment
+  SET Value 10.86
+  SET Clamp_page 3.3 5.5
+  SET Configure 1.0 2.2 3.3 4.4 5.5 6.6
+  SET Lower 10.86
+  SET Page_increment 0.3
+  SET Page_size 3.3
+  SET Step_increment 0.2
+  SET Upper 55.86
+;
+
+SPIN_BUTTON spin_button
+  SET Adjustment adjustment
+  SET Digits 15
+  SET Increments 1.0 2.0
+  SET Range 0.0 30.0
+  SET Update_policy GTK_UPDATE_ALWAYS
+  SET Numeric TRUE
+  SET Spin GTK_SPIN_HOME 1.0
+  SET Wrap TRUE
+  SET Snap_to_ticks TRUE
+;
+
 LABEL label
   CMN Hexpand TRUE
   CMN Vexpand TRUE
@@ -25,17 +48,6 @@ LABEL label
   SET Single_line_mode TRUE
   SET Angle 45.0
   SET Track_visited_links TRUE
-;
-
-ADJUSTMENT adjustment
-  SET Value 10.86
-  SET Clamp_page 3.3 5.5
-  SET Configure 1.0 2.2 3.3 4.4 5.5 6.6
-  SET Lower 10.86
-  SET Page_increment 0.3
-  SET Page_size 3.3
-  SET Step_increment 0.2
-  SET Upper 55.86
 ;
 
 BUTTON button
@@ -175,6 +187,7 @@ VBOX vbox
   ADD comboboxentry
   ADD comboboxtextentry
   ADD label
+  ADD spin_button
 ;
 
 WINDOW window
