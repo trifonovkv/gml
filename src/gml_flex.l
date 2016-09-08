@@ -32,7 +32,11 @@ SET                   return SET;
 ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
+
 CMN                   return COMMON;
+Focus_vadjustment     return FOCUS_VADJUSTMENT;
+Focus_hadjustment     return FOCUS_HADJUSTMENT;
+Border_width          return BORDER_WIDTH;
 
 SPIN_BUTTON           return SPIN_BUTTON;
 Adjustment            return SET_ADJUSTMENT; 

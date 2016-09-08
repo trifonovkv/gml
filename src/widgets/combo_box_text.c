@@ -4,16 +4,14 @@
 
 void combo_box_text_new(char *widget)
 {
-        syminst(TYPE_COMBO_BOX_TEXT, widget, widget);
-        syminst(TYPE_COMBO_BOX_TEXT, "this", widget);
+        this = syminst(TYPE_COMBO_BOX_TEXT, widget, widget);
         
         putdef("GtkWidget *", widget, "gtk_combo_box_text_new", 0);
 }
 
 void combo_box_text_new_with_entry(char *widget)
 {
-        syminst(TYPE_COMBO_BOX_TEXT_ENTRY, widget, widget);
-        syminst(TYPE_COMBO_BOX_TEXT_ENTRY, "this", widget);
+        this = syminst(TYPE_COMBO_BOX_TEXT_ENTRY, widget, widget);
         
         putdef("GtkWidget *", widget, "gtk_combo_box_text_new_with_entry", 0);
 }

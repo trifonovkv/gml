@@ -64,17 +64,17 @@ void application()
 
 void application_set_name(char *name)
 {
-        syminst(TYPE_APPLICATION, "app_name", name);
+        this = syminst(TYPE_APPLICATION, "app_name", name);
 }
 
 void application_set_flags(char *flags) 
 {
-        syminst(TYPE_STRING, "app_flags", flags);
+        this = syminst(TYPE_STRING, "app_flags", flags);
 }
 
 void application_set_id(char *id) 
 {
-        syminst(TYPE_STRING, "app_id", id);
+        this = syminst(TYPE_STRING, "app_id", id);
 }
 
 void application_set_accels_for_action(char *action, char *accels)

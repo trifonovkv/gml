@@ -20,6 +20,7 @@
 #include "widgets/combo_box_text.h"
 #include "widgets/label.h"
 #include "widgets/spin_button.h"
+#include "widgets/container.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -37,6 +38,8 @@ int yywrap()
 int yylex();
 
 %}
+%token COMMON FOCUS_VADJUSTMENT FOCUS_HADJUSTMENT BORDER_WIDTH 
+
 %token SPIN_BUTTON SET_ADJUSTMENT DIGITS INCREMENTS RANGE UPDATE_POLICY
 %token NUMERIC SPIN WRAP SNAP_TO_TICKS
 
@@ -97,10 +100,8 @@ int yylex();
 
 %token APPLICATION APP_ID APP_FLAGS ACCELS_FOR_ACTION
 
-%token INCLUDE 
-%token SET ADD SIGNAL PACK COMMON
-%token IDENTIFIER STRING NUMBER SEMICOLON FLOAT CHAR OR
-%token HBOX VBOX WINDOW 
+%token INCLUDE SET ADD SIGNAL PACK IDENTIFIER STRING NUMBER SEMICOLON 
+%token HBOX VBOX WINDOW FLOAT CHAR OR
 
 %union
 {
@@ -1017,6 +1018,24 @@ common:
         | widget_set_has_tootip
         | widget_set_tooltip_text
         | widget_set_name
+        | set_container_focus_vadjustment
+        | set_container_focus_hadjustment
+        | set_container_border_width
+
+        ;
+
+set_container_focus_vadjustment:
+        COMMON FOCUS_VADJUSTMENT IDENTIFIER 
+                                        { container_set_focus_vadjustment($3); }
+        ;
+
+set_container_focus_hadjustment:
+        COMMON FOCUS_HADJUSTMENT IDENTIFIER
+                                        { container_set_focus_hadjustment($3); }
+        ;
+
+set_container_border_width:
+        COMMON BORDER_WIDTH NUMBER           { container_set_border_width($3); }
         ;
 
 widget_set_size_request:

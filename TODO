@@ -1,2 +1,3 @@
 set invisible char in entry
 add const for args of functions
+in gml_bison.y change name of common rules

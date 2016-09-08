@@ -12,7 +12,7 @@
 
 void set_value(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_SPIN_BUTTON) {
                 spin_button_set_value(setting);
@@ -23,7 +23,7 @@ void set_value(char *setting)
 
 void set_use_underline(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_BUTTON) {
                 button_set_use_underline(setting); 
@@ -34,7 +34,7 @@ void set_use_underline(char *setting)
 
 void set_width_chars(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_ENTRY) {
                 entry_set_max_width_chars(setting);
@@ -45,7 +45,7 @@ void set_width_chars(char *setting)
 
 void set_text(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_LABEL) {
                 label_set_text(setting);
@@ -56,7 +56,7 @@ void set_text(char *setting)
 
 void set_focus_on_click(char *string)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_BUTTON) {
                 button_set_focus_on_click(string);
@@ -67,7 +67,7 @@ void set_focus_on_click(char *string)
 
 void set_title(char *string)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_WINDOW) {
                 window_set_title(string);
@@ -78,7 +78,7 @@ void set_title(char *string)
 
 void set_editable(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
 
         if (type == TYPE_TEXT_VIEW) {
                 text_view_set_editable(setting);
@@ -89,7 +89,7 @@ void set_editable(char *setting)
 
 void set_input_purpose(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
         if (type == TYPE_TEXT_VIEW) {
                 text_view_set_input_purpose(setting);
         } else if (type == TYPE_ENTRY) {
@@ -99,7 +99,7 @@ void set_input_purpose(char *setting)
 
 void set_homogeneous(char *setting)
 {
-        widget_type type = getsymtype("this");
+        widget_type type = getsymtype(this);
         if (type == TYPE_VBOX || type == TYPE_HBOX) {
                 box_set_homogeneous(setting);
         } else if (type == TYPE_STACK) {

@@ -4,15 +4,14 @@
 
 void stack_switcher_new(char *widget)
 {
-        syminst(TYPE_STACK_SWITCHER, widget, widget);
-        syminst(TYPE_STACK_SWITCHER, "this", widget);
+        this = syminst(TYPE_STACK_SWITCHER, widget, widget);
 
         putdef("GtkWidget *", widget, "gtk_stack_switcher_new", 0);
 }
 
 void stack_switcher_set_stack(char *setting)
 {
-        char *widget = wrptype("GTK_STACK_SWITCHER", getsymval("this"));
+        char *widget = wrptype("GTK_STACK_SWITCHER", this);
         char *stack  = wrptype("GTK_STACK", setting);
         
         putfun("gtk_stack_switcher_set_stack"

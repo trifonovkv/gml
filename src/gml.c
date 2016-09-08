@@ -3,6 +3,7 @@
 #include "widgets/application.h"
 
 symrec *sym_table;
+char *this;
 
 void prtlst()
 {
@@ -76,12 +77,12 @@ void include_insert(char *include)
 
 void block_close(char *start)
 {
-        symdelto(start);
+        this = NULL;
 }
 
 void signal_connect(char *signal, char *handler, char *data)
 {
-        char *widget = getsymval("this");
+        char *widget = this;
         char *callback = wrptype("G_CALLBACK", handler);
 
         putfun("g_signal_connect"
@@ -92,18 +93,6 @@ void signal_connect(char *signal, char *handler, char *data)
               , data);
 
         free(callback);
-}
-
-void container_add(char *widget)
-{
-        char *container = wrptype("GTK_CONTAINER", getsymval("this"));
-
-        putfun("gtk_container_add"
-              , 2
-              , container
-              , widget);
-        
-        free(container);
 }
 
 widget_type getsymtype(char *sym_name)
@@ -136,14 +125,15 @@ void symdelto(char *sym_name)
         sym_table = ptr;
 }
 
-void syminst(widget_type sym_type, char *sym_name, char *sym_value)
+char *syminst(widget_type sym_type, char *sym_name, char *sym_value)
 { 
-        symrec *s = getsym(sym_name);
-
-        if (s == NULL)
+        if (getsym(sym_name) == NULL) {
                 putsym(sym_type, sym_name, sym_value);
-        else 
+                return sym_value;
+        } else { 
                 printf("%s is already defined\n", sym_name);
+                return NULL;
+        }
 }
 
 symrec *putsym(widget_type sym_type, char *sym_name, char *sym_value)

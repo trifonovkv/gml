@@ -4,8 +4,7 @@
 
 void spin_button_new(char *widget)
 {
-        syminst(TYPE_SPIN_BUTTON, widget, widget);
-        syminst(TYPE_SPIN_BUTTON, "this", widget);
+        this = syminst(TYPE_SPIN_BUTTON, widget, widget);
 
         putdef("GtkWidget *"
               , widget
@@ -18,7 +17,7 @@ void spin_button_new(char *widget)
 
 void spin_button_set_adjustment(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_adjustment", 2, widget, setting);
 
@@ -28,7 +27,7 @@ void spin_button_set_adjustment(char *setting)
 
 void spin_button_set_digits(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_digits", 2, widget, setting);
 
@@ -38,7 +37,7 @@ void spin_button_set_digits(char *setting)
 
 void spin_button_set_increments(char *step, char *page)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_increments", 3, widget, step, page);
 
@@ -49,7 +48,7 @@ void spin_button_set_increments(char *step, char *page)
 
 void spin_button_set_range(char *min, char *max)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_range", 3, widget, min, max);
 
@@ -60,7 +59,7 @@ void spin_button_set_range(char *min, char *max)
 
 void spin_button_set_value(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_value", 2, widget, setting);
 
@@ -70,7 +69,7 @@ void spin_button_set_value(char *setting)
 
 void spin_button_set_update_policy(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_update_policy", 2, widget, setting);
 
@@ -80,7 +79,7 @@ void spin_button_set_update_policy(char *setting)
 
 void spin_button_set_numeric(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_numeric", 2, widget, setting);
 
@@ -90,7 +89,7 @@ void spin_button_set_numeric(char *setting)
 
 void spin_button_spin(char *direction, char *increment)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_spin", 3, widget, direction, increment);
 
@@ -101,7 +100,7 @@ void spin_button_spin(char *direction, char *increment)
 
 void spin_button_set_wrap(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_wrap", 2, widget, setting);
 
@@ -111,7 +110,7 @@ void spin_button_set_wrap(char *setting)
 
 void spin_button_set_snap_to_ticks(char *setting)
 {
-        char *widget = wrptype("GTK_SPIN_BUTTON", getsymval("this"));
+        char *widget = wrptype("GTK_SPIN_BUTTON", this);
 
         putfun("gtk_spin_button_set_snap_to_ticks", 2, widget, setting);
 

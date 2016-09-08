@@ -5,7 +5,7 @@
 void box_query_child_packing(char *widget, char *child)
 {
         if(getsymval("box") == NULL) {
-                syminst(TYPE_STRING, "box", "box");
+                this = syminst(TYPE_STRING, "box", "box");
 
                 prtstr(1, "gboolean    expand;\n");
                 prtstr(1, "gboolean    fill;\n");
@@ -22,23 +22,20 @@ void box_query_child_packing(char *widget, char *child)
               , "&padding"
               , "&pack_type");
 
-        // free(widget); no need free after
-        // free(child);
 }
 
 void box_set_center_widget(char *child)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         putfun("gtk_box_set_center_widget", 2, widget, child);
 
         free(widget);
-        // free(child);
 }
 
 void box_set_pack_type(char *child, char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
 
         box_query_child_packing(widget, child);
 
@@ -52,13 +49,12 @@ void box_set_pack_type(char *child, char *setting)
               , setting);
 
         free(widget);
-        // free(child);
         free(setting);
 }
 
 void box_set_expand(char *child, char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
 
         box_query_child_packing(widget, child);
 
@@ -77,7 +73,7 @@ void box_set_expand(char *child, char *setting)
 
 void box_set_fill(char *child, char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         box_query_child_packing(widget, child);
 
@@ -96,7 +92,7 @@ void box_set_fill(char *child, char *setting)
 
 void box_set_padding(char *child, char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         box_query_child_packing(widget, child);
 
@@ -115,7 +111,7 @@ void box_set_padding(char *child, char *setting)
 
 void box_reorder_child(char *child, char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         putfun("gtk_box_reorder_child", 3, widget, child, setting);
 
@@ -125,7 +121,7 @@ void box_reorder_child(char *child, char *setting)
 
 void box_set_homogeneous(char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         putfun("gtk_box_set_homogeneous", 2, widget, setting);
 
@@ -135,7 +131,7 @@ void box_set_homogeneous(char *setting)
 
 void box_set_baseline_position(char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         putfun("gtk_box_set_baseline_position", 2, widget, setting);
 
@@ -145,7 +141,7 @@ void box_set_baseline_position(char *setting)
 
 void box_set_spacing(char *setting)
 {
-        char *widget = wrptype("GTK_BOX", getsymval("this"));
+        char *widget = wrptype("GTK_BOX", this);
         
         putfun("gtk_box_set_spacing", 2, widget, setting);
 
@@ -155,8 +151,7 @@ void box_set_spacing(char *setting)
 
 void box_horizontal_new(char *widget)
 {
-        syminst(TYPE_HBOX, widget, widget);
-        syminst(TYPE_HBOX, "this", widget);
+        this = syminst(TYPE_HBOX, widget, widget);
 
         char *orientation = "GTK_ORIENTATION_HORIZONTAL";
         char *spacing     = "0";
@@ -166,8 +161,7 @@ void box_horizontal_new(char *widget)
 
 void box_vertical_new(char *widget)
 {
-        syminst(TYPE_VBOX, widget, widget);
-        syminst(TYPE_VBOX, "this", widget);
+        this = syminst(TYPE_VBOX, widget, widget);
 
         char *orientation = "GTK_ORIENTATION_VERTICAL";
         char *spacing     = "0";

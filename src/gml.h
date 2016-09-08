@@ -65,23 +65,24 @@ typedef struct symrec symrec;
 /* The symbol table: a chain of 'struct symrec'. */
 extern symrec *sym_table;
 
-void    prtlst          ();
-void    accels_add      (char *action_name, char *accel_key);
-char*   append_flag     (char *flags, char *or, char *flag);
-void    tab_insert      ();
-void    main_start      ();
-void    main_end        ();
-void    include_insert  (char *include);
-void    block_close     (char *start);
-void    signal_connect  (char *signal, char *handler, char *data);
-void    container_add   (char *widget);
-void    button_box_new  (char *widget);
+extern char *this;
+
+void        prtlst          ();
+void        accels_add      (char *action_name, char *accel_key);
+char*       append_flag     (char *flags, char *or, char *flag);
+void        tab_insert      ();
+void        main_start      ();
+void        main_end        ();
+void        include_insert  (char *include);
+void        block_close     (char *start);
+void        signal_connect  (char *signal, char *handler, char *data);
+void        button_box_new  (char *widget);
 
 widget_type getsymtype  (char *sym_name);
 symrec*     getsym      (char *sym_name);
 char*       getsymval   (char *sym_name);
 void        symdelto    (char *sym_name);
-void        syminst     (widget_type sym_type, char *sym_name, char *sym_value);
+char*       syminst     (widget_type sym_type, char *sym_name, char *sym_value);
 symrec*     putsym      (widget_type sym_type, char *sym_name, char *sym_value);
 
 #endif

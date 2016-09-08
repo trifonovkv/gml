@@ -7,19 +7,23 @@ ADJUSTMENT adjustment
 ;
 
 SPIN_BUTTON spin_button2
+  CMN Hexpand TRUE 
   CMN Sensitive FALSE
 ;
 
 SPIN_BUTTON spin_button1
+  CMN Hexpand TRUE 
   SET Adjustment adjustment
 ;
 
 LABEL label2
+  CMN Hexpand TRUE 
   SET Text "label"
   CMN Sensitive FALSE
 ;
 
 LABEL label1
+  CMN Hexpand TRUE 
   SET Text "label"
 ;
 
@@ -50,6 +54,7 @@ HBOX hbox3v2
   ADD combobox3
   ADD combobox4
   ADD combobox5
+  STYLE Add_class "linked"
 ;
 
 ENTRY entry3
@@ -104,6 +109,7 @@ HBOX hbox1v1
 ;
 
 VBOX vbox1
+  CMN Border_width 10
   SET Spacing 10
   ADD hbox1v1
 ;

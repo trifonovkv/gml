@@ -4,15 +4,14 @@
 
 void text_view_new(char *widget)
 {
-        syminst(TYPE_TEXT_VIEW, widget, widget);
-        syminst(TYPE_TEXT_VIEW, "this", widget);
+        this = syminst(TYPE_TEXT_VIEW, widget, widget);
 
         putdef("GtkWidget *", widget, "gtk_text_view_new", 0);
 }
 
 void text_view_set_border_window_size(char *type, char *size)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_border_window_size", 3, widget, type, size);
 
@@ -23,7 +22,7 @@ void text_view_set_border_window_size(char *type, char *size)
 
 void text_view_set_wrap_mode(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_wrap_mode", 2, widget, setting);
 
@@ -33,7 +32,7 @@ void text_view_set_wrap_mode(char *setting)
 
 void text_view_set_editable(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_editable", 2, widget, setting);
 
@@ -43,7 +42,7 @@ void text_view_set_editable(char *setting)
 
 void text_view_set_cursor_visible(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_cursor_visible", 2, widget, setting);
 
@@ -53,7 +52,7 @@ void text_view_set_cursor_visible(char *setting)
 
 void text_view_set_overwrite(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_overwrite", 2, widget, setting);
 
@@ -63,7 +62,7 @@ void text_view_set_overwrite(char *setting)
 
 void text_view_set_pixels_above_lines(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_pixels_above_lines", 2, widget, setting);
 
@@ -73,7 +72,7 @@ void text_view_set_pixels_above_lines(char *setting)
 
 void text_view_set_pixels_below_lines(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_pixels_below_lines", 2, widget, setting);
 
@@ -83,7 +82,7 @@ void text_view_set_pixels_below_lines(char *setting)
 
 void text_view_set_pixels_inside_wrap(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_pixels_inside_wrap", 2, widget, setting);
 
@@ -93,7 +92,7 @@ void text_view_set_pixels_inside_wrap(char *setting)
 
 void text_view_set_justification(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_justification", 2, widget, setting);
 
@@ -103,7 +102,7 @@ void text_view_set_justification(char *setting)
 
 void text_view_set_left_margin(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_left_margin", 2, widget, setting);
 
@@ -113,7 +112,7 @@ void text_view_set_left_margin(char *setting)
 
 void text_view_set_right_margin(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_right_margin", 2, widget, setting);
 
@@ -123,7 +122,7 @@ void text_view_set_right_margin(char *setting)
 
 void text_view_set_indent(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_indent", 2, widget, setting);
 
@@ -133,7 +132,7 @@ void text_view_set_indent(char *setting)
 
 void text_view_set_accepts_tab(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
         
         putfun("gtk_text_view_set_accepts_tab", 2, widget, setting);
 
@@ -143,7 +142,7 @@ void text_view_set_accepts_tab(char *setting)
 
 void text_view_set_input_purpose(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_input_purpose", 2, widget, setting);
 
@@ -153,7 +152,7 @@ void text_view_set_input_purpose(char *setting)
 
 void text_view_set_input_hints(char *setting)
 {
-        char *widget = wrptype("GTK_TEXT_VIEW", getsymval("this"));
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
 
         putfun("gtk_text_view_set_input_hints", 2, widget, setting);
 
