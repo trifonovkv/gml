@@ -6,6 +6,12 @@ ADJUSTMENT adjustment
   SET Page_increment 10.0
 ;
 
+GRID grid1
+  SET Row_homogeneous TRUE
+  SET Column_spacing 18
+  SET Row_spacing 6
+;
+
 SPIN_BUTTON spin_button2
   CMN Hexpand TRUE 
   CMN Sensitive FALSE
@@ -101,6 +107,7 @@ VBOX vbox2h1
   ADD hbox2v2
   ADD hbox3v2
   ADD hbox4v2
+  ADD grid1
 ;
 
 HBOX hbox1v1

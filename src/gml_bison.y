@@ -21,6 +21,7 @@
 #include "widgets/label.h"
 #include "widgets/spin_button.h"
 #include "widgets/container.h"
+#include "widgets/grid.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -38,6 +39,9 @@ int yywrap()
 int yylex();
 
 %}
+%token GRID ROW_HOMOGENEOUS ROW_SPACING COLUMN_HOMOGENEOUS COLUMN_SPACING
+%token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO INSERT_NEXT_TO 
+ 
 %token COMMON FOCUS_VADJUSTMENT FOCUS_HADJUSTMENT BORDER_WIDTH 
 
 %token SPIN_BUTTON SET_ADJUSTMENT DIGITS INCREMENTS RANGE UPDATE_POLICY
@@ -142,6 +146,7 @@ widget:
         | button_new_from_icon_name
         | label
         | spin_button
+        | grid
         ;
 
 params: 
@@ -158,6 +163,7 @@ param:
         | hb_pack
         | stack_add
         | style
+        | grid_add
         ;
 
 icon_name:
@@ -178,13 +184,9 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
-hb_pack:
-        ADD PACK_START IDENTIFIER                 { header_bar_pack_start($3); }
-        | ADD PACK_END IDENTIFIER                   { header_bar_pack_end($3); }
-        ;
-
-stack_add:
-        ADD TITLED IDENTIFIER STRING STRING    { stack_add_titled($3, $4, $5); }
+grid:
+        GRID IDENTIFIER                                        { grid_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 spin_button:
@@ -453,6 +455,37 @@ set:
         | set_spin_button_spin
         | set_spin_button_wrap
         | set_spin_button_snap_to_ticks
+        | set_grid_row_homogeneous
+        | set_grid_row_spacing
+        | set_grid_column_homogeneous
+        | set_grid_column_spacing
+        | set_grid_baseline_row
+        | set_grid_row_baseline_position
+        ;
+
+set_grid_row_homogeneous:
+        SET ROW_HOMOGENEOUS IDENTIFIER         { grid_set_row_homogeneous($3); }
+        ;
+
+set_grid_row_spacing:
+        SET ROW_SPACING NUMBER                     { grid_set_row_spacing($3); }
+        ;
+
+set_grid_column_homogeneous:
+        SET COLUMN_HOMOGENEOUS IDENTIFIER   { grid_set_column_homogeneous($3); }
+        ;
+
+set_grid_column_spacing:
+        SET COLUMN_SPACING NUMBER               { grid_set_column_spacing($3); }
+        ;
+
+set_grid_baseline_row:
+        SET BASELINE_ROW NUMBER                   { grid_set_baseline_row($3); }
+        ;
+
+set_grid_row_baseline_position:
+        SET ROW_BASELINE_POSITION NUMBER IDENTIFIER
+                                    { grid_set_row_baseline_position($3, $4); }
         ;
 
 set_spin_button_adjustment:
@@ -988,6 +1021,24 @@ set_editable:
 
 set_focus_on_click:
         SET FOCUS_ON_CLICK IDENTIFIER                { set_focus_on_click($3); }
+        ;
+
+grid_add:
+        ADD ATACH IDENTIFIER NUMBER NUMBER NUMBER NUMBER
+                                            { grid_attach($3, $4, $5, $6, $7); }
+        | ADD ATACH_NEXT_TO IDENTIFIER IDENTIFIER IDENTIFIER NUMBER NUMBER
+                                    { grid_attach_next_to($3, $4, $5, $6, $7); }
+        | ADD INSERT_NEXT_TO IDENTIFIER IDENTIFIER
+                                                { grid_insert_next_to($3, $4); }
+        ;
+
+hb_pack:
+        ADD PACK_START IDENTIFIER                 { header_bar_pack_start($3); }
+        | ADD PACK_END IDENTIFIER                   { header_bar_pack_end($3); }
+        ;
+
+stack_add:
+        ADD TITLED IDENTIFIER STRING STRING    { stack_add_titled($3, $4, $5); }
         ;
 
 add:

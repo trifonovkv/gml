@@ -30,6 +30,7 @@ gml_SOURCES =                                 \
 								widgets/label.c               \
 								widgets/spin_button.c         \
 								widgets/container.c           \
+								widgets/grid.c                \
 								$(NULL)
 
 noinst_HEADERS = gml.h

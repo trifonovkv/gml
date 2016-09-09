@@ -33,6 +33,17 @@ ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 
+GRID                  return GRID;
+Row_homogeneous       return ROW_HOMOGENEOUS;
+Row_spacing           return ROW_SPACING;
+Column_homogeneous    return COLUMN_HOMOGENEOUS;
+Column_spacing        return COLUMN_SPACING;
+Baseline_row          return BASELINE_ROW;
+Row_baseline_position return ROW_BASELINE_POSITION;
+Atach                 return ATACH;
+Atach_next_to         return ATACH_NEXT_TO;
+Insert_next_to        return INSERT_NEXT_TO;
+ 
 CMN                   return COMMON;
 Focus_vadjustment     return FOCUS_VADJUSTMENT;
 Focus_hadjustment     return FOCUS_HADJUSTMENT;

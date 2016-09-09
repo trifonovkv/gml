@@ -14,6 +14,20 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+GRID grid
+  SET Row_homogeneous TRUE
+  SET Row_spacing 30          
+  SET Column_homogeneous TRUE
+  SET Column_spacing 40 
+  SET Baseline_row 3
+  SET Row_baseline_position 3 GTK_BASELINE_POSITION_CENTER
+/*
+  ADD Atach                 
+  ADD Atach_next_to         
+  ADD Insert_next_to 
+*/
+;
+ 
 SPIN_BUTTON spin_button
   SET Adjustment adjustment
   SET Digits 15
@@ -101,6 +115,7 @@ SCROLLED_WINDOW scrolled_window2
   SET Vadjustment adjustment
   ADD text_view2
 ;
+
 STACK stack
   ADD Titled scrolled_window "test" "test"
   ADD Titled scrolled_window2 "test2" "test2"
@@ -188,6 +203,7 @@ VBOX vbox
   ADD comboboxtextentry
   ADD label
   ADD spin_button
+  ADD grid
 ;
 
 WINDOW window
