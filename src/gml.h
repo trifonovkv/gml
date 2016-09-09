@@ -14,29 +14,30 @@ int yyparse(void);
 typedef enum
 {
         TYPE_NONE
-        ,TYPE_STRING
-        ,TYPE_ADJUSTMENT        
-        ,TYPE_HBOX              
-        ,TYPE_VBOX              
-        ,TYPE_BUTTON           
-        ,TYPE_ENTRY            
-        ,TYPE_HEADER_BAR       
-        ,TYPE_SCROLLED_WINDOW  
-        ,TYPE_TEXT_VIEW        
-        ,TYPE_WIDGET           
-        ,TYPE_WINDOW
-        ,TYPE_BUTTON_BOX
-        ,TYPE_STACK
-        ,TYPE_STACK_SWITCHER
-        ,TYPE_APPLICATION
-        ,TYPE_COMBO_BOX
-        ,TYPE_COMBO_BOX_ENTRY
-        ,TYPE_COMBO_BOX_TEXT
-        ,TYPE_COMBO_BOX_TEXT_ENTRY
-        ,TYPE_STYLE_CONTEXT
-        ,TYPE_LABEL
-        ,TYPE_SPIN_BUTTON
-        ,TYPE_GRID
+        , TYPE_STRING
+        , TYPE_ADJUSTMENT        
+        , TYPE_HBOX              
+        , TYPE_VBOX              
+        , TYPE_BUTTON           
+        , TYPE_ENTRY            
+        , TYPE_HEADER_BAR       
+        , TYPE_SCROLLED_WINDOW  
+        , TYPE_TEXT_VIEW        
+        , TYPE_WIDGET           
+        , TYPE_WINDOW
+        , TYPE_BUTTON_BOX
+        , TYPE_STACK
+        , TYPE_STACK_SWITCHER
+        , TYPE_APPLICATION
+        , TYPE_COMBO_BOX
+        , TYPE_COMBO_BOX_ENTRY
+        , TYPE_COMBO_BOX_TEXT
+        , TYPE_COMBO_BOX_TEXT_ENTRY
+        , TYPE_STYLE_CONTEXT
+        , TYPE_LABEL
+        , TYPE_SPIN_BUTTON
+        , TYPE_GRID
+        , TYPE_CHECK_BUTTON
 } widget_type;
 
 /* Keyboard accelerators and action */

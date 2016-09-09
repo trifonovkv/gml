@@ -22,6 +22,7 @@
 #include "widgets/spin_button.h"
 #include "widgets/container.h"
 #include "widgets/grid.h"
+#include "widgets/check_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -39,6 +40,8 @@ int yywrap()
 int yylex();
 
 %}
+%token CHECK_BUTTON MNEMONICS
+
 %token GRID ROW_HOMOGENEOUS ROW_SPACING COLUMN_HOMOGENEOUS COLUMN_SPACING
 %token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO INSERT_NEXT_TO 
  
@@ -112,7 +115,8 @@ int yylex();
         char  *string;
 }
 
-%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
+%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label
+%type <string> set_mnemonics
 %%
 
 main:
@@ -147,6 +151,7 @@ widget:
         | label
         | spin_button
         | grid
+        | check_button
         ;
 
 params: 
@@ -166,6 +171,14 @@ param:
         | grid_add
         ;
 
+set_label:
+        SET LABEL_TEXT STRING                                       { $$ = $3; }
+        ;
+
+set_mnemonics:
+        SET MNEMONICS STRING                                        { $$ = $3; }
+        ;
+
 icon_name:
         SET ICON_NAME STRING                                        { $$ = $3; }
         ;
@@ -182,6 +195,17 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+check_button:
+        CHECK_BUTTON IDENTIFIER                        { check_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        | CHECK_BUTTON IDENTIFIER set_label 
+                                        { check_button_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        | CHECK_BUTTON IDENTIFIER set_mnemonics 
+                                     { check_button_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 grid:

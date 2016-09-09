@@ -14,6 +14,13 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+CHECK_BUTTON check_button
+  SET Label_text "Check button"
+;
+/*
+  SET Mnemonics    
+*/
+
 GRID grid
   SET Row_homogeneous TRUE
   SET Row_spacing 30          
@@ -21,8 +28,8 @@ GRID grid
   SET Column_spacing 40 
   SET Baseline_row 3
   SET Row_baseline_position 3 GTK_BASELINE_POSITION_CENTER
+  ADD Atach check_button 0 0 1 1
 /*
-  ADD Atach                 
   ADD Atach_next_to         
   ADD Insert_next_to 
 */

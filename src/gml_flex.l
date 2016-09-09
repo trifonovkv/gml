@@ -33,6 +33,9 @@ ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 
+CHECK_BUTTON          return CHECK_BUTTON;
+Mnemonics             return MNEMONICS;
+
 GRID                  return GRID;
 Row_homogeneous       return ROW_HOMOGENEOUS;
 Row_spacing           return ROW_SPACING;
