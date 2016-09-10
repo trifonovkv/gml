@@ -33,6 +33,9 @@ ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 
+RADIO_BUTTON          return RADIO_BUTTON;
+Join                  return JOIN;
+
 CHECK_BUTTON          return CHECK_BUTTON;
 Mnemonics             return MNEMONICS;
 
@@ -45,7 +48,6 @@ Baseline_row          return BASELINE_ROW;
 Row_baseline_position return ROW_BASELINE_POSITION;
 Atach                 return ATACH;
 Atach_next_to         return ATACH_NEXT_TO;
-Insert_next_to        return INSERT_NEXT_TO;
  
 CMN                   return COMMON;
 Focus_vadjustment     return FOCUS_VADJUSTMENT;

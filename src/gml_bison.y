@@ -23,6 +23,7 @@
 #include "widgets/container.h"
 #include "widgets/grid.h"
 #include "widgets/check_button.h"
+#include "widgets/radio_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -40,10 +41,12 @@ int yywrap()
 int yylex();
 
 %}
+%token RADIO_BUTTON JOIN
+
 %token CHECK_BUTTON MNEMONICS
 
 %token GRID ROW_HOMOGENEOUS ROW_SPACING COLUMN_HOMOGENEOUS COLUMN_SPACING
-%token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO INSERT_NEXT_TO 
+%token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO 
  
 %token COMMON FOCUS_VADJUSTMENT FOCUS_HADJUSTMENT BORDER_WIDTH 
 
@@ -152,6 +155,7 @@ widget:
         | spin_button
         | grid
         | check_button
+        | radio_button
         ;
 
 params: 
@@ -195,6 +199,18 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+
+radio_button:
+        RADIO_BUTTON IDENTIFIER                        { radio_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        | RADIO_BUTTON IDENTIFIER set_label 
+                                        { radio_button_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        | RADIO_BUTTON IDENTIFIER set_mnemonics
+                                     { radio_button_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 check_button:
@@ -485,6 +501,11 @@ set:
         | set_grid_column_spacing
         | set_grid_baseline_row
         | set_grid_row_baseline_position
+        | set_radio_button_join_group
+        ;
+
+set_radio_button_join_group:
+        SET JOIN IDENTIFIER                     { radio_button_join_group($3); }
         ;
 
 set_grid_row_homogeneous:
@@ -1052,8 +1073,6 @@ grid_add:
                                             { grid_attach($3, $4, $5, $6, $7); }
         | ADD ATACH_NEXT_TO IDENTIFIER IDENTIFIER IDENTIFIER NUMBER NUMBER
                                     { grid_attach_next_to($3, $4, $5, $6, $7); }
-        | ADD INSERT_NEXT_TO IDENTIFIER IDENTIFIER
-                                                { grid_insert_next_to($3, $4); }
         ;
 
 hb_pack:

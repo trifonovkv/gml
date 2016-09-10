@@ -14,7 +14,21 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
-CHECK_BUTTON check_button
+RADIO_BUTTON radio_button3
+  SET Label_text "Radio button 3"
+;
+
+RADIO_BUTTON radio_button2
+  SET Label_text "Radio button 2"
+  SET Join radio_button3
+;
+
+RADIO_BUTTON radio_button1
+  SET Label_text "Radio button 1"
+  SET Join radio_button2
+;
+
+CHECK_BUTTON check_button1
   SET Label_text "Check button"
 ;
 /*
@@ -28,11 +42,10 @@ GRID grid
   SET Column_spacing 40 
   SET Baseline_row 3
   SET Row_baseline_position 3 GTK_BASELINE_POSITION_CENTER
-  ADD Atach check_button 0 0 1 1
-/*
-  ADD Atach_next_to         
-  ADD Insert_next_to 
-*/
+  ADD Atach check_button1 0 0 1 1
+  ADD Atach_next_to radio_button1 check_button1 GTK_POS_RIGHT 1 1
+  ADD Atach_next_to radio_button2 radio_button1 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to radio_button3 radio_button2 GTK_POS_BOTTOM 1 1
 ;
  
 SPIN_BUTTON spin_button

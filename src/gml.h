@@ -38,6 +38,7 @@ typedef enum
         , TYPE_SPIN_BUTTON
         , TYPE_GRID
         , TYPE_CHECK_BUTTON
+        , TYPE_RADIO_BUTTON
 } widget_type;
 
 /* Keyboard accelerators and action */

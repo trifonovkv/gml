@@ -28,15 +28,6 @@ void grid_attach_next_to(char *child
                         , char *height);
 
 /* 
- * Inserts a row or column at the specified position.
- * 
- * The new row or column is placed next to sibling , on the side determined by
- * side . If side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted. If side
- * is GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
- */
-void grid_insert_next_to(char *sibling, char *side);
-
-/* 
  * Sets whether all rows of grid will have the same height.
  */
 void grid_set_row_homogeneous(char *setting);

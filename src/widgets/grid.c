@@ -48,17 +48,6 @@ void grid_attach_next_to(char *child
         free(height);
 }
 
-void grid_insert_next_to(char *sibling, char *side)
-{
-        char *widget = wrptype("GTK_GRID", this);
-
-        putfun("gtk_grid_insert_next_to", 3, widget, sibling, side); 
-        
-        free(widget);
-        free(sibling);
-        free(side); 
-}
-
 void grid_set_row_homogeneous(char *setting)
 {
         char *widget = wrptype("GTK_GRID", this);
