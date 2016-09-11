@@ -6,10 +6,43 @@ ADJUSTMENT adjustment
   SET Page_increment 10.0
 ;
 
+CHECK_BUTTON checkbutton6
+  SET Label_text "checkbutton"
+  CMN Sensitive FALSE
+;
+
+CHECK_BUTTON checkbutton5
+  SET Label_text "checkbutton"
+  CMN Sensitive FALSE
+;
+
+CHECK_BUTTON checkbutton4
+  SET Label_text "checkbutton"
+  CMN Sensitive FALSE
+;
+
+CHECK_BUTTON checkbutton3
+  SET Label_text "checkbutton"
+;
+
+CHECK_BUTTON checkbutton2
+  SET Label_text "checkbutton"
+;
+
+CHECK_BUTTON checkbutton1
+  SET Label_text "checkbutton"
+;
+
 GRID grid1
   SET Row_homogeneous TRUE
   SET Column_spacing 18
   SET Row_spacing 6
+  ADD Atach checkbutton1 0 0 1 1
+  ADD Atach checkbutton2 0 1 1 1
+  ADD Atach checkbutton3 0 2 1 1
+  ADD Atach checkbutton4 0 3 1 1
+  ADD Atach checkbutton5 0 4 1 1
+  ADD Atach checkbutton6 0 5 1 1
 ;
 
 SPIN_BUTTON spin_button2

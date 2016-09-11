@@ -24,6 +24,7 @@
 #include "widgets/grid.h"
 #include "widgets/check_button.h"
 #include "widgets/radio_button.h"
+#include "widgets/spinner.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -41,6 +42,8 @@ int yywrap()
 int yylex();
 
 %}
+%token SPINNER START STOP
+
 %token RADIO_BUTTON JOIN
 
 %token CHECK_BUTTON MNEMONICS
@@ -156,6 +159,7 @@ widget:
         | grid
         | check_button
         | radio_button
+        | spinner
         ;
 
 params: 
@@ -201,6 +205,10 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
+spinner:
+        SPINNER IDENTIFIER                                  { spinner_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
 
 radio_button:
         RADIO_BUTTON IDENTIFIER                        { radio_button_new($2); }
@@ -502,6 +510,15 @@ set:
         | set_grid_baseline_row
         | set_grid_row_baseline_position
         | set_radio_button_join_group
+        | set_spinner_start
+        | set_spinner_stop
+        ;
+
+set_spinner_start:
+        SET START                                           { spinner_start(); }
+        ;
+set_spinner_stop:
+        SET STOP                                             { spinner_stop(); }
         ;
 
 set_radio_button_join_group:

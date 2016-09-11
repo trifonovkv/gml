@@ -14,6 +14,16 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+SPINNER spinner2
+  CMN Sensitive TRUE
+  SET Start
+;
+
+SPINNER spinner1
+  CMN Sensitive FALSE
+  SET Start
+;
+
 RADIO_BUTTON radio_button3
   SET Label_text "Radio button 3"
 ;
@@ -46,6 +56,8 @@ GRID grid
   ADD Atach_next_to radio_button1 check_button1 GTK_POS_RIGHT 1 1
   ADD Atach_next_to radio_button2 radio_button1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to radio_button3 radio_button2 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to spinner1 check_button1 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to spinner2 spinner1 GTK_POS_BOTTOM 1 1
 ;
  
 SPIN_BUTTON spin_button

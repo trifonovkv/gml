@@ -33,6 +33,10 @@ ADD                   return ADD;
 SIGNAL                return SIGNAL;
 PACK                  return PACK;
 
+SPINNER               return SPINNER;
+Start                 return START;
+Stop                  return STOP;
+
 RADIO_BUTTON          return RADIO_BUTTON;
 Join                  return JOIN;
 
