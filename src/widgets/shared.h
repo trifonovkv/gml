@@ -9,6 +9,18 @@
 #include "label.h"
 #include "adjustment.h"
 #include "spin_button.h"
+#include "toggle_button.h"
+
+void set_active(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TOGGLE_BUTTON) {
+                toggle_button_set_active(setting);
+        } else if (type == TYPE_COMBO_BOX) {
+                combo_box_set_active(setting);
+        }
+}
 
 void set_value(char *setting)
 {

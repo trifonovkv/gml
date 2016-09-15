@@ -14,6 +14,15 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+TOGGLE_BUTTON togglebutton1
+  SET Label_text "togglebutton"
+  SET Mode FALSE
+  SET Inconsistent TRUE
+;
+/*
+  SET Active TRUE
+*/
+
 SPINNER spinner2
   CMN Sensitive TRUE
   SET Start
@@ -26,6 +35,7 @@ SPINNER spinner1
 
 RADIO_BUTTON radio_button3
   SET Label_text "Radio button 3"
+  SET Mode FALSE
 ;
 
 RADIO_BUTTON radio_button2
@@ -38,8 +48,9 @@ RADIO_BUTTON radio_button1
   SET Join radio_button2
 ;
 
-CHECK_BUTTON check_button1
+CHECK_BUTTON_WITH_LABEL check_button1
   SET Label_text "Check button"
+  SET Mode FALSE
 ;
 /*
   SET Mnemonics    
@@ -58,6 +69,7 @@ GRID grid
   ADD Atach_next_to radio_button3 radio_button2 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to spinner1 check_button1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to spinner2 spinner1 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to togglebutton1 spinner2 GTK_POS_BOTTOM 1 1
 ;
  
 SPIN_BUTTON spin_button

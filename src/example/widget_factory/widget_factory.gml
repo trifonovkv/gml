@@ -6,31 +6,35 @@ ADJUSTMENT adjustment
   SET Page_increment 10.0
 ;
 
-CHECK_BUTTON checkbutton6
+CHECK_BUTTON_WITH_LABEL checkbutton6
+  SET Label_text "checkbutton"
+  SET Inconsistent TRUE
+  CMN Sensitive FALSE
+;
+
+CHECK_BUTTON_WITH_LABEL checkbutton5
   SET Label_text "checkbutton"
   CMN Sensitive FALSE
 ;
 
-CHECK_BUTTON checkbutton5
+CHECK_BUTTON_WITH_LABEL checkbutton4
   SET Label_text "checkbutton"
+  SET Active TRUE
   CMN Sensitive FALSE
 ;
 
-CHECK_BUTTON checkbutton4
+CHECK_BUTTON_WITH_LABEL checkbutton3
   SET Label_text "checkbutton"
-  CMN Sensitive FALSE
+  SET Inconsistent TRUE
 ;
 
-CHECK_BUTTON checkbutton3
-  SET Label_text "checkbutton"
-;
-
-CHECK_BUTTON checkbutton2
+CHECK_BUTTON_WITH_LABEL checkbutton2
   SET Label_text "checkbutton"
 ;
 
-CHECK_BUTTON checkbutton1
+CHECK_BUTTON_WITH_LABEL checkbutton1
   SET Label_text "checkbutton"
+  SET Active TRUE
 ;
 
 GRID grid1

@@ -25,6 +25,7 @@
 #include "widgets/check_button.h"
 #include "widgets/radio_button.h"
 #include "widgets/spinner.h"
+#include "widgets/toggle_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -44,9 +45,12 @@ int yylex();
 %}
 %token SPINNER START STOP
 
-%token RADIO_BUTTON JOIN
+%token TOGGLE_BUTTON TOGGLE_BUTTON_WITH_LABEL TOGGLE_BUTTON_WITH_MNEMONIC MODE 
+%token INCONSISTENT
+ 
+%token RADIO_BUTTON RADIO_BUTTON_WITH_LABEL RADIO_BUTTON_WITH_MNEMONIC JOIN
 
-%token CHECK_BUTTON MNEMONICS
+%token CHECK_BUTTON CHECK_BUTTON_WITH_LABEL CHECK_BUTTON_WITH_MNEMONIC MNEMONICS
 
 %token GRID ROW_HOMOGENEOUS ROW_SPACING COLUMN_HOMOGENEOUS COLUMN_SPACING
 %token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO 
@@ -158,7 +162,14 @@ widget:
         | spin_button
         | grid
         | check_button
+        | check_button_with_label
+        | check_button_with_mnemonic
         | radio_button
+        | radio_button_with_label
+        | radio_button_with_mnemonic
+        | toggle_button
+        | toggle_button_with_label
+        | toggle_button_with_mnemonic
         | spinner
         ;
 
@@ -210,27 +221,57 @@ spinner:
         params SEMICOLON                                    { block_close($2); }
         ;
 
-radio_button:
-        RADIO_BUTTON IDENTIFIER                        { radio_button_new($2); }
-        params SEMICOLON                                    { block_close($2); }
-        | RADIO_BUTTON IDENTIFIER set_label 
-                                        { radio_button_new_with_label($2, $3); }
-        params SEMICOLON                                    { block_close($2); }
-        | RADIO_BUTTON IDENTIFIER set_mnemonics
-                                     { radio_button_new_with_mnemonic($2, $3); }
+toggle_button:
+        TOGGLE_BUTTON IDENTIFIER                      { toggle_button_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
+toggle_button_with_label:
+        TOGGLE_BUTTON IDENTIFIER set_label 
+                                       { toggle_button_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+toggle_button_with_mnemonic:
+        TOGGLE_BUTTON IDENTIFIER set_mnemonics
+                                    { toggle_button_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+   
+radio_button:
+        RADIO_BUTTON IDENTIFIER                        { radio_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+radio_button_with_label:
+        RADIO_BUTTON IDENTIFIER set_label 
+                                        { radio_button_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+radio_button_with_mnemonic:
+        RADIO_BUTTON IDENTIFIER set_mnemonics
+                                     { radio_button_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+ 
 check_button:
         CHECK_BUTTON IDENTIFIER                        { check_button_new($2); }
         params SEMICOLON                                    { block_close($2); }
-        | CHECK_BUTTON IDENTIFIER set_label 
+        ;
+
+check_button_with_label:
+        CHECK_BUTTON_WITH_LABEL IDENTIFIER set_label 
                                         { check_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
-        | CHECK_BUTTON IDENTIFIER set_mnemonics 
+        ;
+
+check_button_with_mnemonic:
+        CHECK_BUTTON_WITH_MNEMONIC IDENTIFIER set_mnemonics 
                                      { check_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
+
 
 grid:
         GRID IDENTIFIER                                        { grid_new($2); }
@@ -470,8 +511,8 @@ set:
         | set_combo_box_wrap_width
         | set_combo_box_row_span_column
         | set_combo_box_column_span_column
-        | set_combo_box_active
         | set_combo_box_id_column
+        | set_combo_box_active
         | set_combo_box_active_id
         | set_combo_box_model
         | set_combo_box_button_sensitivity
@@ -510,6 +551,9 @@ set:
         | set_grid_baseline_row
         | set_grid_row_baseline_position
         | set_radio_button_join_group
+        | set_toggle_button_mode
+        | set_toggle_button_active
+        | set_toggle_button_inconsistent
         | set_spinner_start
         | set_spinner_stop
         ;
@@ -517,8 +561,21 @@ set:
 set_spinner_start:
         SET START                                           { spinner_start(); }
         ;
+
 set_spinner_stop:
         SET STOP                                             { spinner_stop(); }
+        ;
+
+set_toggle_button_mode:
+        SET MODE IDENTIFIER                      { toggle_button_set_mode($3); }
+        ;
+
+set_toggle_button_active:
+        SET ACTIVE IDENTIFIER                  { toggle_button_set_active($3); }
+        ;
+
+set_toggle_button_inconsistent:
+        SET INCONSISTENT IDENTIFIER      { toggle_button_set_inconsistent($3); }
         ;
 
 set_radio_button_join_group:
@@ -671,7 +728,7 @@ set_combo_box_column_span_column:
 set_combo_box_active:
         SET ACTIVE NUMBER                          { combo_box_set_active($3); }
         ;
-
+ 
 set_combo_box_id_column:
         SET ID_COLUMN NUMBER                    { combo_box_set_id_column($3); }
         ;

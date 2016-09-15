@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-AM_YFLAGS = -d
+AM_YFLAGS = -d --verbose
 
 AUTOMAKE_OPTIONS = subdir-objects
 
@@ -34,6 +34,7 @@ gml_SOURCES =                                 \
 								widgets/check_button.c        \
 								widgets/radio_button.c        \
 								widgets/spinner.c             \
+								widgets/toggle_button.c       \
 								$(NULL)
 
 noinst_HEADERS = gml.h
