@@ -1,3 +1,11 @@
+/*
+ * Sets whether the widget should grab focus when it is clicked with the mouse.
+ * Making mouse clicks not grab focus is useful in places like toolbars where
+ * you don’t want the keyboard focus removed from the main area of the
+ * application.
+ */
+void widget_set_focus_on_click(char *setting);
+
 void widget_show_all(char *widget);
 
 /*

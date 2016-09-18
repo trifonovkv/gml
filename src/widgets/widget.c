@@ -2,6 +2,15 @@
 #include "fmtout.h"
 #include "widget.h"
 
+void widget_set_focus_on_click(char *setting)
+{
+        char *widget = this;
+
+        putfun("gtk_widget_set_focus_on_click", 2, widget, setting);
+
+        free(setting);
+}
+
 void widget_show_all(char *widget)
 {
         putfun("gtk_widget_show_all", 1, widget); 

@@ -10,6 +10,8 @@
 #include "adjustment.h"
 #include "spin_button.h"
 #include "toggle_button.h"
+#include "font_button.h"
+#include "color_button.h"
 
 void set_active(char *setting)
 {
@@ -66,17 +68,6 @@ void set_text(char *setting)
         }
 }
 
-void set_focus_on_click(char *string)
-{
-        widget_type type = getsymtype(this);
-
-        if (type == TYPE_BUTTON) {
-                button_set_focus_on_click(string);
-        } else if ((type == TYPE_COMBO_BOX) || (type == TYPE_COMBO_BOX_ENTRY)) {
-                combo_box_set_focus_on_click(string);
-        }
-}
-
 void set_title(char *string)
 {
         widget_type type = getsymtype(this);
@@ -85,6 +76,10 @@ void set_title(char *string)
                 window_set_title(string);
         } else if (type == TYPE_HEADER_BAR) {
                 header_bar_set_title(string);
+        } else if (type == TYPE_FONT_BUTTON) {
+                font_button_set_title(string);
+        } else if (type == TYPE_COLOR_BUTTON) {
+                color_button_set_title(string);
         }
 }
 

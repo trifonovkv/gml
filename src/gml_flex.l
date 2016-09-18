@@ -33,6 +33,21 @@ ADD                         return ADD;
 SIGNAL                      return SIGNAL;
 PACK                        return PACK;
 
+COLOR_BUTTON                return COLOR_BUTTON;
+COLOR_BUTTON_WITH_RGBA      return COLOR_BUTTON_WITH_RGBA;
+Rgba                        return RGBA;
+
+FONT_BUTTON                 return FONT_BUTTON;
+Font                        return FONT;
+Font_name                   return FONT_NAME;
+Show_style                  return SHOW_STYLE;
+Show_size                   return SHOW_SIZE;
+Use_font                    return USE_FONT;
+Use_size                    return USE_SIZE;
+
+SEPARATOR                   return SEPARATOR;
+Orientation                 return ORIENTATION;
+
 SPINNER                     return SPINNER;
 Start                       return START;
 Stop                        return STOP;
@@ -112,7 +127,6 @@ Active                      return ACTIVE;
 Id_column                   return ID_COLUMN;
 Active_id                   return ACTIVE_ID; 
 Model                       return MODEL; 
-Focus_on_click              return FOCUS_ON_CLICK;
 Button_sensitivity          return BUTTON_SENSITIVITY;
 Entry_text_column           return ENTRY_TEXT_COLUMN; 
 Popup_fixed_width           return POPUP_FIXED_WIDTH;
@@ -175,6 +189,7 @@ Has_frame                   return HAS_FRAME;
 Visibility_char             return VISIBILITY_CHAR;
 Visibility                  return VISIBILITY;
 
+Focus_on_click              return FOCUS_ON_CLICK;
 Size_request                return SIZE_REQUEST;
 Margin_bottom               return MARGIN_BOTTOM;
 Margin_top                  return MARGIN_TOP;

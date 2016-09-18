@@ -26,6 +26,8 @@
 #include "widgets/radio_button.h"
 #include "widgets/spinner.h"
 #include "widgets/toggle_button.h"
+#include "widgets/separator.h"
+#include "widgets/font_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -43,6 +45,13 @@ int yywrap()
 int yylex();
 
 %}
+%token COLOR_BUTTON COLOR_BUTTON_WITH_RGBA RGBA
+
+%token FONT_BUTTON FONT FONT_NAME SHOW_STYLE SHOW_SIZE 
+%token USE_FONT USE_SIZE
+
+%token SEPARATOR ORIENTATION
+
 %token SPINNER START STOP
 
 %token TOGGLE_BUTTON TOGGLE_BUTTON_WITH_LABEL TOGGLE_BUTTON_WITH_MNEMONIC MODE 
@@ -93,10 +102,10 @@ int yylex();
 %token SIZE_REQUEST MARGIN_BOTTOM MARGIN_TOP MARGIN_END MARGIN_START VALIGN 
 %token HALIGN VEXPAND_SET VEXPAND HEXPAND_SET HEXPAND RECEIVES_DEFAULT
 %token SENSITIVE NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS VISIBLE 
-%token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME 
+%token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME FOCUS_ON_CLICK
 
 %token BUTTON BUTTON_FROM_ICON_NAME RELIEF LABEL_BUTTON USE_UNDERLINE 
-%token FOCUS_ON_CLICK ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
+%token ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
 
 %token HEADER_BAR SUBTITLE HAS_SUBTITLE CUSTOM_TITLE SHOW_CLOSE_BUTTON
 %token DECORATION_LAYOUT PACK_START PACK_END 
@@ -126,7 +135,7 @@ int yylex();
 }
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label
-%type <string> set_mnemonics
+%type <string> set_mnemonics set_orientation set_rgba
 %%
 
 main:
@@ -171,6 +180,10 @@ widget:
         | toggle_button_with_label
         | toggle_button_with_mnemonic
         | spinner
+        | separator
+        | font_button
+        | color_button
+        | color_button_with_rgba
         ;
 
 params: 
@@ -188,6 +201,14 @@ param:
         | stack_add
         | style
         | grid_add
+        ;
+
+set_rgba:
+        SET RGBA STRING                                             { $$ = $3; }
+        ;
+
+set_orientation:
+        SET ORIENTATION IDENTIFIER                                  { $$ = $3; }
         ;
 
 set_label:
@@ -216,6 +237,27 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
+color_button:
+        COLOR_BUTTON IDENTIFIER                        { color_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+color_button_with_rgba:
+        COLOR_BUTTON_WITH_RGBA IDENTIFIER set_rgba  
+                                         { color_button_new_with_rgba($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+font_button:
+        FONT_BUTTON IDENTIFIER                          { font_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+separator:
+        SEPARATOR IDENTIFIER set_orientation          { separator_new($2, $3); }
+        SEMICOLON
+        ;
+
 spinner:
         SPINNER IDENTIFIER                                  { spinner_new($2); }
         params SEMICOLON                                    { block_close($2); }
@@ -227,13 +269,13 @@ toggle_button:
         ;
 
 toggle_button_with_label:
-        TOGGLE_BUTTON IDENTIFIER set_label 
+        TOGGLE_BUTTON_WITH_LABEL IDENTIFIER set_label 
                                        { toggle_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
 toggle_button_with_mnemonic:
-        TOGGLE_BUTTON IDENTIFIER set_mnemonics
+        TOGGLE_BUTTON_WITH_MNEMONIC IDENTIFIER set_mnemonics
                                     { toggle_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -244,13 +286,13 @@ radio_button:
         ;
 
 radio_button_with_label:
-        RADIO_BUTTON IDENTIFIER set_label 
+        RADIO_BUTTON_WITH_LABEL IDENTIFIER set_label 
                                         { radio_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
 radio_button_with_mnemonic:
-        RADIO_BUTTON IDENTIFIER set_mnemonics
+        RADIO_BUTTON_WITH_MNEMONIC IDENTIFIER set_mnemonics
                                      { radio_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -419,7 +461,9 @@ set:
         | set_input_purpose
         | set_title
         | set_text
-        | set_focus_on_click
+        /*
+         * | set_focus_on_click
+         */
         | set_width_chars
         | set_use_underline
         | set_value
@@ -556,6 +600,31 @@ set:
         | set_toggle_button_inconsistent
         | set_spinner_start
         | set_spinner_stop
+        | set_font_button_font_name
+        | set_font_button_show_style
+        | set_font_button_show_size
+        | set_font_button_use_font
+        | set_font_button_use_size
+        ;
+
+set_font_button_font_name:
+        SET FONT_NAME STRING                  { font_button_set_font_name($3); }
+        ;
+
+set_font_button_show_style:
+        SET SHOW_STYLE IDENTIFIER            { font_button_set_show_style($3); }
+        ;
+       
+set_font_button_show_size:
+        SET SHOW_SIZE IDENTIFIER              { font_button_set_show_size($3); }
+        ;
+
+set_font_button_use_font:
+        SET USE_FONT IDENTIFIER                { font_button_set_use_font($3); }
+        ;
+
+set_font_button_use_size:
+        SET USE_SIZE IDENTIFIER                { font_button_set_use_size($3); }
         ;
 
 set_spinner_start:
@@ -1138,9 +1207,12 @@ set_editable:
         SET EDITABLE IDENTIFIER                            { set_editable($3); }
         ;
 
-set_focus_on_click:
-        SET FOCUS_ON_CLICK IDENTIFIER                { set_focus_on_click($3); }
-        ;
+/*
+ * set_focus_on_click:
+ *         SET FOCUS_ON_CLICK IDENTIFIER                { set_focus_on_click($3); }
+ *         ;
+ * 
+ */
 
 grid_add:
         ADD ATACH IDENTIFIER NUMBER NUMBER NUMBER NUMBER
@@ -1186,6 +1258,7 @@ common:
         | widget_set_has_tootip
         | widget_set_tooltip_text
         | widget_set_name
+        | widget_set_focus_on_click
         | set_container_focus_vadjustment
         | set_container_focus_hadjustment
         | set_container_border_width
@@ -1204,6 +1277,10 @@ set_container_focus_hadjustment:
 
 set_container_border_width:
         COMMON BORDER_WIDTH NUMBER           { container_set_border_width($3); }
+        ;
+
+widget_set_focus_on_click:
+        COMMON FOCUS_ON_CLICK IDENTIFIER      { widget_set_focus_on_click($3); }
         ;
 
 widget_set_size_request:

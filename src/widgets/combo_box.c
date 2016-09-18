@@ -86,16 +86,6 @@ void combo_box_set_model(char *setting)
         free(setting);
 }
 
-void combo_box_set_focus_on_click(char *setting)
-{
-        char *widget = wrptype("GTK_COMBO_BOX", this);
-
-        putfun("gtk_combo_box_set_focus_on_click", 2, widget, setting);
-
-        free(widget);
-        free(setting);
-}
-
 void combo_box_set_button_sensitivity(char *setting)
 {
         char *widget = wrptype("GTK_COMBO_BOX", this);

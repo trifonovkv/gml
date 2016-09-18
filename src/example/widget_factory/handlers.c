@@ -16,19 +16,6 @@ void button_show(GtkWidget *widget,
         gtk_widget_show_all(widget);
 }
 
-void hbox_show(GtkWidget *widget, 
-               GdkEvent  *event, 
-               gpointer   user_data)
-{
-        GtkStyleContext *context;
-
-        context = gtk_style_context_new();
-
-        gtk_style_context_get(context, GTK_STATE_FLAG_NORMAL);
-
-        gtk_style_context_add_class(context, "linked");
-}
- 
 void remove_pulse(gpointer pulse_id)
 {
         g_source_remove(GPOINTER_TO_UINT(pulse_id));
@@ -86,6 +73,19 @@ gboolean entry_show(GtkWidget *widget,
                                           "view-refresh-symbolic");
         gtk_entry_set_placeholder_text(GTK_ENTRY(widget),
                                        "Click icon to change mode");
+}
+
+gboolean combobox3_show(GtkWidget *widget, 
+                        GdkEvent  *event, 
+                        gpointer   user_data)
+{
+        static int i = 0;
+
+        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(widget), NULL, "Andrea");
+        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(widget), NULL, "Otto");
+        gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(widget), NULL, "Orville");
+        
+        gtk_combo_box_set_active (GTK_COMBO_BOX(widget), i++);
 }
 
 gboolean combobox2_show(GtkWidget *widget, 

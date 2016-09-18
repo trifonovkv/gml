@@ -51,16 +51,6 @@ void button_set_use_underline(char *setting)
         free(setting);
 }
 
-void button_set_focus_on_click(char *setting)
-{
-        char *widget = wrptype("GTK_BUTTON", this);
-
-        putfun("gtk_button_set_focus_on_click", 2, widget, setting);
-
-        free(widget);
-        free(setting);
-}
-
 void button_set_image(char *setting)
 {
         char *widget = wrptype("GTK_BUTTON", this);

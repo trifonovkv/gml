@@ -39,14 +39,6 @@ void button_set_label(char *setting);
 void button_set_use_underline(char *setting);
 
 /* 
- * Sets whether the button will grab focus when it is clicked with the mouse. 
- * Making mouse clicks not grab focus is useful in places like toolbars where 
- * you don’t want the keyboard focus removed from the main area of the 
- * application.
- */
-void button_set_focus_on_click(char *setting);
-
-/* 
  * Set the image of button to the given widget. The image will be displayed if 
  * the label text is NULL or if “always-show-image” is TRUE. You don’t have to 
  * call gtk_widget_show() on image yourself.

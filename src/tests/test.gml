@@ -14,14 +14,25 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
-TOGGLE_BUTTON togglebutton1
+COLOR_BUTTON_WITH_RGBA colorbutton1
+  SET Rgba "#31316867a09f"
+  SET Title "colorbutton"
+;
+
+FONT_BUTTON fontbutton1
+  SET Font_name "Times"                  
+  SET Show_style FALSE
+  SET Show_size FALSE
+  SET Use_font TRUE
+  SET Use_size TRUE
+;
+
+TOGGLE_BUTTON_WITH_LABEL togglebutton1
   SET Label_text "togglebutton"
   SET Mode FALSE
   SET Inconsistent TRUE
-;
-/*
   SET Active TRUE
-*/
+;
 
 SPINNER spinner2
   CMN Sensitive TRUE
@@ -33,17 +44,17 @@ SPINNER spinner1
   SET Start
 ;
 
-RADIO_BUTTON radio_button3
+RADIO_BUTTON_WITH_LABEL radio_button3
   SET Label_text "Radio button 3"
   SET Mode FALSE
 ;
 
-RADIO_BUTTON radio_button2
+RADIO_BUTTON_WITH_LABEL radio_button2
   SET Label_text "Radio button 2"
   SET Join radio_button3
 ;
 
-RADIO_BUTTON radio_button1
+RADIO_BUTTON_WITH_LABEL radio_button1
   SET Label_text "Radio button 1"
   SET Join radio_button2
 ;
@@ -70,6 +81,8 @@ GRID grid
   ADD Atach_next_to spinner1 check_button1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to spinner2 spinner1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to togglebutton1 spinner2 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to fontbutton1 togglebutton1 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to colorbutton1 fontbutton1 GTK_POS_BOTTOM 1 1
 ;
  
 SPIN_BUTTON spin_button
@@ -201,6 +214,7 @@ BUTTON button5
 
 BUTTON button6
   SET Label "button6"
+  CMN Focus_on_click TRUE
   SIGNAL "clicked" print_hello
 ;
 
@@ -227,7 +241,6 @@ COMBO_BOX_ENTRY comboboxentry
   SET Wrap_width 1
   SET Active 1
   SET Id_column 1            
-  SET Focus_on_click TRUE
   SET Button_sensitivity GTK_SENSITIVITY_AUTO
   SET Entry_text_column 1
   SET Popup_fixed_width TRUE

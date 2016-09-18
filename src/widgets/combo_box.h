@@ -62,14 +62,6 @@ void combo_box_set_active_id(char *setting);
 void combo_box_set_model(char *setting);
 
 /* 
- * Sets whether the combo box will grab focus when it is clicked with the
- * mouse. Making mouse clicks not grab focus is useful in places like toolbars
- * where you don’t want the keyboard focus removed from the main area of the
- * application.
- */
-void combo_box_set_focus_on_click(char *setting);
-
-/* 
  * Sets whether the dropdown button of the combo box should be always sensitive
  * (GTK_SENSITIVITY_ON), never sensitive (GTK_SENSITIVITY_OFF) or only if there
  * is at least one item to display (GTK_SENSITIVITY_AUTO).
