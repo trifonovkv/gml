@@ -28,6 +28,8 @@
 #include "widgets/toggle_button.h"
 #include "widgets/separator.h"
 #include "widgets/font_button.h"
+#include "widgets/file_chooser_button.h"
+#include "widgets/file_chooser.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -45,6 +47,13 @@ int yywrap()
 int yylex();
 
 %}
+%token ACTION LOCAL_ONLY SELECT_MULTIPLE SHOW_HIDDEN
+%token DO_OVERWRITE_CONFIRMATION CREATE_FOLDERS CURRENT_NAME FILENAME         
+%token CURRENT_FOLDER URI CURRENT_FOLDER_URI PREVIEW_WIDGET
+%token PREVIEW_WIDGET_ACTIVE USE_PREVIEW_LABEL
+  
+%token FILE_CHOOSER_BUTTON 
+
 %token COLOR_BUTTON COLOR_BUTTON_WITH_RGBA RGBA
 
 %token FONT_BUTTON FONT FONT_NAME SHOW_STYLE SHOW_SIZE 
@@ -184,6 +193,7 @@ widget:
         | font_button
         | color_button
         | color_button_with_rgba
+        | file_chooser_button_new
         ;
 
 params: 
@@ -235,6 +245,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+file_chooser_button_new:
+        FILE_CHOOSER_BUTTON IDENTIFIER          { file_chooser_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 color_button:
@@ -461,9 +476,6 @@ set:
         | set_input_purpose
         | set_title
         | set_text
-        /*
-         * | set_focus_on_click
-         */
         | set_width_chars
         | set_use_underline
         | set_value
@@ -605,6 +617,80 @@ set:
         | set_font_button_show_size
         | set_font_button_use_font
         | set_font_button_use_size
+        | set_file_chooser_action
+        | set_file_chooser_local_only
+        | set_file_chooser_select_multiple
+        | set_file_chooser_show_hidden
+        | set_file_chooser_do_overwrite_confirmation
+        | set_file_chooser_create_folders
+        | set_file_chooser_current_name
+        | set_file_chooser_filename
+        | set_file_chooser_current_folder
+        | set_file_chooser_uri
+        | set_file_chooser_current_folder_uri
+        | set_file_chooser_preview_widget
+        | set_file_chooser_preview_widget_active
+        | set_file_chooser_use_preview_label
+        ;
+
+set_file_chooser_action:
+        SET ACTION IDENTIFIER                   { file_chooser_set_action($3); }
+        ;
+
+set_file_chooser_local_only:
+        SET LOCAL_ONLY IDENTIFIER           { file_chooser_set_local_only($3); }
+        ;
+
+set_file_chooser_select_multiple:
+        SET SELECT_MULTIPLE IDENTIFIER { file_chooser_set_select_multiple($3); }
+        ;
+
+set_file_chooser_show_hidden:
+        SET SHOW_HIDDEN IDENTIFIER         { file_chooser_set_show_hidden($3); }
+        ;
+
+set_file_chooser_do_overwrite_confirmation:
+        SET DO_OVERWRITE_CONFIRMATION IDENTIFIER 
+                             { file_chooser_set_do_overwrite_confirmation($3); }
+        ;
+
+set_file_chooser_create_folders:
+        SET CREATE_FOLDERS IDENTIFIER   { file_chooser_set_create_folders($3); }
+        ;
+
+set_file_chooser_current_name:
+        SET CURRENT_NAME STRING           { file_chooser_set_current_name($3); }
+        ;
+
+set_file_chooser_filename:
+        SET FILENAME STRING                   { file_chooser_set_filename($3); }
+        ;
+
+set_file_chooser_current_folder:
+        SET CURRENT_FOLDER STRING       { file_chooser_set_current_folder($3); }
+        ;
+
+set_file_chooser_uri:
+        SET URI STRING                             { file_chooser_set_uri($3); }
+        ;
+
+set_file_chooser_current_folder_uri:
+        SET CURRENT_FOLDER_URI STRING
+                                    { file_chooser_set_current_folder_uri($3); }
+        ;
+
+set_file_chooser_preview_widget:
+        SET PREVIEW_WIDGET IDENTIFIER   { file_chooser_set_preview_widget($3); }
+        ;
+
+set_file_chooser_preview_widget_active:
+        SET PREVIEW_WIDGET_ACTIVE IDENTIFIER
+                                 { file_chooser_set_preview_widget_active($3); }
+        ;
+
+set_file_chooser_use_preview_label:
+        SET USE_PREVIEW_LABEL IDENTIFIER 
+                                     { file_chooser_set_use_preview_label($3); }
         ;
 
 set_font_button_font_name:
@@ -1206,13 +1292,6 @@ set_input_purpose:
 set_editable:
         SET EDITABLE IDENTIFIER                            { set_editable($3); }
         ;
-
-/*
- * set_focus_on_click:
- *         SET FOCUS_ON_CLICK IDENTIFIER                { set_focus_on_click($3); }
- *         ;
- * 
- */
 
 grid_add:
         ADD ATACH IDENTIFIER NUMBER NUMBER NUMBER NUMBER

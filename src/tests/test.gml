@@ -14,6 +14,20 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+FILE_CHOOSER_BUTTON filechooserbutton1
+  SET Width_chars 5
+  SET Title "tic tac"
+  SET Action GTK_FILE_CHOOSER_ACTION_OPEN
+  SET Local_only TRUE
+  SET Show_hidden FALSE
+  SET Do_overwrite_confirmation TRUE
+  SET Create_folders TRUE
+  SET Current_folder "/home/"
+  SET Uri "/home/"
+  SET Current_folder_uri "/"
+  SET Use_preview_label TRUE
+;
+
 COLOR_BUTTON_WITH_RGBA colorbutton1
   SET Rgba "#31316867a09f"
   SET Title "colorbutton"
@@ -83,8 +97,9 @@ GRID grid
   ADD Atach_next_to togglebutton1 spinner2 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to fontbutton1 togglebutton1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to colorbutton1 fontbutton1 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to filechooserbutton1 colorbutton1 GTK_POS_BOTTOM 1 1
 ;
- 
+
 SPIN_BUTTON spin_button
   SET Adjustment adjustment
   SET Digits 15
@@ -259,7 +274,9 @@ VBOX vbox
   ADD comboboxentry
   ADD comboboxtextentry
   ADD label
+/*
   ADD spin_button
+*/
   ADD grid
 ;
 

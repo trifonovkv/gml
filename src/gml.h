@@ -43,6 +43,7 @@ typedef enum
         , TYPE_TOGGLE_BUTTON
         , TYPE_FONT_BUTTON
         , TYPE_COLOR_BUTTON
+        , TYPE_FILE_CHOOSER_BUTTON
 } widget_type;
 
 /* Keyboard accelerators and action */

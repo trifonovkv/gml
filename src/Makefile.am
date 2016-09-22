@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-AM_YFLAGS = -d --verbose
+AM_YFLAGS = -d
 
 AUTOMAKE_OPTIONS = subdir-objects
 
@@ -38,6 +38,8 @@ gml_SOURCES =                                 \
 								widgets/separator.c           \
 								widgets/font_button.c         \
 								widgets/color_button.c        \
+								widgets/file_chooser.c        \
+								widgets/file_chooser_button.c \
 								$(NULL)
 
 noinst_HEADERS = gml.h

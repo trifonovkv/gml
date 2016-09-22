@@ -12,6 +12,7 @@
 #include "toggle_button.h"
 #include "font_button.h"
 #include "color_button.h"
+#include "file_chooser_button.h"
 
 void set_active(char *setting)
 {
@@ -54,7 +55,10 @@ void set_width_chars(char *setting)
                 entry_set_max_width_chars(setting);
         } else if (type == TYPE_LABEL) {
                 label_set_width_chars(setting); 
+        } else if (type == TYPE_FILE_CHOOSER_BUTTON) {
+                file_chooser_button_set_width_chars(setting); 
         }
+
 }
 
 void set_text(char *setting)
@@ -80,6 +84,8 @@ void set_title(char *string)
                 font_button_set_title(string);
         } else if (type == TYPE_COLOR_BUTTON) {
                 color_button_set_title(string);
+        } else if (type == TYPE_FILE_CHOOSER_BUTTON) {
+                file_chooser_button_set_title(string);
         }
 }
 

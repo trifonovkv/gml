@@ -23,16 +23,12 @@ FONT_BUTTON fontbutton1
 COLOR_BUTTON_WITH_RGBA colorbutton1
   SET Rgba "#31316867a09f"
 ;
+      
+FILE_CHOOSER_BUTTON filechooserbutton1
+  SET Local_only FALSE
+;
+
 /*
-    <child>
-      <object class="GtkFileChooserButton" id="filechooserbutton1">
-        <property name="visible">1</property>
-        <property name="local_only">0</property>
-      </object>
-      <packing>
-        <property name="position">8</property>
-      </packing>
-    </child>
     <child>
       <object class="GtkLinkButton" id="linkbutton1">
         <property name="label" translatable="yes">link button</property>
@@ -110,6 +106,7 @@ VBOX vbox3h1
   ADD combo_box2
   ADD fontbutton1
   ADD colorbutton1
+  ADD filechooserbutton1
 ;
 
 SEPARATOR separator1

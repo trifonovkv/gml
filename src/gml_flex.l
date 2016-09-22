@@ -33,6 +33,23 @@ ADD                         return ADD;
 SIGNAL                      return SIGNAL;
 PACK                        return PACK;
 
+Action                      return ACTION;
+Local_only                  return LOCAL_ONLY;
+Select_multiple             return SELECT_MULTIPLE;
+Show_hidden                 return SHOW_HIDDEN;
+Do_overwrite_confirmation   return DO_OVERWRITE_CONFIRMATION;
+Create_folders              return CREATE_FOLDERS;
+Current_name                return CURRENT_NAME;
+Filename                    return FILENAME;
+Current_folder              return CURRENT_FOLDER;
+Uri                         return URI;
+Current_folder_uri          return CURRENT_FOLDER_URI;
+Preview_widget              return PREVIEW_WIDGET;
+Preview_widget_active       return PREVIEW_WIDGET_ACTIVE;
+Use_preview_label           return USE_PREVIEW_LABEL;
+ 
+FILE_CHOOSER_BUTTON         return FILE_CHOOSER_BUTTON;
+
 COLOR_BUTTON                return COLOR_BUTTON;
 COLOR_BUTTON_WITH_RGBA      return COLOR_BUTTON_WITH_RGBA;
 Rgba                        return RGBA;
