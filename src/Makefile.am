@@ -41,6 +41,7 @@ gml_SOURCES =                                 \
 								widgets/file_chooser.c        \
 								widgets/file_chooser_button.c \
 								widgets/link_button.c         \
+								widgets/switch.c              \
 								$(NULL)
 
 noinst_HEADERS = gml.h

@@ -34,27 +34,17 @@ LINK_BUTTON_WITH_LABEL linkbutton1
   SET Uri "http://www.gtk.org"
   CMN Has_tooltip TRUE
 ;
+
+SWITCH switch1
+  CMN Halign GTK_ALIGN_CENTER
+;
+
+SWITCH switch2
+  CMN Sensitive FALSE
+  CMN Halign GTK_ALIGN_CENTER
+;
+
 /*
-    <child>
-      <object class="GtkSwitch" id="switch1">
-        <property name="visible">1</property>
-        <property name="halign">center</property>
-      </object>
-      <packing>
-        <property name="position">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkSwitch" id="switch2">
-        <property name="visible">1</property>
-        <property name="sensitive">0</property>
-        <property name="halign">center</property>
-      </object>
-      <packing>
-        <property name="position">11</property>
-      </packing>
-    </child>
-  </object>
   <packing>
     <property name="fill">0</property>
     <property name="position">2</property>
@@ -99,6 +89,8 @@ VBOX vbox3h1
   ADD colorbutton1
   ADD filechooserbutton1
   ADD linkbutton1
+  ADD switch1
+  ADD switch2
 ;
 
 SEPARATOR separator1

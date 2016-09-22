@@ -15,7 +15,8 @@
 #include "file_chooser_button.h"
 #include "file_chooser.h"
 #include "link_button.h"
-
+#include "switch.h"
+        
 void set_uri(char *setting)
 {
         widget_type type = getsymtype(this);
@@ -35,6 +36,8 @@ void set_active(char *setting)
                 toggle_button_set_active(setting);
         } else if (type == TYPE_COMBO_BOX) {
                 combo_box_set_active(setting);
+        } else if (type == TYPE_SWITCH) {
+                switch_set_active(setting);
         }
 }
 

@@ -33,6 +33,9 @@ ADD                         return ADD;
 SIGNAL                      return SIGNAL;
 PACK                        return PACK;
 
+SWITCH                      return SWITCH;
+State                       return STATE;
+
 LINK_BUTTON                 return LINK_BUTTON;
 LINK_BUTTON_WITH_LABEL      return LINK_BUTTON_WITH_LABEL;
 Uri                         return URI;

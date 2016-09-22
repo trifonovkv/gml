@@ -14,15 +14,15 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+SWITCH switch1
+  SET State TRUE
+;
+
 LINK_BUTTON_WITH_LABEL linkbutton1
   SET Label_text "http://www.gtk.org"
   SET Uri "http://www.gtk.org"
   SET Visited TRUE
 ;
-
-/*
-LINK_BUTTON_WITH_LABEL  
-*/
 
 FILE_CHOOSER_BUTTON filechooserbutton1
   SET Width_chars 5
@@ -109,6 +109,7 @@ GRID grid
   ADD Atach_next_to colorbutton1 fontbutton1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to filechooserbutton1 colorbutton1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to linkbutton1 radio_button3 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to switch1 linkbutton1 GTK_POS_BOTTOM 1 1
 ;
 
 SPIN_BUTTON spin_button
