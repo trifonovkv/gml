@@ -13,6 +13,19 @@
 #include "font_button.h"
 #include "color_button.h"
 #include "file_chooser_button.h"
+#include "file_chooser.h"
+#include "link_button.h"
+
+void set_uri(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_FILE_CHOOSER_BUTTON) {
+                file_chooser_set_uri(setting);
+        } else if (type == TYPE_LINK_BUTTON) {
+                link_button_set_uri(setting);
+        }
+}
 
 void set_active(char *setting)
 {

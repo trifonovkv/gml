@@ -44,6 +44,7 @@ typedef enum
         , TYPE_FONT_BUTTON
         , TYPE_COLOR_BUTTON
         , TYPE_FILE_CHOOSER_BUTTON
+        , TYPE_LINK_BUTTON
 } widget_type;
 
 /* Keyboard accelerators and action */

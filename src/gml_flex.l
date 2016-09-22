@@ -33,6 +33,11 @@ ADD                         return ADD;
 SIGNAL                      return SIGNAL;
 PACK                        return PACK;
 
+LINK_BUTTON                 return LINK_BUTTON;
+LINK_BUTTON_WITH_LABEL      return LINK_BUTTON_WITH_LABEL;
+Uri                         return URI;
+Visited                     return VISITED;
+
 Action                      return ACTION;
 Local_only                  return LOCAL_ONLY;
 Select_multiple             return SELECT_MULTIPLE;

@@ -30,6 +30,7 @@
 #include "widgets/font_button.h"
 #include "widgets/file_chooser_button.h"
 #include "widgets/file_chooser.h"
+#include "widgets/link_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -47,6 +48,8 @@ int yywrap()
 int yylex();
 
 %}
+%token LINK_BUTTON LINK_BUTTON_WITH_LABEL VISITED
+
 %token ACTION LOCAL_ONLY SELECT_MULTIPLE SHOW_HIDDEN
 %token DO_OVERWRITE_CONFIRMATION CREATE_FOLDERS CURRENT_NAME FILENAME         
 %token CURRENT_FOLDER URI CURRENT_FOLDER_URI PREVIEW_WIDGET
@@ -193,7 +196,9 @@ widget:
         | font_button
         | color_button
         | color_button_with_rgba
-        | file_chooser_button_new
+        | file_chooser_button
+        | link_button
+        | link_button_with_label
         ;
 
 params: 
@@ -247,7 +252,18 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
-file_chooser_button_new:
+link_button:
+        LINK_BUTTON IDENTIFIER                          { link_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+link_button_with_label:
+        LINK_BUTTON_WITH_LABEL IDENTIFIER set_label
+                                         { link_button_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+file_chooser_button:
         FILE_CHOOSER_BUTTON IDENTIFIER          { file_chooser_button_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -328,7 +344,6 @@ check_button_with_mnemonic:
                                      { check_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
-
 
 grid:
         GRID IDENTIFIER                                        { grid_new($2); }
@@ -479,6 +494,7 @@ set:
         | set_width_chars
         | set_use_underline
         | set_value
+        | set_uri
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -626,11 +642,27 @@ set:
         | set_file_chooser_current_name
         | set_file_chooser_filename
         | set_file_chooser_current_folder
-        | set_file_chooser_uri
+        /*
+         *| set_file_chooser_uri
+         */
         | set_file_chooser_current_folder_uri
         | set_file_chooser_preview_widget
         | set_file_chooser_preview_widget_active
         | set_file_chooser_use_preview_label
+        /*
+         *| set_link_button_uri
+         */
+        | set_link_button_visited
+        ;
+
+/*
+ *set_link_button_uri:
+ *        SET URI STRING                              { link_button_set_uri($3); }
+ *        ;
+ *
+ */
+set_link_button_visited:
+        SET VISITED IDENTIFIER                  { link_button_set_visited($3); }
         ;
 
 set_file_chooser_action:
@@ -670,10 +702,12 @@ set_file_chooser_current_folder:
         SET CURRENT_FOLDER STRING       { file_chooser_set_current_folder($3); }
         ;
 
-set_file_chooser_uri:
-        SET URI STRING                             { file_chooser_set_uri($3); }
-        ;
-
+/*
+ *set_file_chooser_uri:
+ *        SET URI STRING                             { file_chooser_set_uri($3); }
+ *        ;
+ *
+ */
 set_file_chooser_current_folder_uri:
         SET CURRENT_FOLDER_URI STRING
                                     { file_chooser_set_current_folder_uri($3); }
@@ -1261,6 +1295,10 @@ set_window_resizable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_uri:
+        SET URI STRING                                          { set_uri($3); }
         ;
 
 set_value:

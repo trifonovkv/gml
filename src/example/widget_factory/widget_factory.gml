@@ -28,22 +28,13 @@ FILE_CHOOSER_BUTTON filechooserbutton1
   SET Local_only FALSE
 ;
 
+LINK_BUTTON_WITH_LABEL linkbutton1
+  SET Label_text "link button"
+  SET Relief GTK_RELIEF_NONE
+  SET Uri "http://www.gtk.org"
+  CMN Has_tooltip TRUE
+;
 /*
-    <child>
-      <object class="GtkLinkButton" id="linkbutton1">
-        <property name="label" translatable="yes">link button</property>
-        <property name="visible">1</property>
-        <property name="can_focus">1</property>
-        <property name="receives_default">1</property>
-        <property name="has_tooltip">1</property>
-        <property name="use_action_appearance">0</property>
-        <property name="relief">none</property>
-        <property name="uri">http://www.gtk.org</property>
-      </object>
-      <packing>
-        <property name="position">9</property>
-      </packing>
-    </child>
     <child>
       <object class="GtkSwitch" id="switch1">
         <property name="visible">1</property>
@@ -107,6 +98,7 @@ VBOX vbox3h1
   ADD fontbutton1
   ADD colorbutton1
   ADD filechooserbutton1
+  ADD linkbutton1
 ;
 
 SEPARATOR separator1
