@@ -32,6 +32,7 @@
 #include "widgets/file_chooser.h"
 #include "widgets/link_button.h"
 #include "widgets/switch.h"
+#include "widgets/progress_bar.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -49,6 +50,8 @@ int yywrap()
 int yylex();
 
 %}
+%token PROGRESS_BAR FRACTION INVERTED SHOW_TEXT PULSE_STEP 
+
 %token SWITCH STATE
 %token LINK_BUTTON LINK_BUTTON_WITH_LABEL VISITED
 
@@ -202,6 +205,7 @@ widget:
         | link_button
         | link_button_with_label
         | switch
+        | progress_bar
         ;
 
 params: 
@@ -253,6 +257,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+progress_bar:
+        PROGRESS_BAR IDENTIFIER                        { progress_bar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 switch:
@@ -504,6 +513,7 @@ set:
         | set_value
         | set_uri
         | set_active
+        | set_ellipsize
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -603,7 +613,6 @@ set:
         | set_label_justify
         | set_label_xalign
         | set_label_yalign
-        | set_label_ellipsize
         | set_label_max_width_chars
         | set_label_line_wrap
         | set_label_line_wrap_mode
@@ -656,8 +665,27 @@ set:
         | set_file_chooser_use_preview_label
         | set_link_button_visited
         | set_switch_state
+        | set_progress_bar_fraction
+        | set_progress_bar_inverted
+        | set_progress_bar_show_text
+        | set_progress_bar_pulse_step
         ;
 
+set_progress_bar_fraction:
+        SET FRACTION FLOAT                    { progress_bar_set_fraction($3); }
+        ;
+
+set_progress_bar_inverted:
+        SET INVERTED IDENTIFIER               { progress_bar_set_inverted($3); }
+        ;
+
+set_progress_bar_show_text:
+        SET SHOW_TEXT IDENTIFIER             { progress_bar_set_show_text($3); }
+        ;
+
+set_progress_bar_pulse_step:
+        SET PULSE_STEP FLOAT                { progress_bar_set_pulse_step($3); }
+        ;
 
 set_switch_state:
         SET STATE IDENTIFIER                           { switch_set_state($3); }
@@ -838,10 +866,6 @@ set_label_xalign:
 
 set_label_yalign:
         SET YALIGN FLOAT                               { label_set_yalign($3); }
-        ;
-
-set_label_ellipsize:
-        SET ELLIPSIZE IDENTIFIER                    { label_set_ellipsize($3); }
         ;
 
 set_label_max_width_chars:
@@ -1289,6 +1313,10 @@ set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
 
+set_ellipsize:
+        SET ELLIPSIZE IDENTIFIER                          { set_ellipsize($3); }
+        ;
+
 set_active:
         SET ACTIVE IDENTIFIER                                { set_active($3); }
         ;
@@ -1375,7 +1403,6 @@ common:
         | set_container_focus_vadjustment
         | set_container_focus_hadjustment
         | set_container_border_width
-
         ;
 
 set_container_focus_vadjustment:

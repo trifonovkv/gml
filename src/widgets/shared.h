@@ -16,7 +16,19 @@
 #include "file_chooser.h"
 #include "link_button.h"
 #include "switch.h"
+#include "progress_bar.h"
         
+void set_ellipsize(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_LABEL) {
+                label_set_ellipsize(setting);
+        } else if (type == TYPE_PROGRESS_BAR) {
+                progress_bar_set_ellipsize(setting);
+        }
+}
+
 void set_uri(char *setting)
 {
         widget_type type = getsymtype(this);
@@ -85,6 +97,8 @@ void set_text(char *setting)
                 label_set_text(setting);
         } else if (type == TYPE_ENTRY) {
                 entry_set_text(setting);
+        } else if (type == TYPE_PROGRESS_BAR) {
+                progress_bar_set_text(setting);
         }
 }
 

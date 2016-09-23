@@ -14,6 +14,14 @@ ADJUSTMENT adjustment
   SET Upper 55.86
 ;
 
+PROGRESS_BAR progress_bar1
+  SET Fraction 0.3
+  SET Inverted TRUE 
+  SET Show_text TRUE
+  SET Pulse_step 0.1
+  SET Text "opop"
+;
+
 SWITCH switch1
   SET State TRUE
 ;
@@ -110,6 +118,7 @@ GRID grid
   ADD Atach_next_to filechooserbutton1 colorbutton1 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to linkbutton1 radio_button3 GTK_POS_BOTTOM 1 1
   ADD Atach_next_to switch1 linkbutton1 GTK_POS_BOTTOM 1 1
+  ADD Atach_next_to progress_bar1 switch1 GTK_POS_BOTTOM 1 1
 ;
 
 SPIN_BUTTON spin_button

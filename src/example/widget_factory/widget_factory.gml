@@ -6,6 +6,210 @@ ADJUSTMENT adjustment
   SET Page_increment 10.0
 ;
 
+PROGRESS_BAR progressbar3
+  SET Fraction 0.5
+  SET Show_text TRUE
+;
+
+PROGRESS_BAR progressbar2
+  SET Fraction 0.5
+  SET Inverted TRUE
+;
+
+PROGRESS_BAR progressbar1
+  SET Fraction 0.5
+;
+
+VBOX vbox3h2
+  SET Spacing 6
+  ADD progressbar1
+  ADD progressbar2
+  ADD progressbar3
+;
+/*
+                                             <child>
+                              <object class="GtkLevelBar" id="levelbar1">
+                                <property name="visible">1</property>
+                                <property name="value">0.6</property>
+                              </object>
+                              <packing>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLevelBar" id="levelbar2">
+                                <property name="visible">1</property>
+                                <property name="max-value">5</property>
+                                <property name="value">2</property>
+                                <property name="mode">1</property>
+                                <offsets>
+                                  <offset name="low" value="1"/>
+                                  <offset name="high" value="4"/>
+                                  <offset name="full" value="5"/>
+                                </offsets>
+                              </object>
+                              <packing>
+                                <property name="position">11</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="fill">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="box27">
+                            <property name="visible">1</property>
+                            <child>
+                              <object class="GtkBox" id="box24">
+                                <property name="visible">1</property>
+                                <property name="hexpand">1</property>
+                                <property name="orientation">vertical</property>
+                                <property name="homogeneous">1</property>
+                                <child>
+                                  <object class="GtkScale" id="scale1">
+                                    <property name="visible">1</property>
+                                    <property name="can_focus">1</property>
+                                    <property name="adjustment">adjustment1</property>
+                                    <property name="restrict_to_fill_level">0</property>
+                                    <property name="fill_level">75</property>
+                                    <property name="draw_value">0</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkScale" id="scale2">
+                                    <property name="visible">1</property>
+                                    <property name="sensitive">0</property>
+                                    <property name="can_focus">1</property>
+                                    <property name="adjustment">adjustment1</property>
+                                    <property name="restrict_to_fill_level">0</property>
+                                    <property name="fill_level">75</property>
+                                    <property name="draw_value">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="fill">0</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="scale5">
+                            <property name="visible">1</property>
+                            <property name="can_focus">1</property>
+                            <property name="draw_value">0</property>
+                            <property name="has_origin">0</property>
+                            <property name="round_digits">0</property>
+                            <property name="adjustment">adjustment3</property>
+                            <property name="restrict_to_fill_level">0</property>
+                            <marks>
+                              <mark value="0" position="bottom"></mark>
+                              <mark value="1" position="bottom"></mark>
+                              <mark value="2" position="bottom"></mark>
+                              <mark value="3" position="bottom"></mark>
+                              <mark value="4" position="bottom"></mark>
+                            </marks>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="box25">
+                            <property name="visible">1</property>
+                            <property name="homogeneous">1</property>
+                            <child>
+                              <object class="GtkBox" id="box28">
+                                <property name="visible">1</property>
+                                <property name="vexpand">1</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkProgressBar" id="progressbar5">
+                                    <property name="visible">1</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="fraction">0.5</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkProgressBar" id="progressbar6">
+                                    <property name="visible">1</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="fraction">0.5</property>
+                                    <property name="inverted">1</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="fill">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="box23">
+                                <property name="visible">1</property>
+                                <property name="vexpand">1</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkScale" id="scale3">
+                                    <property name="height_request">100</property>
+                                    <property name="visible">1</property>
+                                    <property name="can_focus">1</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="adjustment">adjustment1</property>
+                                    <property name="restrict_to_fill_level">0</property>
+                                    <property name="fill_level">75</property>
+                                    <property name="draw_value">1</property>
+                                    <property name="digits">-1</property>
+                                    <signal name="format-value" handler="scale_format_value"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkScale" id="scale4">
+                                    <property name="height_request">100</property>
+                                    <property name="visible">1</property>
+                                    <property name="sensitive">0</property>
+                                    <property name="can_focus">1</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="adjustment">adjustment1</property>
+                                    <property name="restrict_to_fill_level">0</property>
+                                    <property name="fill_level">75</property>
+                                    <property name="draw_value">1</property>
+                                    <property name="digits">-1</property>
+                                    <signal name="format-value" handler="scale_format_value_blank"/>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="fill">0</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">1</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">4</property>
+                      </packing>
+</child>
+*/
+
 COMBO_BOX_TEXT combo_box1
   SET Active 0
   SIGNAL "show" combobox3_show 
@@ -44,15 +248,6 @@ SWITCH switch2
   CMN Halign GTK_ALIGN_CENTER
 ;
 
-/*
-  <packing>
-    <property name="fill">0</property>
-    <property name="position">2</property>
-  </packing>
-</child>
-<child>
-*/
-
 TOGGLE_BUTTON_WITH_LABEL togglebutton1
   SET Label_text "togglebutton"
   CMN Receives_default TRUE
@@ -75,6 +270,10 @@ TOGGLE_BUTTON_WITH_LABEL togglebutton4
   CMN Sensitive FALSE
   CMN Receives_default TRUE
   SET Active TRUE
+;
+
+SEPARATOR separator2
+  SET Orientation GTK_ORIENTATION_VERTICAL
 ;
 
 VBOX vbox3h1
@@ -301,6 +500,8 @@ HBOX hbox1v1
   ADD vbox2h1
   ADD separator1
   ADD vbox3h1
+  ADD separator2
+  ADD vbox3h2
 ;
 
 VBOX vbox1

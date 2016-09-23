@@ -33,6 +33,12 @@ ADD                         return ADD;
 SIGNAL                      return SIGNAL;
 PACK                        return PACK;
 
+PROGRESS_BAR                return PROGRESS_BAR;
+Fraction                    return FRACTION;
+Inverted                    return INVERTED;
+Show_text                   return SHOW_TEXT;
+Pulse_step                  return PULSE_STEP;
+
 SWITCH                      return SWITCH;
 State                       return STATE;
 
