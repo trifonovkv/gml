@@ -47,6 +47,9 @@ typedef enum
         , TYPE_LINK_BUTTON
         , TYPE_SWITCH
         , TYPE_PROGRESS_BAR
+        , TYPE_LEVEL_BAR
+        , TYPE_SCALE
+        , TYPE_RANGE
 } widget_type;
 
 /* Keyboard accelerators and action */

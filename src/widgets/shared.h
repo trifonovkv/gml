@@ -17,7 +17,42 @@
 #include "link_button.h"
 #include "switch.h"
 #include "progress_bar.h"
+#include "level_bar.h"
+#include "scale.h"
         
+void set_digits(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_SCALE) {
+                scale_set_digits(setting);
+        } else if (type == TYPE_SPIN_BUTTON) {
+                spin_button_set_digits(setting);
+        }
+}
+
+void set_mode(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_LEVEL_BAR) {
+                level_bar_set_mode(setting);
+        } else if (type == TYPE_TOGGLE_BUTTON) {
+                toggle_button_set_mode(setting);
+        }
+}
+
+void set_inverted(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_LEVEL_BAR) {
+                level_bar_set_inverted(setting);
+        } else if (type == TYPE_PROGRESS_BAR) {
+                progress_bar_set_inverted(setting);
+        }
+}
+
 void set_ellipsize(char *setting)
 {
         widget_type type = getsymtype(this);
@@ -61,6 +96,8 @@ void set_value(char *setting)
                 spin_button_set_value(setting);
         } else if (type == TYPE_ADJUSTMENT) {
                 adjustment_set_value(setting);
+        } else if (type == TYPE_LEVEL_BAR) {
+                level_bar_set_value(setting);
         }
 }
 

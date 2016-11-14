@@ -1,3 +1,4 @@
 set invisible char in entry
 add const for args of functions
 in gml_bison.y change name of common rules
+add bison, flex and gtk3-devel check in configure script

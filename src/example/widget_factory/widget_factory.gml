@@ -1,9 +1,60 @@
-ADJUSTMENT adjustment
+ADJUSTMENT adjustment3
+  SET Upper 4.0
+  SET Value 1.0
+  SET Step_increment 1.0
+  SET Page_increment 1.0
+;
+
+ADJUSTMENT adjustment1
   SET Upper 100.0
   SET Lower 1.0
   SET Value 50.0
   SET Step_increment 1.0
   SET Page_increment 10.0
+;
+
+SCALE scale5
+  ARG GTK_ORIENTATION_HORIZONTAL
+  ARG adjustment3
+  SET Draw_value FALSE
+  SET Has_origin FALSE
+  SET Digits 0
+  SET Range_restrict_to_fill_level FALSE
+  SET Add_mark 0.0 GTK_POS_BOTTOM ""
+  SET Add_mark 1.0 GTK_POS_BOTTOM ""
+  SET Add_mark 2.0 GTK_POS_BOTTOM ""
+  SET Add_mark 3.0 GTK_POS_BOTTOM ""
+  SET Add_mark 4.0 GTK_POS_BOTTOM ""
+;
+
+SCALE scale2
+  ARG GTK_ORIENTATION_HORIZONTAL
+  ARG adjustment1
+  CMN Sensitive FALSE
+  SET Range_restrict_to_fill_level FALSE
+  SET Range_fill_level 75.0
+  SET Draw_value FALSE
+;
+                                  
+SCALE scale1
+  ARG GTK_ORIENTATION_HORIZONTAL
+  ARG adjustment1
+  SET Range_restrict_to_fill_level FALSE
+  SET Range_fill_level 75.0
+  SET Draw_value FALSE
+;
+
+LEVEL_BAR levelbar2
+  SET Max_value 5.0
+  SET Value 2.0
+  SET Mode GTK_LEVEL_BAR_MODE_DISCRETE
+  SET Add_offset_value "low" 1.0
+  SET Add_offset_value "high" 4.0
+  SET Add_offset_value "full" 5.0
+;
+
+LEVEL_BAR levelbar1
+  SET Value 0.6
 ;
 
 PROGRESS_BAR progressbar3
@@ -25,103 +76,15 @@ VBOX vbox3h2
   ADD progressbar1
   ADD progressbar2
   ADD progressbar3
+  ADD levelbar1
+  ADD levelbar2
+  ADD scale1
+  ADD scale2
+  ADD scale5
 ;
+                              
+
 /*
-                                             <child>
-                              <object class="GtkLevelBar" id="levelbar1">
-                                <property name="visible">1</property>
-                                <property name="value">0.6</property>
-                              </object>
-                              <packing>
-                                <property name="position">10</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLevelBar" id="levelbar2">
-                                <property name="visible">1</property>
-                                <property name="max-value">5</property>
-                                <property name="value">2</property>
-                                <property name="mode">1</property>
-                                <offsets>
-                                  <offset name="low" value="1"/>
-                                  <offset name="high" value="4"/>
-                                  <offset name="full" value="5"/>
-                                </offsets>
-                              </object>
-                              <packing>
-                                <property name="position">11</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="fill">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="box27">
-                            <property name="visible">1</property>
-                            <child>
-                              <object class="GtkBox" id="box24">
-                                <property name="visible">1</property>
-                                <property name="hexpand">1</property>
-                                <property name="orientation">vertical</property>
-                                <property name="homogeneous">1</property>
-                                <child>
-                                  <object class="GtkScale" id="scale1">
-                                    <property name="visible">1</property>
-                                    <property name="can_focus">1</property>
-                                    <property name="adjustment">adjustment1</property>
-                                    <property name="restrict_to_fill_level">0</property>
-                                    <property name="fill_level">75</property>
-                                    <property name="draw_value">0</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkScale" id="scale2">
-                                    <property name="visible">1</property>
-                                    <property name="sensitive">0</property>
-                                    <property name="can_focus">1</property>
-                                    <property name="adjustment">adjustment1</property>
-                                    <property name="restrict_to_fill_level">0</property>
-                                    <property name="fill_level">75</property>
-                                    <property name="draw_value">0</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="fill">0</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkScale" id="scale5">
-                            <property name="visible">1</property>
-                            <property name="can_focus">1</property>
-                            <property name="draw_value">0</property>
-                            <property name="has_origin">0</property>
-                            <property name="round_digits">0</property>
-                            <property name="adjustment">adjustment3</property>
-                            <property name="restrict_to_fill_level">0</property>
-                            <marks>
-                              <mark value="0" position="bottom"></mark>
-                              <mark value="1" position="bottom"></mark>
-                              <mark value="2" position="bottom"></mark>
-                              <mark value="3" position="bottom"></mark>
-                              <mark value="4" position="bottom"></mark>
-                            </marks>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
                         <child>
                           <object class="GtkBox" id="box25">
                             <property name="visible">1</property>
@@ -405,7 +368,7 @@ SPIN_BUTTON spin_button2
 
 SPIN_BUTTON spin_button1
   CMN Hexpand TRUE 
-  SET Adjustment adjustment
+  SET Adjustment adjustment1
 ;
 
 LABEL label2

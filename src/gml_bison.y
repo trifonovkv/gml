@@ -33,6 +33,9 @@
 #include "widgets/link_button.h"
 #include "widgets/switch.h"
 #include "widgets/progress_bar.h"
+#include "widgets/level_bar.h"
+#include "widgets/scale.h"
+#include "widgets/range.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -50,6 +53,15 @@ int yywrap()
 int yylex();
 
 %}
+%token RANGE_FILL_LEVEL RANGE_RESTRICT_TO_FILL_LEVEL RANGE_SHOW_FILL_LEVEL
+%token RANGE_ADJUSTMENT RANGE_INVERTED RANGE_VALUE RANGE_INCREMENTS RANGE_RANGE
+%token RANGE_ROUND_DIGITS RANGE_LOWER_STEPPER_SENSITIVITY 
+%token RANGE_UPPER_STEPPER_SENSITIVITY RANGE_FLIPPABLE RANGE_SLIDER_SIZE_FIXED 
+
+%token SCALE DRAW_VALUE HAS_ORIGIN VALUE_POS ADD_MARK
+
+%token LEVEL_BAR MIN_VALUE MAX_VALUE ADD_OFFSET_VALUE
+
 %token PROGRESS_BAR FRACTION INVERTED SHOW_TEXT PULSE_STEP 
 
 %token SWITCH STATE
@@ -144,7 +156,7 @@ int yylex();
 %token APPLICATION APP_ID APP_FLAGS ACCELS_FOR_ACTION
 
 %token INCLUDE SET ADD SIGNAL PACK IDENTIFIER STRING NUMBER SEMICOLON 
-%token HBOX VBOX WINDOW FLOAT CHAR OR
+%token HBOX VBOX WINDOW FLOAT CHAR OR ARG
 
 %union
 {
@@ -152,7 +164,7 @@ int yylex();
 }
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label
-%type <string> set_mnemonics set_orientation set_rgba
+%type <string> set_mnemonics set_orientation set_rgba arg_id
 %%
 
 main:
@@ -206,6 +218,8 @@ widget:
         | link_button_with_label
         | switch
         | progress_bar
+        | level_bar
+        | scale
         ;
 
 params: 
@@ -223,6 +237,10 @@ param:
         | stack_add
         | style
         | grid_add
+        ;
+
+arg_id:
+        ARG IDENTIFIER                                              { $$ = $2; }
         ;
 
 set_rgba:
@@ -257,6 +275,16 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+scale:
+        SCALE IDENTIFIER arg_id arg_id                { scale_new($2, $3, $4); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+level_bar:
+        LEVEL_BAR IDENTIFIER                              { level_bar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 progress_bar:
@@ -514,6 +542,9 @@ set:
         | set_uri
         | set_active
         | set_ellipsize
+        | set_inverted
+        | set_mode
+        | set_digits
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -626,7 +657,6 @@ set:
         | set_label_angle
         | set_label_track_visited_links
         | set_spin_button_adjustment
-        | set_spin_button_digits
         | set_spin_button_increments
         | set_spin_button_range
         | set_spin_button_update_policy
@@ -641,7 +671,6 @@ set:
         | set_grid_baseline_row
         | set_grid_row_baseline_position
         | set_radio_button_join_group
-        | set_toggle_button_mode
         | set_toggle_button_inconsistent
         | set_spinner_start
         | set_spinner_stop
@@ -666,17 +695,117 @@ set:
         | set_link_button_visited
         | set_switch_state
         | set_progress_bar_fraction
-        | set_progress_bar_inverted
         | set_progress_bar_show_text
         | set_progress_bar_pulse_step
+        | set_level_bar_min_value
+        | set_level_bar_max_value
+        | set_level_bar_add_offset_value
+        | set_scale_draw_value
+        | set_scale_has_origin
+        | set_scale_value_pos
+        | set_scale_add_mark
+        | set_range_fill_level
+        | set_range_restrict_to_fill_level
+        | set_range_show_fill_level
+        | set_range_adjustment
+        | set_range_inverted
+        | set_range_value
+        | set_range_increments
+        | set_range_range
+        | set_range_round_digits
+        | set_range_lower_stepper_sensitivity
+        | set_range_upper_stepper_sensitivity
+        | set_range_flippable
+        | set_range_slider_size_fixed
+        ;
+
+set_range_fill_level:
+        SET RANGE_FILL_LEVEL FLOAT                 { range_set_fill_level($3); }
+        ;
+
+set_range_restrict_to_fill_level:
+        SET RANGE_RESTRICT_TO_FILL_LEVEL IDENTIFIER 
+                                       { range_set_restrict_to_fill_level($3); }
+        ;
+
+set_range_show_fill_level:
+        SET RANGE_SHOW_FILL_LEVEL IDENTIFIER  { range_set_show_fill_level($3); }
+        ;
+
+set_range_adjustment:
+        SET RANGE_ADJUSTMENT IDENTIFIER            { range_set_adjustment($3); }
+        ;
+
+set_range_inverted:
+        SET RANGE_INVERTED IDENTIFIER                { range_set_inverted($3); }
+        ;
+
+set_range_value:
+        SET RANGE_VALUE FLOAT                           { range_set_value($3); }
+        ;
+
+set_range_increments:
+        SET RANGE_INCREMENTS FLOAT FLOAT       { range_set_increments($3, $4); }
+        ;
+
+set_range_range:
+        SET RANGE_RANGE FLOAT FLOAT                 { range_set_range($3, $4); }
+        ;
+
+set_range_round_digits:
+        SET RANGE_ROUND_DIGITS NUMBER            { range_set_round_digits($3); }
+        ;
+
+set_range_lower_stepper_sensitivity:
+        SET RANGE_LOWER_STEPPER_SENSITIVITY IDENTIFIER
+                                    { range_set_lower_stepper_sensitivity($3); }
+        ;
+
+set_range_upper_stepper_sensitivity:
+        SET RANGE_UPPER_STEPPER_SENSITIVITY IDENTIFIER
+                                    { range_set_upper_stepper_sensitivity($3); }
+        ;
+
+set_range_flippable:
+        SET RANGE_FLIPPABLE IDENTIFIER              { range_set_flippable($3); }
+        ;
+
+set_range_slider_size_fixed:
+        SET RANGE_SLIDER_SIZE_FIXED IDENTIFIER 
+                                            { range_set_slider_size_fixed($3); }
+        ;
+
+set_scale_draw_value:
+        SET DRAW_VALUE IDENTIFIER                  { scale_set_draw_value($3); }
+        ;
+
+set_scale_has_origin:
+        SET HAS_ORIGIN IDENTIFIER                  { scale_set_has_origin($3); }
+        ;
+
+set_scale_value_pos:
+        SET VALUE_POS IDENTIFIER                    { scale_set_value_pos($3); }
+        ;
+
+set_scale_add_mark:
+        SET ADD_MARK FLOAT IDENTIFIER STRING     { scale_add_mark($3, $4, $5); }
+        ;
+
+set_level_bar_min_value:
+        SET MIN_VALUE FLOAT                     { level_bar_set_min_value($3); }
+        ;
+
+set_level_bar_max_value:
+        SET MAX_VALUE FLOAT                     { level_bar_set_max_value($3); }
+        ;
+
+set_level_bar_add_offset_value:
+        SET ADD_OFFSET_VALUE STRING FLOAT 
+                                         { level_bar_add_offset_value($3, $4); }
         ;
 
 set_progress_bar_fraction:
         SET FRACTION FLOAT                    { progress_bar_set_fraction($3); }
-        ;
-
-set_progress_bar_inverted:
-        SET INVERTED IDENTIFIER               { progress_bar_set_inverted($3); }
         ;
 
 set_progress_bar_show_text:
@@ -779,10 +908,6 @@ set_spinner_stop:
         SET STOP                                             { spinner_stop(); }
         ;
 
-set_toggle_button_mode:
-        SET MODE IDENTIFIER                      { toggle_button_set_mode($3); }
-        ;
-
 set_toggle_button_inconsistent:
         SET INCONSISTENT IDENTIFIER      { toggle_button_set_inconsistent($3); }
         ;
@@ -818,10 +943,6 @@ set_grid_row_baseline_position:
 
 set_spin_button_adjustment:
         SET SET_ADJUSTMENT IDENTIFIER        { spin_button_set_adjustment($3); }
-        ;
-
-set_spin_button_digits:
-        SET DIGITS NUMBER                        { spin_button_set_digits($3); }
         ;
 
 set_spin_button_increments:
@@ -1311,6 +1432,18 @@ set_window_resizable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_digits:
+        SET DIGITS NUMBER                                    { set_digits($3); }
+        ;
+
+set_mode:
+        SET MODE IDENTIFIER                                    { set_mode($3); }
+        ;
+
+set_inverted:
+        SET INVERTED IDENTIFIER                            { set_inverted($3); }
         ;
 
 set_ellipsize:
