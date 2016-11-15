@@ -13,6 +13,48 @@ ADJUSTMENT adjustment1
   SET Page_increment 10.0
 ;
 
+SCALE scale4
+  ARG GTK_ORIENTATION_VERTICAL
+  ARG adjustment1
+  CMN Size_request 0 100
+  CMN Sensitive FALSE
+  SET Range_restrict_to_fill_level FALSE
+  SET Range_fill_level 75.0
+  SET Draw_value FALSE
+  SET Digits -1
+;
+
+SCALE scale3
+  ARG GTK_ORIENTATION_VERTICAL
+  ARG adjustment1
+  CMN Size_request 0 100
+  SET Range_restrict_to_fill_level FALSE
+  SET Range_fill_level 75.0
+  SET Draw_value FALSE
+  SET Digits -1
+;
+
+PROGRESS_BAR progressbar6
+  SET Orientation GTK_ORIENTATION_VERTICAL
+  SET Fraction 0.5
+  SET Inverted TRUE
+;
+
+PROGRESS_BAR progressbar5
+  SET Orientation GTK_ORIENTATION_VERTICAL
+  SET Fraction 0.5
+;
+
+HBOX hbox1v3
+  CMN Vexpand TRUE
+  SET Homogeneous TRUE
+  SET Spacing 6
+  ADD progressbar5
+  ADD progressbar6
+  ADD scale3
+  ADD scale4
+;
+
 SCALE scale5
   ARG GTK_ORIENTATION_HORIZONTAL
   ARG adjustment3
@@ -81,97 +123,8 @@ VBOX vbox3h2
   ADD scale1
   ADD scale2
   ADD scale5
+  ADD hbox1v3
 ;
-                              
-
-/*
-                        <child>
-                          <object class="GtkBox" id="box25">
-                            <property name="visible">1</property>
-                            <property name="homogeneous">1</property>
-                            <child>
-                              <object class="GtkBox" id="box28">
-                                <property name="visible">1</property>
-                                <property name="vexpand">1</property>
-                                <property name="spacing">6</property>
-                                <child>
-                                  <object class="GtkProgressBar" id="progressbar5">
-                                    <property name="visible">1</property>
-                                    <property name="orientation">vertical</property>
-                                    <property name="fraction">0.5</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkProgressBar" id="progressbar6">
-                                    <property name="visible">1</property>
-                                    <property name="orientation">vertical</property>
-                                    <property name="fraction">0.5</property>
-                                    <property name="inverted">1</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="fill">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkBox" id="box23">
-                                <property name="visible">1</property>
-                                <property name="vexpand">1</property>
-                                <property name="spacing">6</property>
-                                <child>
-                                  <object class="GtkScale" id="scale3">
-                                    <property name="height_request">100</property>
-                                    <property name="visible">1</property>
-                                    <property name="can_focus">1</property>
-                                    <property name="orientation">vertical</property>
-                                    <property name="adjustment">adjustment1</property>
-                                    <property name="restrict_to_fill_level">0</property>
-                                    <property name="fill_level">75</property>
-                                    <property name="draw_value">1</property>
-                                    <property name="digits">-1</property>
-                                    <signal name="format-value" handler="scale_format_value"/>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkScale" id="scale4">
-                                    <property name="height_request">100</property>
-                                    <property name="visible">1</property>
-                                    <property name="sensitive">0</property>
-                                    <property name="can_focus">1</property>
-                                    <property name="orientation">vertical</property>
-                                    <property name="adjustment">adjustment1</property>
-                                    <property name="restrict_to_fill_level">0</property>
-                                    <property name="fill_level">75</property>
-                                    <property name="draw_value">1</property>
-                                    <property name="digits">-1</property>
-                                    <signal name="format-value" handler="scale_format_value_blank"/>
-                                  </object>
-                                  <packing>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="fill">0</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">1</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">4</property>
-                      </packing>
-</child>
-*/
 
 COMBO_BOX_TEXT combo_box1
   SET Active 0

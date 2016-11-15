@@ -36,6 +36,7 @@
 #include "widgets/level_bar.h"
 #include "widgets/scale.h"
 #include "widgets/range.h"
+#include "widgets/orientation.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -717,6 +718,12 @@ set:
         | set_range_upper_stepper_sensitivity
         | set_range_flippable
         | set_range_slider_size_fixed
+        | set_orientable_orientation
+        ;
+
+
+set_orientable_orientation:
+        SET ORIENTATION IDENTIFIER           { orientable_set_orientation($3); }
         ;
 
 set_range_fill_level:

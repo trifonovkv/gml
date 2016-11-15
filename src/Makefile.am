@@ -46,6 +46,7 @@ gml_SOURCES =                                 \
 								widgets/level_bar.c           \
 								widgets/scale.c               \
 								widgets/range.c               \
+							  widgets/orientation.c         \
 								$(NULL)
 
 noinst_HEADERS = gml.h
