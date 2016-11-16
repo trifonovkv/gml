@@ -37,6 +37,7 @@
 #include "widgets/scale.h"
 #include "widgets/range.h"
 #include "widgets/orientation.h"
+#include "widgets/frame.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -54,6 +55,8 @@ int yywrap()
 int yylex();
 
 %}
+%token FRAME LABEL_WIDGET LABEL_ALIGN 
+
 %token RANGE_FILL_LEVEL RANGE_RESTRICT_TO_FILL_LEVEL RANGE_SHOW_FILL_LEVEL
 %token RANGE_ADJUSTMENT RANGE_INVERTED RANGE_VALUE RANGE_INCREMENTS RANGE_RANGE
 %token RANGE_ROUND_DIGITS RANGE_LOWER_STEPPER_SENSITIVITY 
@@ -221,6 +224,7 @@ widget:
         | progress_bar
         | level_bar
         | scale
+        | frame
         ;
 
 params: 
@@ -277,6 +281,11 @@ bbox_child_set:
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
+
+frame:
+        FRAME IDENTIFIER                                      { frame_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+;
 
 scale:
         SCALE IDENTIFIER arg_id arg_id                { scale_new($2, $3, $4); }
@@ -546,6 +555,7 @@ set:
         | set_inverted
         | set_mode
         | set_digits
+        | set_shadow_type
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -594,7 +604,6 @@ set:
         | set_header_bar_decoration_layout
         | set_scrolled_window_policy
         | set_scrolled_window_placement
-        | set_scrolled_window_shadow_type
         | set_scrolled_window_hadjustment
         | set_scrolled_window_vadjustment
         | set_scrolled_window_min_content_width 
@@ -719,8 +728,26 @@ set:
         | set_range_flippable
         | set_range_slider_size_fixed
         | set_orientable_orientation
+        /*
+         *| set_frame_label
+         */
+        | set_frame_label_widget
+        | set_frame_label_align
         ;
 
+/*
+ *set_frame_label:
+ *        SET LABEL IDENTIFIER                            { frame_set_label($3); }
+ *        ;
+ *
+ */
+set_frame_label_widget:
+        SET LABEL_WIDGET IDENTIFIER              { frame_set_label_widget($3); }
+        ;
+
+set_frame_label_align:
+        SET LABEL_ALIGN FLOAT FLOAT           { frame_set_label_align($3, $4); }
+        ;
 
 set_orientable_orientation:
         SET ORIENTATION IDENTIFIER           { orientable_set_orientation($3); }
@@ -1215,10 +1242,12 @@ set_scrolled_window_placement:
         SET PLACEMENT IDENTIFIER          { scrolled_window_set_placement($3); }
         ;
 
-set_scrolled_window_shadow_type:
-        SET SHADOW_TYPE IDENTIFIER      { scrolled_window_set_shadow_type($3); }
-        ;
-
+/*
+ *set_scrolled_window_shadow_type:
+ *        SET SHADOW_TYPE IDENTIFIER      { scrolled_window_set_shadow_type($3); }
+ *        ;
+ *
+ */
 set_scrolled_window_hadjustment:
         SET HADJUSTMENT IDENTIFIER      { scrolled_window_set_hadjustment($3); }
         ;
@@ -1439,6 +1468,10 @@ set_window_resizable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_shadow_type:
+        SET SHADOW_TYPE IDENTIFIER                      { set_shadow_type($3); }
         ;
 
 set_digits:

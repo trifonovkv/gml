@@ -19,7 +19,20 @@
 #include "progress_bar.h"
 #include "level_bar.h"
 #include "scale.h"
+#include "scrolled_window.h"
+#include "frame.h"
         
+void set_shadow_type(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_FRAME) {
+                frame_set_shadow_type(setting);
+        } else if (type == TYPE_SCROLLED_WINDOW) {
+                scrolled_window_set_shadow_type(setting);
+        }
+}
+
 void set_digits(char *setting)
 {
         widget_type type = getsymtype(this);

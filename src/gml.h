@@ -50,6 +50,7 @@ typedef enum
         , TYPE_LEVEL_BAR
         , TYPE_SCALE
         , TYPE_RANGE
+        , TYPE_FRAME
 } widget_type;
 
 /* Keyboard accelerators and action */

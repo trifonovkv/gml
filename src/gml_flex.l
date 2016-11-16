@@ -12,8 +12,8 @@ void comment();
 %%
 
 "/*"                                  comment();
-{DIGIT}+                              yylval.string=strdup(yytext);    return NUMBER; 
-{DIGIT}+\.{DIGIT}+                    yylval.string=strdup(yytext);    return FLOAT;
+[+-]?{DIGIT}+                         yylval.string=strdup(yytext); return NUMBER; 
+[+-]?{DIGIT}+\.{DIGIT}+               yylval.string=strdup(yytext); return FLOAT;
 STYLE                                 return STYLE;
 APPLICATION                           return APPLICATION;
 STACK                                 return STACK;
@@ -33,6 +33,10 @@ ADD                                   return ADD;
 SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
+
+FRAME                                 return FRAME;
+Label_widget                          return LABEL_WIDGET;
+Label_align                           return LABEL_ALIGN;
 
 Range_fill_level                      return RANGE_FILL_LEVEL;
 Range_restrict_to_fill_level          return RANGE_RESTRICT_TO_FILL_LEVEL;

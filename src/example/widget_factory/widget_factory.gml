@@ -13,6 +13,64 @@ ADJUSTMENT adjustment1
   SET Page_increment 10.0
 ;
 
+LABEL label18
+  SET Text "Etched out"
+  SET Label_use_markup TRUE
+;
+
+FRAME frame4
+  SET Shadow_type GTK_SHADOW_ETCHED_OUT
+  SET Label_widget label18
+;
+
+LABEL label17
+  SET Text "Etched in"
+  SET Label_use_markup TRUE
+;
+
+FRAME frame3
+  SET Label_widget label17
+  SET Shadow_type GTK_SHADOW_ETCHED_IN
+;
+
+
+LABEL label2
+  SET Text "Out"
+  SET Label_use_markup TRUE
+;
+
+FRAME frame2
+  SET Shadow_type GTK_SHADOW_OUT
+  SET Label_widget label2
+;
+
+LABEL label1
+  SET Text "In"
+  SET Label_use_markup TRUE
+;
+
+FRAME frame1
+  SET Shadow_type GTK_SHADOW_IN
+  SET Label_widget label1
+;
+
+VBOX box26
+  SET Homogeneous TRUE
+  SET Spacing 6
+  ADD frame1
+  ADD frame2
+  ADD frame3
+  ADD frame4
+  PACK frame1 Expand TRUE
+  PACK frame2 Expand TRUE
+  PACK frame3 Expand TRUE
+  PACK frame4 Expand TRUE
+;
+
+SEPARATOR separator3
+  SET Orientation GTK_ORIENTATION_VERTICAL
+;
+
 SCALE scale4
   ARG GTK_ORIENTATION_VERTICAL
   ARG adjustment1
@@ -324,21 +382,21 @@ SPIN_BUTTON spin_button1
   SET Adjustment adjustment1
 ;
 
-LABEL label2
+LABEL label2s
   CMN Hexpand TRUE 
   SET Text "label"
   CMN Sensitive FALSE
 ;
 
-LABEL label1
+LABEL label1s
   CMN Hexpand TRUE 
   SET Text "label"
 ;
 
 HBOX hbox4v2
   SET Spacing 20
-  ADD label1
-  ADD label2
+  ADD label1s
+  ADD label2s
   ADD spin_button1
   ADD spin_button2
 ;
@@ -418,6 +476,8 @@ HBOX hbox1v1
   ADD vbox3h1
   ADD separator2
   ADD vbox3h2
+  ADD separator3
+  ADD box26
 ;
 
 VBOX vbox1
