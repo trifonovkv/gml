@@ -48,6 +48,7 @@ gml_SOURCES =                                 \
 								widgets/range.c               \
 							  widgets/orientation.c         \
 								widgets/frame.c               \
+								widgets/tree_view.c           \
 								$(NULL)
 
 noinst_HEADERS = gml.h

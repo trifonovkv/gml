@@ -51,6 +51,7 @@ typedef enum
         , TYPE_SCALE
         , TYPE_RANGE
         , TYPE_FRAME
+        , TYPE_TREE_VIEW
 } widget_type;
 
 /* Keyboard accelerators and action */

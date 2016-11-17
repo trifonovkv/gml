@@ -12,6 +12,134 @@ ADJUSTMENT adjustment1
   SET Step_increment 1.0
   SET Page_increment 10.0
 ;
+                          
+SCROLLED_WINDOW scrolledwindow1
+  CMN Size_request 0 150
+  SET Policy GTK_POLICY_AUTOMATIC GTK_POLICY_ALWAYS
+  SET Shadow_type GTK_SHADOW_IN
+;
+
+VBOX box4
+  SET Homogeneous TRUE
+  SET Spacing 6
+  ADD scrolledwindow1
+;
+
+SEPARATOR separator4
+  SET Orientation GTK_ORIENTATION_VERTICAL
+;
+
+/*
+                            <child>
+                              <object class="GtkTreeView" id="treeview1">
+                                <property name="visible">1</property>
+                                <property name="can_focus">1</property>
+                                <property name="model">liststore1</property>
+                                <property name="headers_clickable">0</property>
+                                <property name="search_column">0</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection"/>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                                    <property name="title" translatable="yes">Cool</property>
+                                    <child>
+                                      <object class="GtkCellRendererToggle" id="cellrenderertoggle1"/>
+                                      <attributes>
+                                        <attribute name="active">0</attribute>
+                                        <attribute name="radio">4</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                                    <property name="title" translatable="yes">Icon</property>
+                                    <property name="reorderable">1</property>
+                                    <child>
+                                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
+                                      <attributes>
+                                        <attribute name="icon_name">1</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                                    <property name="title" translatable="yes">Name</property>
+                                    <property name="resizable">1</property>
+                                    <property name="reorderable">1</property>
+                                    <property name="sort-indicator">1</property>
+                                    <property name="sort-column-id">2</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext3">
+                                        <property name="ellipsize">end</property>
+                                      </object>
+                                      <attributes>
+                                        <attribute name="text">2</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                                    <property name="title" translatable="yes">Nick</property>
+                                    <property name="resizable">1</property>
+                                    <property name="reorderable">1</property>
+                                    <property name="sort-indicator">1</property>
+                                    <property name="sort-column-id">3</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext4">
+                                        <property name="ellipsize">end</property>
+                                      </object>
+                                      <attributes>
+                                        <attribute name="text">3</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScrolledWindow" id="scrolledwindow2">
+                            <property name="visible">1</property>
+                            <property name="can_focus">1</property>
+                            <property name="shadow_type">in</property>
+                            <child>
+                              <object class="GtkTextView" id="textview1">
+                                <property name="visible">1</property>
+                                <property name="can_focus">1</property>
+                                <property name="buffer">textbuffer1</property>
+                                <property name="wrap_mode">2</property>
+                                <property name="left_margin">10</property>
+                                <property name="right_margin">10</property>
+                                <property name="populate_all">1</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">1</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">1</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+<child>
+*/
 
 LABEL label18
   SET Text "Etched out"
@@ -32,7 +160,6 @@ FRAME frame3
   SET Label_widget label17
   SET Shadow_type GTK_SHADOW_ETCHED_IN
 ;
-
 
 LABEL label2
   SET Text "Out"
@@ -478,6 +605,8 @@ HBOX hbox1v1
   ADD vbox3h2
   ADD separator3
   ADD box26
+  ADD separator4
+  ADD box4
 ;
 
 VBOX vbox1

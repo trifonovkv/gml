@@ -34,6 +34,25 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+Tree_view                             return TREE_VIEW;
+Level_indentation                     return LEVEL_INDENTATION;
+Show_expanders                        return SHOW_EXPANDERS;
+Headers_visible                       return HEADERS_VISIBLE;
+Headers_clickable                     return HEADERS_CLICKABLE;
+Activate_on_single_click              return ACTIVATE_ON_SINGLE_CLICK;
+Expander_column                       return EXPANDER_COLUMN;
+Reorderable                           return REORDERABLE;
+Enable_search                         return ENABLE_SEARCH;
+Search_column                         return SEARCH_COLUMN;
+Search_entry                          return SEARCH_ENTRY;
+Fixed_height_mode                     return FIXED_HEIGHT_MODE;
+Hover_selection                       return HOVER_SELECTION;
+Hover_expand                          return HOVER_EXPAND;
+Rubber_banding                        return RUBBER_BANDING;
+Enable_tree_lines                     return ENABLE_TREE_LINES;
+Grid_lines                            return GRID_LINES;
+Tooltip_column                        return TOOLTIP_COLUMN;
+
 FRAME                                 return FRAME;
 Label_widget                          return LABEL_WIDGET;
 Label_align                           return LABEL_ALIGN;

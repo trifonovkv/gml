@@ -21,7 +21,19 @@
 #include "scale.h"
 #include "scrolled_window.h"
 #include "frame.h"
+#include "tree_view.h"
         
+void set_model(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW) {
+                tree_view_set_model(setting);
+        } else if (type == TYPE_COMBO_BOX) {
+                combo_box_set_model(setting);
+        }
+}
+
 void set_shadow_type(char *setting)
 {
         widget_type type = getsymtype(this);

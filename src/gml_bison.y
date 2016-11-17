@@ -38,6 +38,7 @@
 #include "widgets/range.h"
 #include "widgets/orientation.h"
 #include "widgets/frame.h"
+#include "widgets/tree_view.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -55,6 +56,12 @@ int yywrap()
 int yylex();
 
 %}
+%token TREE_VIEW LEVEL_INDENTATION SHOW_EXPANDERS HEADERS_VISIBLE
+%token HEADERS_CLICKABLE ACTIVATE_ON_SINGLE_CLICK EXPANDER_COLUMN REORDERABLE
+%token ENABLE_SEARCH SEARCH_COLUMN SEARCH_ENTRY FIXED_HEIGHT_MODE
+%token HOVER_SELECTION HOVER_EXPAND RUBBER_BANDING ENABLE_TREE_LINES GRID_LINES
+%token TOOLTIP_COLUMN
+
 %token FRAME LABEL_WIDGET LABEL_ALIGN 
 
 %token RANGE_FILL_LEVEL RANGE_RESTRICT_TO_FILL_LEVEL RANGE_SHOW_FILL_LEVEL
@@ -225,6 +232,7 @@ widget:
         | level_bar
         | scale
         | frame
+        | tree_view
         ;
 
 params: 
@@ -280,6 +288,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+tree_view:
+        TREE_VIEW IDENTIFIER                              { tree_view_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 frame:
@@ -553,9 +566,10 @@ set:
         | set_active
         | set_ellipsize
         | set_inverted
-        | set_mode
+        | set_model
         | set_digits
         | set_shadow_type
+        | set_mode
         | set_window_default_size
         | set_window_resizable
         | set_window_deletable
@@ -646,7 +660,6 @@ set:
         | set_combo_box_id_column
         | set_combo_box_active
         | set_combo_box_active_id
-        | set_combo_box_model
         | set_combo_box_button_sensitivity
         | set_combo_box_entry_text_column
         | set_combo_box_popup_fixed_width
@@ -728,19 +741,99 @@ set:
         | set_range_flippable
         | set_range_slider_size_fixed
         | set_orientable_orientation
-        /*
-         *| set_frame_label
-         */
         | set_frame_label_widget
         | set_frame_label_align
+        | set_tree_view_level_indentation
+        | set_tree_view_show_expanders
+        | set_tree_view_headers_visible
+        | set_tree_view_headers_clickable
+        | set_tree_view_activate_on_single_click
+        | set_tree_view_expander_column
+        | set_tree_view_reorderable
+        | set_tree_view_enable_search
+        | set_tree_view_search_column
+        | set_tree_view_search_entry
+        | set_tree_view_fixed_height_mode
+        | set_tree_view_hover_selection
+        | set_tree_view_hover_expand
+        | set_tree_view_rubber_banding
+        | set_tree_view_enable_tree_lines
+        | set_tree_view_grid_lines
+        | set_tree_view_tooltip_column
         ;
 
-/*
- *set_frame_label:
- *        SET LABEL IDENTIFIER                            { frame_set_label($3); }
- *        ;
- *
- */
+set_tree_view_level_indentation:
+        SET LEVEL_INDENTATION NUMBER    { tree_view_set_level_indentation($3); }
+        ;
+
+set_tree_view_show_expanders:
+        SET SHOW_EXPANDERS IDENTIFIER      { tree_view_set_show_expanders($3); }
+        ;
+
+set_tree_view_headers_visible:
+        SET HEADERS_VISIBLE IDENTIFIER    { tree_view_set_headers_visible($3); }
+        ;
+
+set_tree_view_headers_clickable:
+        SET HEADERS_CLICKABLE IDENTIFIER
+                                        { tree_view_set_headers_clickable($3); }
+        ;
+
+set_tree_view_activate_on_single_click:
+        SET ACTIVATE_ON_SINGLE_CLICK IDENTIFIER
+                                 { tree_view_set_activate_on_single_click($3); }
+        ;
+
+set_tree_view_expander_column:
+        SET EXPANDER_COLUMN IDENTIFIER    { tree_view_set_expander_column($3); }
+        ;
+
+set_tree_view_reorderable:
+        SET REORDERABLE IDENTIFIER            { tree_view_set_reorderable($3); }
+        ;
+
+set_tree_view_enable_search:
+        SET ENABLE_SEARCH IDENTIFIER        { tree_view_set_enable_search($3); }
+        ;
+
+set_tree_view_search_column:
+        SET SEARCH_COLUMN IDENTIFIER        { tree_view_set_search_column($3); }
+        ;
+
+set_tree_view_search_entry:
+        SET SEARCH_ENTRY IDENTIFIER          { tree_view_set_search_entry($3); }
+        ;
+
+set_tree_view_fixed_height_mode:
+        SET FIXED_HEIGHT_MODE IDENTIFIER
+                                        { tree_view_set_fixed_height_mode($3); }
+        ;
+
+set_tree_view_hover_selection:
+        SET HOVER_SELECTION IDENTIFIER    { tree_view_set_hover_selection($3); }
+        ;
+
+set_tree_view_hover_expand:
+        SET HOVER_EXPAND IDENTIFIER          { tree_view_set_hover_expand($3); }
+        ;
+
+set_tree_view_rubber_banding:
+        SET RUBBER_BANDING IDENTIFIER      { tree_view_set_rubber_banding($3); }
+        ;
+
+set_tree_view_enable_tree_lines:
+        SET ENABLE_TREE_LINES IDENTIFIER
+                                        { tree_view_set_enable_tree_lines($3); }
+        ;
+
+set_tree_view_grid_lines:
+        SET GRID_LINES IDENTIFIER              { tree_view_set_grid_lines($3); }
+        ;
+
+set_tree_view_tooltip_column:
+        SET TOOLTIP_COLUMN IDENTIFIER      { tree_view_set_tooltip_column($3); }
+        ;
+
 set_frame_label_widget:
         SET LABEL_WIDGET IDENTIFIER              { frame_set_label_widget($3); }
         ;
@@ -1097,10 +1190,6 @@ set_combo_box_active_id:
         SET ACTIVE_ID STRING                    { combo_box_set_active_id($3); }
         ;
 
-set_combo_box_model:
-        SET MODEL IDENTIFIER                        { combo_box_set_model($3); }
-        ;
-
 set_combo_box_button_sensitivity:
         SET BUTTON_SENSITIVITY IDENTIFIER 
                                        { combo_box_set_button_sensitivity($3); }
@@ -1242,12 +1331,6 @@ set_scrolled_window_placement:
         SET PLACEMENT IDENTIFIER          { scrolled_window_set_placement($3); }
         ;
 
-/*
- *set_scrolled_window_shadow_type:
- *        SET SHADOW_TYPE IDENTIFIER      { scrolled_window_set_shadow_type($3); }
- *        ;
- *
- */
 set_scrolled_window_hadjustment:
         SET HADJUSTMENT IDENTIFIER      { scrolled_window_set_hadjustment($3); }
         ;
@@ -1468,6 +1551,10 @@ set_window_resizable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_model:
+        SET MODEL IDENTIFIER                                  { set_model($3); }
         ;
 
 set_shadow_type:
