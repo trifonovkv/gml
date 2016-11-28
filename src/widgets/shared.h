@@ -23,7 +23,52 @@
 #include "frame.h"
 #include "tree_view.h"
 #include "cell_renderer_toggle.h"
+#include "tree_view_column.h"
         
+void set_reorderable(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_set_reorderable(setting);
+        } else if (type == TYPE_TREE_VIEW) {
+                tree_view_set_reorderable(setting);
+        }
+}
+
+void set_spacing(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_set_spacing(setting);
+        } else if (type == TYPE_VBOX || type == TYPE_HBOX) {
+                box_set_spacing(setting);
+        }
+}
+
+void set_alignment(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_set_alignment(setting);
+        } else if (type == TYPE_WINDOW) {
+                entry_set_alignment(setting);
+        }
+}
+
+void set_resizable(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_set_resizable(setting);
+        } else if (type == TYPE_WINDOW) {
+                window_set_resizable(setting);
+        }
+}
+
 void set_model(char *setting)
 {
         widget_type type = getsymtype(this);
@@ -181,6 +226,8 @@ void set_title(char *string)
                 color_button_set_title(string);
         } else if (type == TYPE_FILE_CHOOSER_BUTTON) {
                 file_chooser_button_set_title(string);
+        } else if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_set_title(string);
         }
 }
 

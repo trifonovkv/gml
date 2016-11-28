@@ -34,6 +34,18 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+TREE_VIEW_COLUMN                      return TREE_VIEW_COLUMN;
+Sizing                                return SIZING;
+Fixed_width                           return FIXED_WIDTH;
+Min_width                             return MIN_WIDTH;
+Max_width                             return MAX_WIDTH;
+Clickable                             return CLICKABLE;
+Widget                                return WIDGET;
+Sort_column_id                        return SORT_COLUMN_ID;
+Sort_indicator                        return SORT_INDICATOR;
+Sort_order                            return SORT_ORDER;
+Atribute                              return ATRIBUTE;
+
 CELL_RENDERER_TOGGLE                  return CELL_RENDERER_TOGGLE;
 Radio                                 return RADIO;
 Activatable                           return ACTIVATABLE;

@@ -40,6 +40,7 @@
 #include "widgets/frame.h"
 #include "widgets/tree_view.h"
 #include "widgets/cell_renderer_toggle.h"
+#include "widgets/tree_view_column.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -57,6 +58,9 @@ int yywrap()
 int yylex();
 
 %}
+%token TREE_VIEW_COLUMN SIZING FIXED_WIDTH MIN_WIDTH MAX_WIDTH
+%token CLICKABLE WIDGET SORT_COLUMN_ID SORT_INDICATOR SORT_ORDER ATRIBUTE
+
 %token CELL_RENDERER_TOGGLE RADIO ACTIVATABLE
 
 %token TREE_VIEW LEVEL_INDENTATION SHOW_EXPANDERS HEADERS_VISIBLE
@@ -237,6 +241,7 @@ widget:
         | frame
         | tree_view
         | cell_renderer_toggle
+        | tree_view_column
         ;
 
 params: 
@@ -292,6 +297,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+tree_view_column:
+        TREE_VIEW_COLUMN IDENTIFIER                { tree_view_column_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 cell_renderer_toggle:
@@ -579,8 +589,14 @@ set:
         | set_digits
         | set_shadow_type
         | set_mode
+        | set_resizable
+        | set_alignment
+        | set_spacing
+        | set_reorderable                
         | set_window_default_size
-        | set_window_resizable
+        /*
+         * | set_window_resizable
+         */
         | set_window_deletable
         | set_window_urgent
         | set_window_accept_focus
@@ -606,10 +622,14 @@ set:
         | set_window_skip_pager_hint
         | set_window_urgency_hint
         | set_window_titlebar
-        | set_box_spacing
+        /*
+         * | set_box_spacing
+         */
         | set_box_baseline
         | set_entry_max_length
-        | set_entry_alignment
+        /*
+         * | set_entry_alignment
+         */
         | set_entry_placeholder_text
         | set_entry_activates_default
         | set_entry_overwrite_mode
@@ -758,7 +778,9 @@ set:
         | set_tree_view_headers_clickable
         | set_tree_view_activate_on_single_click
         | set_tree_view_expander_column
-        | set_tree_view_reorderable
+        /*
+         * | set_tree_view_reorderable
+         */
         | set_tree_view_enable_search
         | set_tree_view_search_column
         | set_tree_view_search_entry
@@ -771,6 +793,106 @@ set:
         | set_tree_view_tooltip_column
         | set_cell_renderer_toggle_radio
         | set_cell_renderer_toggle_activatable
+        /*
+         * | set_tree_view_column_spacing
+         */
+        | set_tree_view_column_visible
+        /*
+         * | set_tree_view_column_resizable
+         */
+        | set_tree_view_column_sizing
+        | set_tree_view_column_fixed_width
+        | set_tree_view_column_min_width
+        | set_tree_view_column_max_width
+        /*
+         * | set_tree_view_column_title
+         */
+        | set_tree_view_column_expand
+        | set_tree_view_column_clickable
+        | set_tree_view_column_widget
+        /*
+         * | set_tree_view_column_alignment
+         */
+        /*
+         * | set_tree_view_column_reorderable
+         */
+        | set_tree_view_column_sort_column_id
+        | set_tree_view_column_sort_indicator
+        | set_tree_view_column_sort_order
+        ;
+
+/*
+ * set_tree_view_column_spacing:
+ *         SET SPACING IDENTIFIER             { tree_view_column_set_spacing($3); }
+ *         ;
+ * 
+ */
+set_tree_view_column_visible:
+        SET VISIBLE IDENTIFIER             { tree_view_column_set_visible($3); }
+        ;
+
+/*
+ * set_tree_view_column_resizable:
+ *         SET RESIZABLE IDENTIFIER         { tree_view_column_set_resizable($3); }
+ *         ;
+ */
+set_tree_view_column_sizing:
+        SET SIZING IDENTIFIER               { tree_view_column_set_sizing($3); }
+        ;
+
+set_tree_view_column_fixed_width:
+        SET FIXED_WIDTH NUMBER         { tree_view_column_set_fixed_width($3); }
+        ;
+
+set_tree_view_column_min_width:
+        SET MIN_WIDTH NUMBER             { tree_view_column_set_min_width($3); }
+        ;
+
+set_tree_view_column_max_width:
+        SET MAX_WIDTH NUMBER             { tree_view_column_set_max_width($3); }
+        ;
+
+/*
+ * set_tree_view_column_title:
+ *         SET TITLE STRING                     { tree_view_column_set_title($3); }
+ *         ;
+ * 
+ */
+set_tree_view_column_expand:
+        SET EXPAND IDENTIFIER               { tree_view_column_set_expand($3); }
+        ;
+
+set_tree_view_column_clickable:
+        SET CLICKABLE IDENTIFIER         { tree_view_column_set_clickable($3); }
+        ;
+
+set_tree_view_column_widget:
+        SET WIDGET IDENTIFIER               { tree_view_column_set_widget($3); }
+        ;
+
+/*
+ * set_tree_view_column_alignment:
+ *         SET ALIGNMENT IDENTIFIER         { tree_view_column_set_alignment($3); }
+ *         ;
+ * 
+ */
+/*
+ * set_tree_view_column_reorderable:
+ *         SET REORDERABLE IDENTIFIER     { tree_view_column_set_reorderable($3); }
+ *         ;
+ */
+
+set_tree_view_column_sort_column_id:
+        SET SORT_COLUMN_ID NUMBER   { tree_view_column_set_sort_column_id($3); }
+        ;
+
+set_tree_view_column_sort_indicator:
+        SET SORT_INDICATOR IDENTIFIER 
+                                    { tree_view_column_set_sort_indicator($3); }
+        ;
+
+set_tree_view_column_sort_order:
+        SET SORT_ORDER IDENTIFIER       { tree_view_column_set_sort_order($3); }
         ;
 
 set_cell_renderer_toggle_radio:
@@ -807,10 +929,12 @@ set_tree_view_expander_column:
         SET EXPANDER_COLUMN IDENTIFIER    { tree_view_set_expander_column($3); }
         ;
 
-set_tree_view_reorderable:
-        SET REORDERABLE IDENTIFIER            { tree_view_set_reorderable($3); }
-        ;
-
+/*
+ * set_tree_view_reorderable:
+ *         SET REORDERABLE IDENTIFIER            { tree_view_set_reorderable($3); }
+ *         ;
+ * 
+ */
 set_tree_view_enable_search:
         SET ENABLE_SEARCH IDENTIFIER        { tree_view_set_enable_search($3); }
         ;
@@ -1444,10 +1568,12 @@ set_entry_visibility:
         SET VISIBILITY IDENTIFIER                  { entry_set_visibility($3); }
         ;
 
-set_entry_alignment:
-        SET ALIGNMENT FLOAT                         { entry_set_alignment($3); }
-        ;
-
+/*
+ * set_entry_alignment:
+ *         SET ALIGNMENT FLOAT                         { entry_set_alignment($3); }
+ *         ;
+ * 
+ */
 set_entry_max_length:
         SET MAX_LENGTH NUMBER                      { entry_set_max_length($3); }
         ;
@@ -1456,10 +1582,12 @@ set_box_baseline:
         SET BASELINE IDENTIFIER               { box_set_baseline_position($3); }
         ;
 
-set_box_spacing:
-        SET SPACING NUMBER                              { box_set_spacing($3); }
-        ;
-
+/*
+ * set_box_spacing:
+ *         SET SPACING NUMBER                              { box_set_spacing($3); }
+ *         ;
+ * 
+ */
 set_window_titlebar:
         SET TITLEBAR IDENTIFIER                     { window_set_titlebar($3); }
         ;
@@ -1564,12 +1692,30 @@ set_window_deletable:
         SET DELETABLE IDENTIFIER                   { window_set_deletable($3); }
         ;
 
-set_window_resizable:
-        SET RESIZABLE IDENTIFIER                   { window_set_resizable($3); }
-        ;
-
+/*
+ * set_window_resizable:
+ *         SET RESIZABLE IDENTIFIER                   { window_set_resizable($3); }
+ *         ;
+ * 
+ */
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_reorderable:
+        SET REORDERABLE IDENTIFIER                      { set_reorderable($3); }
+        ;
+
+set_spacing:
+        SET SPACING NUMBER                                  { set_spacing($3); }
+        ;
+
+set_alignment:
+        SET ALIGNMENT IDENTIFIER                          { set_alignment($3); }
+        ;
+
+set_resizable:
+        SET RESIZABLE IDENTIFIER                          { set_resizable($3); }
         ;
 
 set_model:
@@ -1652,6 +1798,8 @@ stack_add:
 
 add:
         ADD IDENTIFIER                                    { container_add($2); }
+        | ADD ATRIBUTE IDENTIFIER STRING NUMBER
+                                 { tree_view_column_add_attribute($3, $4, $5); }
         ;
 
 common:

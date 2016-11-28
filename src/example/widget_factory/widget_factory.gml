@@ -29,16 +29,14 @@ ADJUSTMENT adjustment1
 
 CELL_RENDERER_TOGGLE cellrenderertoggle1
   SET Active FALSE
-;
 /*
 <attribute name="radio">4</attribute>
 */
+;
 
-/*
 TREE_VIEW_COLUMN treeviewcolumn3
   SET Title "Cool"
 ;
-*/
 
 /*
                                 </child>
