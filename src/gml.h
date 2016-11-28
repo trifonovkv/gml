@@ -52,6 +52,7 @@ typedef enum
         , TYPE_RANGE
         , TYPE_FRAME
         , TYPE_TREE_VIEW
+        , TYPE_CELL_RENDERER_TOGGLE
 } widget_type;
 
 /* Keyboard accelerators and action */

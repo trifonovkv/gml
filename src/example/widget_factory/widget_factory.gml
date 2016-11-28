@@ -12,6 +12,85 @@ ADJUSTMENT adjustment1
   SET Step_increment 1.0
   SET Page_increment 10.0
 ;
+
+/*
+                            <child>
+                              <object class="GtkTreeView" id="treeview1">
+                                <property name="visible">1</property>
+                                <property name="can_focus">1</property>
+                                <property name="model">liststore1</property>
+                                <property name="headers_clickable">0</property>
+                                <property name="search_column">0</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection"/>
+                                </child>
+                                <child>
+*/
+
+CELL_RENDERER_TOGGLE cellrenderertoggle1
+  SET Active FALSE
+;
+/*
+<attribute name="radio">4</attribute>
+*/
+
+/*
+TREE_VIEW_COLUMN treeviewcolumn3
+  SET Title "Cool"
+;
+*/
+
+/*
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                                    <property name="title" translatable="yes">Icon</property>
+                                    <property name="reorderable">1</property>
+                                    <child>
+                                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
+                                      <attributes>
+                                        <attribute name="icon_name">1</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                                    <property name="title" translatable="yes">Name</property>
+                                    <property name="resizable">1</property>
+                                    <property name="reorderable">1</property>
+                                    <property name="sort-indicator">1</property>
+                                    <property name="sort-column-id">2</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext3">
+                                        <property name="ellipsize">end</property>
+                                      </object>
+                                      <attributes>
+                                        <attribute name="text">2</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                                    <property name="title" translatable="yes">Nick</property>
+                                    <property name="resizable">1</property>
+                                    <property name="reorderable">1</property>
+                                    <property name="sort-indicator">1</property>
+                                    <property name="sort-column-id">3</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="cellrenderertext4">
+                                        <property name="ellipsize">end</property>
+                                      </object>
+                                      <attributes>
+                                        <attribute name="text">3</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+*/
                           
 SCROLLED_WINDOW scrolledwindow1
   CMN Size_request 0 150

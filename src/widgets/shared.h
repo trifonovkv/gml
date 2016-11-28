@@ -22,6 +22,7 @@
 #include "scrolled_window.h"
 #include "frame.h"
 #include "tree_view.h"
+#include "cell_renderer_toggle.h"
         
 void set_model(char *setting)
 {
@@ -110,6 +111,8 @@ void set_active(char *setting)
                 combo_box_set_active(setting);
         } else if (type == TYPE_SWITCH) {
                 switch_set_active(setting);
+        } else if (type == TYPE_CELL_RENDERER_TOGGLE) {
+                cell_renderer_toggle_set_active(setting);
         }
 }
 

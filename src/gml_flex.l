@@ -34,6 +34,10 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+CELL_RENDERER_TOGGLE                  return CELL_RENDERER_TOGGLE;
+Radio                                 return RADIO;
+Activatable                           return ACTIVATABLE;
+
 Tree_view                             return TREE_VIEW;
 Level_indentation                     return LEVEL_INDENTATION;
 Show_expanders                        return SHOW_EXPANDERS;

@@ -39,6 +39,7 @@
 #include "widgets/orientation.h"
 #include "widgets/frame.h"
 #include "widgets/tree_view.h"
+#include "widgets/cell_renderer_toggle.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -56,6 +57,8 @@ int yywrap()
 int yylex();
 
 %}
+%token CELL_RENDERER_TOGGLE RADIO ACTIVATABLE
+
 %token TREE_VIEW LEVEL_INDENTATION SHOW_EXPANDERS HEADERS_VISIBLE
 %token HEADERS_CLICKABLE ACTIVATE_ON_SINGLE_CLICK EXPANDER_COLUMN REORDERABLE
 %token ENABLE_SEARCH SEARCH_COLUMN SEARCH_ENTRY FIXED_HEIGHT_MODE
@@ -233,6 +236,7 @@ widget:
         | scale
         | frame
         | tree_view
+        | cell_renderer_toggle
         ;
 
 params: 
@@ -288,6 +292,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+cell_renderer_toggle:
+        CELL_RENDERER_TOGGLE IDENTIFIER        { cell_renderer_toggle_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 tree_view:
@@ -760,6 +769,16 @@ set:
         | set_tree_view_enable_tree_lines
         | set_tree_view_grid_lines
         | set_tree_view_tooltip_column
+        | set_cell_renderer_toggle_radio
+        | set_cell_renderer_toggle_activatable
+        ;
+
+set_cell_renderer_toggle_radio:
+        SET RADIO IDENTIFIER             { cell_renderer_toggle_set_radio($3); }
+        ;
+
+set_cell_renderer_toggle_activatable:
+        SET ACTIVATABLE IDENTIFIER { cell_renderer_toggle_set_activatable($3); }
         ;
 
 set_tree_view_level_indentation:
