@@ -13,44 +13,40 @@ ADJUSTMENT adjustment1
   SET Page_increment 10.0
 ;
 
+CELL_RENDERER_TOGGLE cellrenderertoggle1
+  SET Active FALSE
+;
+
+TREE_VIEW_COLUMN treeviewcolumn3
+  SET Title "Cool"
+  ADD Attribute cellrenderertoggle1 "radio" 4
+;
+
+CELL_RENDERER_PIXBUF cellrendererpixbuf1
+;
+
+TREE_VIEW_COLUMN treeviewcolumn4
+  SET Title "Icon"
+  SET Reorderable TRUE
+  ADD Attribute cellrendererpixbuf1 "icon_name" 1
+;
+
+TREE_VIEW treeview1
+  SET Headers_clickable FALSE
+  SET Search_column 0
 /*
-                            <child>
-                              <object class="GtkTreeView" id="treeview1">
-                                <property name="visible">1</property>
-                                <property name="can_focus">1</property>
-                                <property name="model">liststore1</property>
-                                <property name="headers_clickable">0</property>
-                                <property name="search_column">0</property>
+  SET Model liststore1
                                 <child internal-child="selection">
                                   <object class="GtkTreeSelection" id="treeview-selection"/>
                                 </child>
                                 <child>
 */
-
-CELL_RENDERER_TOGGLE cellrenderertoggle1
-  SET Active FALSE
-/*
-<attribute name="radio">4</attribute>
-*/
 ;
 
-TREE_VIEW_COLUMN treeviewcolumn3
-  SET Title "Cool"
-;
 
 /*
                                 </child>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn4">
-                                    <property name="title" translatable="yes">Icon</property>
-                                    <property name="reorderable">1</property>
-                                    <child>
-                                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
-                                      <attributes>
-                                        <attribute name="icon_name">1</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
                                 </child>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn1">

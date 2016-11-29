@@ -34,6 +34,16 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+LIST_STORE                            return LIST_STORE;
+Column_types                          return COLUMN_TYPES;
+Column                                return COLUMN;
+
+CELL_RENDERER_PIXBUF                  return CELL_RENDERER_PIXBUF;
+
+CELL_RENDERER_TOGGLE                  return CELL_RENDERER_TOGGLE;
+Radio                                 return RADIO;
+Activatable                           return ACTIVATABLE;
+
 TREE_VIEW_COLUMN                      return TREE_VIEW_COLUMN;
 Sizing                                return SIZING;
 Fixed_width                           return FIXED_WIDTH;
@@ -44,13 +54,9 @@ Widget                                return WIDGET;
 Sort_column_id                        return SORT_COLUMN_ID;
 Sort_indicator                        return SORT_INDICATOR;
 Sort_order                            return SORT_ORDER;
-Atribute                              return ATRIBUTE;
+Attribute                             return ATTRIBUTE;
 
-CELL_RENDERER_TOGGLE                  return CELL_RENDERER_TOGGLE;
-Radio                                 return RADIO;
-Activatable                           return ACTIVATABLE;
-
-Tree_view                             return TREE_VIEW;
+TREE_VIEW                             return TREE_VIEW;
 Level_indentation                     return LEVEL_INDENTATION;
 Show_expanders                        return SHOW_EXPANDERS;
 Headers_visible                       return HEADERS_VISIBLE;

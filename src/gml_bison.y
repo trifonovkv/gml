@@ -39,8 +39,10 @@
 #include "widgets/orientation.h"
 #include "widgets/frame.h"
 #include "widgets/tree_view.h"
-#include "widgets/cell_renderer_toggle.h"
 #include "widgets/tree_view_column.h"
+#include "widgets/cell_renderer_toggle.h"
+#include "widgets/cell_renderer_pixbuf.h"
+#include "widgets/list_store.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -58,8 +60,12 @@ int yywrap()
 int yylex();
 
 %}
+%token LIST_STORE COLUMN_TYPES COLUMN
+
+%token CELL_RENDERER_PIXBUF
+
 %token TREE_VIEW_COLUMN SIZING FIXED_WIDTH MIN_WIDTH MAX_WIDTH
-%token CLICKABLE WIDGET SORT_COLUMN_ID SORT_INDICATOR SORT_ORDER ATRIBUTE
+%token CLICKABLE WIDGET SORT_COLUMN_ID SORT_INDICATOR SORT_ORDER ATTRIBUTE
 
 %token CELL_RENDERER_TOGGLE RADIO ACTIVATABLE
 
@@ -240,8 +246,10 @@ widget:
         | scale
         | frame
         | tree_view
-        | cell_renderer_toggle
         | tree_view_column
+        | cell_renderer_toggle
+        | cell_renderer_pixbuf
+        | list_store
         ;
 
 params: 
@@ -299,13 +307,23 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
-tree_view_column:
-        TREE_VIEW_COLUMN IDENTIFIER                { tree_view_column_new($2); }
+list_store:
+        LIST_STORE IDENTIFIER                            { list_store_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+cell_renderer_pixbuf:
+        CELL_RENDERER_PIXBUF IDENTIFIER        { cell_renderer_pixbuf_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
 cell_renderer_toggle:
         CELL_RENDERER_TOGGLE IDENTIFIER        { cell_renderer_toggle_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+tree_view_column:
+        TREE_VIEW_COLUMN IDENTIFIER                { tree_view_column_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
@@ -819,23 +837,19 @@ set:
         | set_tree_view_column_sort_column_id
         | set_tree_view_column_sort_indicator
         | set_tree_view_column_sort_order
+        | set_list_store_column_types
         ;
 
-/*
- * set_tree_view_column_spacing:
- *         SET SPACING IDENTIFIER             { tree_view_column_set_spacing($3); }
- *         ;
- * 
- */
+
+set_list_store_column_types:
+        SET COLUMN_TYPES NUMBER IDENTIFIER 
+                                        { list_store_set_column_types($3, $4); }
+        ;
+
 set_tree_view_column_visible:
         SET VISIBLE IDENTIFIER             { tree_view_column_set_visible($3); }
         ;
 
-/*
- * set_tree_view_column_resizable:
- *         SET RESIZABLE IDENTIFIER         { tree_view_column_set_resizable($3); }
- *         ;
- */
 set_tree_view_column_sizing:
         SET SIZING IDENTIFIER               { tree_view_column_set_sizing($3); }
         ;
@@ -852,12 +866,6 @@ set_tree_view_column_max_width:
         SET MAX_WIDTH NUMBER             { tree_view_column_set_max_width($3); }
         ;
 
-/*
- * set_tree_view_column_title:
- *         SET TITLE STRING                     { tree_view_column_set_title($3); }
- *         ;
- * 
- */
 set_tree_view_column_expand:
         SET EXPAND IDENTIFIER               { tree_view_column_set_expand($3); }
         ;
@@ -869,18 +877,6 @@ set_tree_view_column_clickable:
 set_tree_view_column_widget:
         SET WIDGET IDENTIFIER               { tree_view_column_set_widget($3); }
         ;
-
-/*
- * set_tree_view_column_alignment:
- *         SET ALIGNMENT IDENTIFIER         { tree_view_column_set_alignment($3); }
- *         ;
- * 
- */
-/*
- * set_tree_view_column_reorderable:
- *         SET REORDERABLE IDENTIFIER     { tree_view_column_set_reorderable($3); }
- *         ;
- */
 
 set_tree_view_column_sort_column_id:
         SET SORT_COLUMN_ID NUMBER   { tree_view_column_set_sort_column_id($3); }
@@ -929,18 +925,12 @@ set_tree_view_expander_column:
         SET EXPANDER_COLUMN IDENTIFIER    { tree_view_set_expander_column($3); }
         ;
 
-/*
- * set_tree_view_reorderable:
- *         SET REORDERABLE IDENTIFIER            { tree_view_set_reorderable($3); }
- *         ;
- * 
- */
 set_tree_view_enable_search:
         SET ENABLE_SEARCH IDENTIFIER        { tree_view_set_enable_search($3); }
         ;
 
 set_tree_view_search_column:
-        SET SEARCH_COLUMN IDENTIFIER        { tree_view_set_search_column($3); }
+        SET SEARCH_COLUMN NUMBER            { tree_view_set_search_column($3); }
         ;
 
 set_tree_view_search_entry:
@@ -1798,8 +1788,9 @@ stack_add:
 
 add:
         ADD IDENTIFIER                                    { container_add($2); }
-        | ADD ATRIBUTE IDENTIFIER STRING NUMBER
+        | ADD ATTRIBUTE IDENTIFIER STRING NUMBER
                                  { tree_view_column_add_attribute($3, $4, $5); }
+        | ADD COLUMN IDENTIFIER                   { list_store_add_column($3); }
         ;
 
 common:

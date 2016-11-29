@@ -52,8 +52,11 @@ typedef enum
         , TYPE_RANGE
         , TYPE_FRAME
         , TYPE_TREE_VIEW
-        , TYPE_CELL_RENDERER_TOGGLE
         , TYPE_TREE_VIEW_COLUMN
+        , TYPE_CELL_RENDERER_TOGGLE
+        , TYPE_CELL_RENDERER_PIXBUF
+        , TYPE_LIST_STORE
+        , TYPE_COLUMN
 } widget_type;
 
 /* Keyboard accelerators and action */
@@ -99,6 +102,7 @@ void        button_box_new  (char *widget);
 widget_type getsymtype  (char *sym_name);
 symrec*     getsym      (char *sym_name);
 char*       getsymval   (char *sym_name);
+void        symdel      (char *sym_name);
 void        symdelto    (char *sym_name);
 char*       syminst     (widget_type sym_type, char *sym_name, char *sym_value);
 symrec*     putsym      (widget_type sym_type, char *sym_name, char *sym_value);

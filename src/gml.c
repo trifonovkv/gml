@@ -111,6 +111,22 @@ char *getsymval(char *sym_name)
         return sym->value;
 }
 
+void symdel(char *sym_name)
+{
+        symrec *tmp;
+        symrec *ptr = sym_table;
+        
+        while ((ptr != NULL) && (strcmp(ptr->name, sym_name) == 0)) {
+                tmp = ptr;
+                ptr = (symrec *)ptr->next;
+        }
+       
+        if (ptr != NULL) {
+                tmp->next = ptr->next;
+                free(ptr);
+        }
+}
+
 void symdelto(char *sym_name)
 {
         symrec *tmp;
