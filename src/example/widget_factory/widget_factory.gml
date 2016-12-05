@@ -13,6 +13,48 @@ ADJUSTMENT adjustment1
   SET Page_increment 10.0
 ;
 
+LIST_STORE liststore1
+  ADD Column G_TYPE_BOOLEAN
+  ADD Column G_TYPE_STRING
+  ADD Column G_TYPE_STRING
+  ADD Column G_TYPE_STRING
+  ADD Column G_TYPE_BOOLEAN
+;
+
+/*
+    <data>
+      <row>
+        <col id="0">True</col>
+        <col id="1">emblem-default-symbolic</col>
+        <col id="2" translatable="yes">Andrea</col>
+        <col id="3" translatable="yes">Cimi</col>
+        <col id="4">False</col>
+      </row>
+      <row>
+        <col id="0">False</col>
+        <col id="1">emblem-important-symbolic</col>
+        <col id="2" translatable="yes">Otto</col>
+        <col id="3" translatable="yes">chaotic</col>
+        <col id="4">False</col>
+      </row>
+      <row>
+        <col id="0">True</col>
+        <col id="1">weather-clear-night-symbolic</col>
+        <col id="2" translatable="yes">Orville</col>
+        <col id="3" translatable="yes">Redenbacher</col>
+        <col id="4">False</col>
+      </row>
+      <row>
+        <col id="0">True</col>
+        <col id="1">face-monkey-symbolic</col>
+        <col id="2" translatable="yes">Benjamin</col>
+        <col id="3" translatable="yes">Company</col>
+        <col id="4">True</col>
+      </row>
+    </data>
+</object>
+*/
+
 CELL_RENDERER_TOGGLE cellrenderertoggle1
   SET Active FALSE
 ;

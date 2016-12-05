@@ -308,7 +308,7 @@ bbox_child_set:
         ;
 
 list_store:
-        LIST_STORE IDENTIFIER                            { list_store_new($2); }
+        LIST_STORE IDENTIFIER columns                    { list_store_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
@@ -1770,6 +1770,14 @@ set_editable:
         SET EDITABLE IDENTIFIER                            { set_editable($3); }
         ;
 
+columns:
+        | columns column
+        ;
+
+column:
+        ADD COLUMN IDENTIFIER                   { list_store_add_column($3); }
+        ;
+
 grid_add:
         ADD ATACH IDENTIFIER NUMBER NUMBER NUMBER NUMBER
                                             { grid_attach($3, $4, $5, $6, $7); }
@@ -1790,7 +1798,6 @@ add:
         ADD IDENTIFIER                                    { container_add($2); }
         | ADD ATTRIBUTE IDENTIFIER STRING NUMBER
                                  { tree_view_column_add_attribute($3, $4, $5); }
-        | ADD COLUMN IDENTIFIER                   { list_store_add_column($3); }
         ;
 
 common:

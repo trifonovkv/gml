@@ -17,7 +17,7 @@ AC_PROG_YACC
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h string.h])
+AC_CHECK_HEADERS([stdlib.h string.h math.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 

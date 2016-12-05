@@ -1,3 +1,5 @@
+AM_LDFLAGS = -lm
+
 ACLOCAL_AMFLAGS = -I m4
 
 AM_YFLAGS = -d

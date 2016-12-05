@@ -113,18 +113,13 @@ char *getsymval(char *sym_name)
 
 void symdel(char *sym_name)
 {
-        symrec *tmp;
-        symrec *ptr = sym_table;
-        
-        while ((ptr != NULL) && (strcmp(ptr->name, sym_name) == 0)) {
-                tmp = ptr;
-                ptr = (symrec *)ptr->next;
-        }
-       
-        if (ptr != NULL) {
-                tmp->next = ptr->next;
-                free(ptr);
-        }
+        symrec *sym = getsym(sym_name);
+        symrec **pp = &sym_table;
+
+        while ((*pp) != sym)
+                pp = &(*pp)->next;
+
+        *pp = sym->next;
 }
 
 void symdelto(char *sym_name)
