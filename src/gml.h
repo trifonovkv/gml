@@ -57,6 +57,7 @@ typedef enum
         , TYPE_CELL_RENDERER_PIXBUF
         , TYPE_LIST_STORE
         , TYPE_COLUMN
+        , TYPE_ITER
 } widget_type;
 
 /* Keyboard accelerators and action */
@@ -99,9 +100,11 @@ void        block_close     (char *start);
 void        signal_connect  (char *signal, char *handler, char *data);
 void        button_box_new  (char *widget);
 
+symrec*     get_symbol_by_type(widget_type type);
 widget_type getsymtype  (char *sym_name);
 symrec*     getsym      (char *sym_name);
 char*       getsymval   (char *sym_name);
+void        delete_symbol (symrec *sym);
 void        symdel      (char *sym_name);
 void        symdelto    (char *sym_name);
 char*       syminst     (widget_type sym_type, char *sym_name, char *sym_value);

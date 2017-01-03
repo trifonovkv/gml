@@ -95,7 +95,18 @@ void signal_connect(char *signal, char *handler, char *data)
         free(callback);
 }
 
-widget_type getsymtype(char *sym_name)
+symrec *get_symbol_by_type(widget_type type)
+{
+        symrec *ptr = sym_table;
+
+        while ((ptr != NULL) && (ptr->type != type)) {
+                ptr = (symrec *)ptr->next;
+        }
+
+        return ptr;
+}
+
+widget_type getsymtype(char *sym_name) /* rename to get_symbol_type_by_name */
 {
         symrec *sym = getsym(sym_name);
         if (sym == NULL)
@@ -111,9 +122,21 @@ char *getsymval(char *sym_name)
         return sym->value;
 }
 
+void delete_symbol(symrec *sym)
+{
+        symrec **pp = &sym_table;
+
+        while ((*pp) != sym)
+                pp = &(*pp)->next;
+
+        *pp = sym->next;
+}
+
 void symdel(char *sym_name)
 {
         symrec *sym = getsym(sym_name);
+        if (sym == NULL)
+                return;
         symrec **pp = &sym_table;
 
         while ((*pp) != sym)

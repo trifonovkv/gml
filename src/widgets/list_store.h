@@ -1,4 +1,10 @@
-void list_store_add_column(char *column_type);
+/*
+ * void list_store_end();
+ */
+
+void list_store_set_column(char *id, char *value);
+
+void list_store_add_column(char *id, char *column_type);
 
 /*
  * Creates a new list store as with n_columns columns each of the types passed
@@ -22,3 +28,15 @@ void list_store_new(char *widget);
  */
 void list_store_set_column_types(char *n_columns, char *types);
 
+/*
+ * Appends a new row to list_store . iter will be changed to point to this new
+ * row. The row will be empty after this function is called. To fill in values,
+ * you need to call gtk_list_store_set() or gtk_list_store_set_value().
+ */
+void list_store_append();
+
+/*
+ * Sets the data in the cell specified by iter and column. The type of value
+ * must be convertible to the type of the column.
+ */
+void list_store_set_value(char *column, char *value);

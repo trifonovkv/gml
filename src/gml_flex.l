@@ -37,6 +37,8 @@ ARG                                   return ARG;
 LIST_STORE                            return LIST_STORE;
 Column_types                          return COLUMN_TYPES;
 Column                                return COLUMN;
+Row                                   return ROW;
+Id                                    return ID;
 
 CELL_RENDERER_PIXBUF                  return CELL_RENDERER_PIXBUF;
 

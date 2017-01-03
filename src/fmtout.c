@@ -37,11 +37,29 @@ void prtstr(int n_args, ...)
         va_list ap;
         
         tabins(tabs_count);
-
         va_start(ap, n_args);
 
         for (int i = 1; i <= n_args; i++)
                 fprintf(yyout, "%s", va_arg(ap, char *));
+
+        va_end(ap);
+}
+
+char* concatv(int n_args, ...)
+{
+        char *str;
+        va_list ap;
+
+        va_start(ap, n_args);
+
+        if (n_args > 1) 
+                str = va_arg(ap, char *);
+        else
+                return NULL;
+
+        for (int i = 2; i <= n_args; i++) {
+                str = concat(str, va_arg(ap, char *));
+        }
 
         va_end(ap);
 }

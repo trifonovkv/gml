@@ -60,7 +60,7 @@ int yywrap()
 int yylex();
 
 %}
-%token LIST_STORE COLUMN_TYPES COLUMN
+%token LIST_STORE COLUMN_TYPES COLUMN ROW ID
 
 %token CELL_RENDERER_PIXBUF
 
@@ -267,6 +267,9 @@ param:
         | stack_add
         | style
         | grid_add
+        /*
+         * | row_add
+         */
         ;
 
 arg_id:
@@ -612,9 +615,6 @@ set:
         | set_spacing
         | set_reorderable                
         | set_window_default_size
-        /*
-         * | set_window_resizable
-         */
         | set_window_deletable
         | set_window_urgent
         | set_window_accept_focus
@@ -640,14 +640,8 @@ set:
         | set_window_skip_pager_hint
         | set_window_urgency_hint
         | set_window_titlebar
-        /*
-         * | set_box_spacing
-         */
         | set_box_baseline
         | set_entry_max_length
-        /*
-         * | set_entry_alignment
-         */
         | set_entry_placeholder_text
         | set_entry_activates_default
         | set_entry_overwrite_mode
@@ -796,9 +790,6 @@ set:
         | set_tree_view_headers_clickable
         | set_tree_view_activate_on_single_click
         | set_tree_view_expander_column
-        /*
-         * | set_tree_view_reorderable
-         */
         | set_tree_view_enable_search
         | set_tree_view_search_column
         | set_tree_view_search_entry
@@ -811,35 +802,32 @@ set:
         | set_tree_view_tooltip_column
         | set_cell_renderer_toggle_radio
         | set_cell_renderer_toggle_activatable
-        /*
-         * | set_tree_view_column_spacing
-         */
         | set_tree_view_column_visible
-        /*
-         * | set_tree_view_column_resizable
-         */
         | set_tree_view_column_sizing
         | set_tree_view_column_fixed_width
         | set_tree_view_column_min_width
         | set_tree_view_column_max_width
-        /*
-         * | set_tree_view_column_title
-         */
         | set_tree_view_column_expand
         | set_tree_view_column_clickable
         | set_tree_view_column_widget
-        /*
-         * | set_tree_view_column_alignment
-         */
-        /*
-         * | set_tree_view_column_reorderable
-         */
         | set_tree_view_column_sort_column_id
         | set_tree_view_column_sort_indicator
         | set_tree_view_column_sort_order
         | set_list_store_column_types
+        | set_list_store_column
+        | set_list_store_row
         ;
 
+set_list_store_row:
+        SET ROW                                         { list_store_append(); }
+        ;
+
+set_list_store_column:
+          SET ID NUMBER IDENTIFIER            { list_store_set_column($3, $4); }
+        | SET ID NUMBER STRING                { list_store_set_column($3, $4); }
+        | SET ID NUMBER NUMBER                { list_store_set_column($3, $4); }
+        | SET ID NUMBER FLOAT                 { list_store_set_column($3, $4); }
+        ;
 
 set_list_store_column_types:
         SET COLUMN_TYPES NUMBER IDENTIFIER 
@@ -1558,12 +1546,6 @@ set_entry_visibility:
         SET VISIBILITY IDENTIFIER                  { entry_set_visibility($3); }
         ;
 
-/*
- * set_entry_alignment:
- *         SET ALIGNMENT FLOAT                         { entry_set_alignment($3); }
- *         ;
- * 
- */
 set_entry_max_length:
         SET MAX_LENGTH NUMBER                      { entry_set_max_length($3); }
         ;
@@ -1572,12 +1554,6 @@ set_box_baseline:
         SET BASELINE IDENTIFIER               { box_set_baseline_position($3); }
         ;
 
-/*
- * set_box_spacing:
- *         SET SPACING NUMBER                              { box_set_spacing($3); }
- *         ;
- * 
- */
 set_window_titlebar:
         SET TITLEBAR IDENTIFIER                     { window_set_titlebar($3); }
         ;
@@ -1682,12 +1658,6 @@ set_window_deletable:
         SET DELETABLE IDENTIFIER                   { window_set_deletable($3); }
         ;
 
-/*
- * set_window_resizable:
- *         SET RESIZABLE IDENTIFIER                   { window_set_resizable($3); }
- *         ;
- * 
- */
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
@@ -1775,9 +1745,15 @@ columns:
         ;
 
 column:
-        ADD COLUMN IDENTIFIER                   { list_store_add_column($3); }
+        ADD COLUMN NUMBER IDENTIFIER           { list_store_add_column($3,$4); }
         ;
 
+/*
+ * row_add:
+ *         ADD ROW                                         { list_store_append(); }
+ *         ;
+ * 
+ */
 grid_add:
         ADD ATACH IDENTIFIER NUMBER NUMBER NUMBER NUMBER
                                             { grid_attach($3, $4, $5, $6, $7); }
@@ -1798,6 +1774,7 @@ add:
         ADD IDENTIFIER                                    { container_add($2); }
         | ADD ATTRIBUTE IDENTIFIER STRING NUMBER
                                  { tree_view_column_add_attribute($3, $4, $5); }
+        | ADD ROW                                       { list_store_append(); }
         ;
 
 common:
