@@ -36,21 +36,54 @@ LIST_STORE liststore1
   SET Id 1 "weather-clear-night-symbolic"
   SET Id 2 "Orville"
   SET Id 3 "Redenbacher"
-  SET Id 4  FALSE
+  SET Id 4 FALSE
   SET Row
   SET Id 0 TRUE
   SET Id 1 "face-monkey-symbolic"
   SET Id 2 "Benjamin"
   SET Id 3 "Company"
-  SET Id 4  TRUE
+  SET Id 4 TRUE
+;
+
+CELL_RENDERER_TEXT cellrenderertext3
+/*
+       <property name="ellipsize">end</property>
+*/
+;
+
+TREE_VIEW_COLUMN treeviewcolumn1
+  SET Title "Name"
+  SET Reorderable TRUE
+  SET Resizable TRUE
+  SET Sort_indicator TRUE
+  SET Sort_column_id 2
+  ADD Cell_renderer cellrenderertext3
+  ADD Attribute cellrenderertext3 "text" 2
+;
+
+CELL_RENDERER_TEXT cellrenderertext4
+/*
+       <property name="ellipsize">end</property>
+*/
+;
+
+TREE_VIEW_COLUMN treeviewcolumn2
+  SET Title "Nick"
+  SET Resizable TRUE
+  SET Reorderable TRUE
+  SET Sort_indicator TRUE
+  SET Sort_column_id 3
+  ADD Cell_renderer cellrenderertext4
+  ADD Attribute cellrenderertext4 "text" 3
 ;
 
 CELL_RENDERER_TOGGLE cellrenderertoggle1
-  SET Active FALSE
 ;
 
 TREE_VIEW_COLUMN treeviewcolumn3
   SET Title "Cool"
+  ADD Cell_renderer cellrenderertoggle1
+  ADD Attribute cellrenderertoggle1 "active" 0
   ADD Attribute cellrenderertoggle1 "radio" 4
 ;
 
@@ -60,68 +93,27 @@ CELL_RENDERER_PIXBUF cellrendererpixbuf1
 TREE_VIEW_COLUMN treeviewcolumn4
   SET Title "Icon"
   SET Reorderable TRUE
+  ADD Cell_renderer cellrendererpixbuf1
   ADD Attribute cellrendererpixbuf1 "icon_name" 1
 ;
 
 TREE_VIEW treeview1
+  SET Model liststore1
   SET Headers_clickable FALSE
   SET Search_column 0
-/*
-  SET Model liststore1
-                                <child internal-child="selection">
-                                  <object class="GtkTreeSelection" id="treeview-selection"/>
-                                </child>
-                                <child>
-*/
+  ADD Column treeviewcolumn3
+  ADD Column treeviewcolumn4
+  ADD Column treeviewcolumn1
+  ADD Column treeviewcolumn2
+  CMN Hexpand TRUE
 ;
 
-
-/*
-                                </child>
-                                <child>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
-                                    <property name="title" translatable="yes">Name</property>
-                                    <property name="resizable">1</property>
-                                    <property name="reorderable">1</property>
-                                    <property name="sort-indicator">1</property>
-                                    <property name="sort-column-id">2</property>
-                                    <child>
-                                      <object class="GtkCellRendererText" id="cellrenderertext3">
-                                        <property name="ellipsize">end</property>
-                                      </object>
-                                      <attributes>
-                                        <attribute name="text">2</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-                                    <property name="title" translatable="yes">Nick</property>
-                                    <property name="resizable">1</property>
-                                    <property name="reorderable">1</property>
-                                    <property name="sort-indicator">1</property>
-                                    <property name="sort-column-id">3</property>
-                                    <child>
-                                      <object class="GtkCellRendererText" id="cellrenderertext4">
-                                        <property name="ellipsize">end</property>
-                                      </object>
-                                      <attributes>
-                                        <attribute name="text">3</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-*/
                           
 SCROLLED_WINDOW scrolledwindow1
   CMN Size_request 0 150
   SET Policy GTK_POLICY_AUTOMATIC GTK_POLICY_ALWAYS
   SET Shadow_type GTK_SHADOW_IN
+  ADD treeview1
 ;
 
 VBOX box4
@@ -135,82 +127,7 @@ SEPARATOR separator4
 ;
 
 /*
-                            <child>
-                              <object class="GtkTreeView" id="treeview1">
-                                <property name="visible">1</property>
-                                <property name="can_focus">1</property>
-                                <property name="model">liststore1</property>
-                                <property name="headers_clickable">0</property>
-                                <property name="search_column">0</property>
-                                <child internal-child="selection">
-                                  <object class="GtkTreeSelection" id="treeview-selection"/>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn3">
-                                    <property name="title" translatable="yes">Cool</property>
-                                    <child>
-                                      <object class="GtkCellRendererToggle" id="cellrenderertoggle1"/>
-                                      <attributes>
-                                        <attribute name="active">0</attribute>
-                                        <attribute name="radio">4</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn4">
-                                    <property name="title" translatable="yes">Icon</property>
-                                    <property name="reorderable">1</property>
-                                    <child>
-                                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
-                                      <attributes>
-                                        <attribute name="icon_name">1</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
-                                    <property name="title" translatable="yes">Name</property>
-                                    <property name="resizable">1</property>
-                                    <property name="reorderable">1</property>
-                                    <property name="sort-indicator">1</property>
-                                    <property name="sort-column-id">2</property>
-                                    <child>
-                                      <object class="GtkCellRendererText" id="cellrenderertext3">
-                                        <property name="ellipsize">end</property>
-                                      </object>
-                                      <attributes>
-                                        <attribute name="text">2</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-                                    <property name="title" translatable="yes">Nick</property>
-                                    <property name="resizable">1</property>
-                                    <property name="reorderable">1</property>
-                                    <property name="sort-indicator">1</property>
-                                    <property name="sort-column-id">3</property>
-                                    <child>
-                                      <object class="GtkCellRendererText" id="cellrenderertext4">
-                                        <property name="ellipsize">end</property>
-                                      </object>
-                                      <attributes>
-                                        <attribute name="text">3</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">1</property>
-                          </packing>
-                        </child>
-                        <child>
+                                                    <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow2">
                             <property name="visible">1</property>
                             <property name="can_focus">1</property>

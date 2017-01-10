@@ -32,10 +32,12 @@ void tree_view_set_show_expanders(char *setting)
 void tree_view_set_model(char *setting)
 {
         char *widget = wrptype("GTK_TREE_VIEW", this);
+        char *model = wrptype("GTK_TREE_MODEL", setting);
 
-        putfun("gtk_tree_view_set_model", 2, widget, setting);
+        putfun("gtk_tree_view_set_model", 2, widget, model);
 
         free(widget);
+        free(model);
         free(setting);
 }
 
@@ -346,6 +348,16 @@ void tree_view_set_hover_expand(char *setting)
  *        free(destroy);
  *}
  */
+
+void tree_view_append_column(char *setting)
+{
+        char *widget = wrptype("GTK_TREE_VIEW", this);
+
+        putfun("gtk_tree_view_append_column", 2, widget, setting);
+
+        free(widget);
+        free(setting);
+}
 
 void tree_view_set_rubber_banding(char *setting)
 {

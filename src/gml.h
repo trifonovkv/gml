@@ -55,6 +55,7 @@ typedef enum
         , TYPE_TREE_VIEW_COLUMN
         , TYPE_CELL_RENDERER_TOGGLE
         , TYPE_CELL_RENDERER_PIXBUF
+        , TYPE_CELL_RENDERER_TEXT
         , TYPE_LIST_STORE
         , TYPE_COLUMN
         , TYPE_ITER

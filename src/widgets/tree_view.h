@@ -300,6 +300,13 @@ void tree_view_set_hover_expand(char *setting);
  *                                    , char *destroy);
  */
 
+/*
+ * Appends column to the list of columns. If tree_view has “fixed_height” mode
+ * enabled, then column must have its “sizing” property set to be
+ * GTK_TREE_VIEW_COLUMN_FIXED.
+ */
+void tree_view_append_column(char *setting);
+
 /* 
  * Enables or disables rubber banding in tree_view . If the selection mode is
  * GTK_SELECTION_MULTIPLE, rubber banding will allow the user to select

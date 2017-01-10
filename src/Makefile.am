@@ -54,6 +54,7 @@ gml_SOURCES =                                     \
 								widgets/tree_view_column.c        \
 								widgets/cell_renderer_toggle.c    \
 								widgets/cell_renderer_pixbuf.c    \
+								widgets/cell_renderer_text.c      \
 								widgets/list_store.c              \
 								$(NULL)
 

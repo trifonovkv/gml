@@ -42,6 +42,7 @@
 #include "widgets/tree_view_column.h"
 #include "widgets/cell_renderer_toggle.h"
 #include "widgets/cell_renderer_pixbuf.h"
+#include "widgets/cell_renderer_text.h"
 #include "widgets/list_store.h"
 
 #define YYERROR_VERBOSE 1
@@ -62,9 +63,9 @@ int yylex();
 %}
 %token LIST_STORE COLUMN_TYPES COLUMN ROW ID
 
-%token CELL_RENDERER_PIXBUF
+%token CELL_RENDERER_PIXBUF CELL_RENDERER_TEXT
 
-%token TREE_VIEW_COLUMN SIZING FIXED_WIDTH MIN_WIDTH MAX_WIDTH
+%token TREE_VIEW_COLUMN SIZING FIXED_WIDTH MIN_WIDTH MAX_WIDTH CELL_RENDERER
 %token CLICKABLE WIDGET SORT_COLUMN_ID SORT_INDICATOR SORT_ORDER ATTRIBUTE
 
 %token CELL_RENDERER_TOGGLE RADIO ACTIVATABLE
@@ -249,6 +250,7 @@ widget:
         | tree_view_column
         | cell_renderer_toggle
         | cell_renderer_pixbuf
+        | cell_renderer_text
         | list_store
         ;
 
@@ -267,9 +269,6 @@ param:
         | stack_add
         | style
         | grid_add
-        /*
-         * | row_add
-         */
         ;
 
 arg_id:
@@ -312,6 +311,11 @@ bbox_child_set:
 
 list_store:
         LIST_STORE IDENTIFIER columns                    { list_store_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+cell_renderer_text:
+        CELL_RENDERER_TEXT IDENTIFIER            { cell_renderer_text_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
@@ -1748,12 +1752,6 @@ column:
         ADD COLUMN NUMBER IDENTIFIER           { list_store_add_column($3,$4); }
         ;
 
-/*
- * row_add:
- *         ADD ROW                                         { list_store_append(); }
- *         ;
- * 
- */
 grid_add:
         ADD ATACH IDENTIFIER NUMBER NUMBER NUMBER NUMBER
                                             { grid_attach($3, $4, $5, $6, $7); }
@@ -1775,6 +1773,8 @@ add:
         | ADD ATTRIBUTE IDENTIFIER STRING NUMBER
                                  { tree_view_column_add_attribute($3, $4, $5); }
         | ADD ROW                                       { list_store_append(); }
+        | ADD COLUMN IDENTIFIER                 { tree_view_append_column($3); }
+        | ADD CELL_RENDERER IDENTIFIER    { tree_view_column_add_renderer($3); }
         ;
 
 common:

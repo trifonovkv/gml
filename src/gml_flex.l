@@ -40,8 +40,9 @@ Column                                return COLUMN;
 Row                                   return ROW;
 Id                                    return ID;
 
+Cell_renderer                         return CELL_RENDERER;
+CELL_RENDERER_TEXT                    return CELL_RENDERER_TEXT;
 CELL_RENDERER_PIXBUF                  return CELL_RENDERER_PIXBUF;
-
 CELL_RENDERER_TOGGLE                  return CELL_RENDERER_TOGGLE;
 Radio                                 return RADIO;
 Activatable                           return ACTIVATABLE;

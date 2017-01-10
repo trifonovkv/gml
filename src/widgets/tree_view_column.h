@@ -4,6 +4,11 @@
 void tree_view_column_new(char *widget);
 
 /*
+ * Add cell renderer
+ */
+void tree_view_column_add_renderer(char *setting);
+
+/*
  * Adds an attribute mapping to the list in tree_column . The column is the
  * column of the model to get a value from, and the attribute is the parameter
  * on cell_renderer to be set from the value. So for example if column 2 of the

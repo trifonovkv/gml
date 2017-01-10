@@ -9,12 +9,26 @@ void tree_view_column_new(char *widget)
         putdef("GtkTreeViewColumn *", widget, "gtk_tree_view_column_new", 0);
 }
 
+void tree_view_column_add_renderer(char *setting)
+{
+        char *widget = wrptype("GTK_TREE_VIEW_COLUMN", this);
+
+        putfun("gtk_tree_view_column_pack_start"
+             , 3
+             , widget
+             , setting
+             , "TRUE");
+
+        free(widget);
+        free(setting);
+}
+
 void tree_view_column_add_attribute(char *cell_renderer
                                   , char *attribute
                                   , char *column)
 {
         char *widget = wrptype("GTK_TREE_VIEW_COLUMN", this);
-
+  
         putfun("gtk_tree_view_column_add_attribute"
              , 4
              , widget
