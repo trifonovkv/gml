@@ -6,7 +6,6 @@ void box_query_child_packing(char *widget, char *child)
 {
         if(getsymval("box") == NULL) {
                 syminst(TYPE_STRING, "box", "box");
-                // this = syminst(TYPE_STRING, "box", "box");
 
                 prtstr(1, "gboolean    expand;\n");
                 prtstr(1, "gboolean    fill;\n");

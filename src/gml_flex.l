@@ -60,6 +60,7 @@ Sort_order                            return SORT_ORDER;
 Attribute                             return ATTRIBUTE;
 
 TREE_VIEW                             return TREE_VIEW;
+Buffer                                return BUFFER;
 Level_indentation                     return LEVEL_INDENTATION;
 Show_expanders                        return SHOW_EXPANDERS;
 Headers_visible                       return HEADERS_VISIBLE;

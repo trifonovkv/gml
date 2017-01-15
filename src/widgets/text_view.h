@@ -6,6 +6,20 @@
  */
 void text_view_new(char *widget);
 
+/*
+ * Set text into GtkTextView
+ */
+void text_view_set_text(char *setting);
+
+/*
+ * Sets buffer as the buffer being displayed by text_view . The previous buffer
+ * displayed by the text view is unreferenced, and a reference is added to
+ * buffer . If you owned a reference to buffer before passing it to this
+ * function, you must remove that reference yourself; GtkTextView will not
+ * “adopt” it.
+ */
+void text_view_set_buffer(char *setting);
+
 /*  
  * Sets the width of GTK_TEXT_WINDOW_LEFT or GTK_TEXT_WINDOW_RIGHT, or the
  * height of GTK_TEXT_WINDOW_TOP or GTK_TEXT_WINDOW_BOTTOM. Automatically

@@ -45,6 +45,43 @@ LIST_STORE liststore1
   SET Id 4 TRUE
 ;
 
+TEXT_VIEW textview1
+  SET Text "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  SET Wrap_mode GTK_WRAP_WORD
+  SET Left_margin 10
+  SET Right_margin 11
+/*
+  SET Populate_all">1</property>
+*/
+  CMN Hexpand TRUE
+;
+
+SCROLLED_WINDOW scrolledwindow2
+  SET Shadow_type GTK_SHADOW_IN
+  ADD textview1
+  CMN Hexpand TRUE
+;
+/*
+                          </object>
+                          <packing>
+                            <property name="expand">1</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">1</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+<child>
+*/
+
 CELL_RENDERER_TEXT cellrenderertext3
 /*
        <property name="ellipsize">end</property>
@@ -108,60 +145,24 @@ TREE_VIEW treeview1
   CMN Hexpand TRUE
 ;
 
-                          
 SCROLLED_WINDOW scrolledwindow1
   CMN Size_request 0 150
   SET Policy GTK_POLICY_AUTOMATIC GTK_POLICY_ALWAYS
   SET Shadow_type GTK_SHADOW_IN
   ADD treeview1
+  CMN Hexpand TRUE
 ;
 
 VBOX box4
   SET Homogeneous TRUE
   SET Spacing 6
   ADD scrolledwindow1
+  ADD scrolledwindow2
 ;
 
 SEPARATOR separator4
   SET Orientation GTK_ORIENTATION_VERTICAL
 ;
-
-/*
-                                                    <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow2">
-                            <property name="visible">1</property>
-                            <property name="can_focus">1</property>
-                            <property name="shadow_type">in</property>
-                            <child>
-                              <object class="GtkTextView" id="textview1">
-                                <property name="visible">1</property>
-                                <property name="can_focus">1</property>
-                                <property name="buffer">textbuffer1</property>
-                                <property name="wrap_mode">2</property>
-                                <property name="left_margin">10</property>
-                                <property name="right_margin">10</property>
-                                <property name="populate_all">1</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">1</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">1</property>
-                        <property name="position">8</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-<child>
-*/
 
 LABEL label18
   SET Text "Etched out"

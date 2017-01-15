@@ -9,6 +9,30 @@ void text_view_new(char *widget)
         putdef("GtkWidget *", widget, "gtk_text_view_new", 0);
 }
 
+void text_view_set_text(char *setting)
+{
+        char *buffer = "buffer";
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
+        
+        putdef("GtkTextBuffer *", buffer, "gtk_text_view_get_buffer", 1, widget);
+        putfun("gtk_text_buffer_set_text", 3, buffer, setting, "-1");
+        
+        free(widget);
+        free(setting);
+}
+
+void text_view_set_buffer(char *setting)
+{
+        char *widget = wrptype("GTK_TEXT_VIEW", this);
+        char *buffer = wrptype("GTK_TEXT_BUFFER", this);
+
+        putfun("gtk_text_view_set_buffer", 2, widget, buffer);
+
+        free(widget);
+        free(buffer);
+        free(setting);
+}
+
 void text_view_set_border_window_size(char *type, char *size)
 {
         char *widget = wrptype("GTK_TEXT_VIEW", this);

@@ -209,7 +209,9 @@ void set_text(char *setting)
                 entry_set_text(setting);
         } else if (type == TYPE_PROGRESS_BAR) {
                 progress_bar_set_text(setting);
-        }
+        } else if (type == TYPE_TEXT_VIEW) {
+                text_view_set_text(setting);
+        } 
 }
 
 void set_title(char *string)

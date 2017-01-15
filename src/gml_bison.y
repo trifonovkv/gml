@@ -61,6 +61,8 @@ int yywrap()
 int yylex();
 
 %}
+%token TEXT_BUFFER MODIFIED 
+
 %token LIST_STORE COLUMN_TYPES COLUMN ROW ID
 
 %token CELL_RENDERER_PIXBUF CELL_RENDERER_TEXT
@@ -70,7 +72,7 @@ int yylex();
 
 %token CELL_RENDERER_TOGGLE RADIO ACTIVATABLE
 
-%token TREE_VIEW LEVEL_INDENTATION SHOW_EXPANDERS HEADERS_VISIBLE
+%token TREE_VIEW LEVEL_INDENTATION BUFFER SHOW_EXPANDERS HEADERS_VISIBLE
 %token HEADERS_CLICKABLE ACTIVATE_ON_SINGLE_CLICK EXPANDER_COLUMN REORDERABLE
 %token ENABLE_SEARCH SEARCH_COLUMN SEARCH_ENTRY FIXED_HEIGHT_MODE
 %token HOVER_SELECTION HOVER_EXPAND RUBBER_BANDING ENABLE_TREE_LINES GRID_LINES
@@ -308,6 +310,7 @@ bbox_child_set:
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
+
 
 list_store:
         LIST_STORE IDENTIFIER columns                    { list_store_new($2); }
@@ -677,6 +680,7 @@ set:
         | set_adjustment_page_size
         | set_adjustment_step_increment
         | set_adjustment_upper
+        | set_text_view_buffer
         | set_text_view_border_window_size
         | set_text_view_wrap_mode
         | set_text_view_cursor_visible
@@ -889,6 +893,11 @@ set_cell_renderer_toggle_radio:
 
 set_cell_renderer_toggle_activatable:
         SET ACTIVATABLE IDENTIFIER { cell_renderer_toggle_set_activatable($3); }
+        ;
+        
+
+set_text_view_buffer:
+        SET BUFFER IDENTIFIER                      { text_view_set_buffer($3); }
         ;
 
 set_tree_view_level_indentation:
