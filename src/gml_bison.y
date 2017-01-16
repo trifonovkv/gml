@@ -44,6 +44,7 @@
 #include "widgets/cell_renderer_pixbuf.h"
 #include "widgets/cell_renderer_text.h"
 #include "widgets/list_store.h"
+#include "widgets/cell_layout.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -61,6 +62,8 @@ int yywrap()
 int yylex();
 
 %}
+%token END
+    
 %token TEXT_BUFFER MODIFIED 
 
 %token LIST_STORE COLUMN_TYPES COLUMN ROW ID
@@ -574,6 +577,16 @@ pack:
         | set_pack_expand
         | set_pack_type
         | set_pack_center
+        | set_pack_start
+        | set_pack_end
+        ;
+
+set_pack_start:
+        PACK IDENTIFIER START IDENTIFIER     { cell_layout_pack_start($2, $4); }
+        ;
+
+set_pack_end:
+        PACK IDENTIFIER END IDENTIFIER         { cell_layout_pack_end($2, $4); }
         ;
 
 set_pack_center:
@@ -824,6 +837,12 @@ set:
         | set_list_store_column_types
         | set_list_store_column
         | set_list_store_row
+        | set_cell_layout_attribute
+        ;
+
+set_cell_layout_attribute:
+        SET ATTRIBUTE IDENTIFIER STRING NUMBER 
+                                      { cell_layout_set_attribute($3, $4, $5); }
         ;
 
 set_list_store_row:
@@ -1779,11 +1798,10 @@ stack_add:
 
 add:
         ADD IDENTIFIER                                    { container_add($2); }
-        | ADD ATTRIBUTE IDENTIFIER STRING NUMBER
-                                 { tree_view_column_add_attribute($3, $4, $5); }
+        | ADD ATTRIBUTE IDENTIFIER STRING NUMBER  { add_attribute($3, $4, $5); }
         | ADD ROW                                       { list_store_append(); }
         | ADD COLUMN IDENTIFIER                 { tree_view_append_column($3); }
-        | ADD CELL_RENDERER IDENTIFIER    { tree_view_column_add_renderer($3); }
+        | ADD CELL_RENDERER IDENTIFIER                { add_cell_renderer($3); }
         ;
 
 common:

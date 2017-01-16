@@ -24,7 +24,30 @@
 #include "tree_view.h"
 #include "cell_renderer_toggle.h"
 #include "tree_view_column.h"
+#include "cell_layout.h"
+
+void add_attribute(char *widget, char *setting, char *column)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_add_attribute(widget, setting, column);
+        } else {
+                cell_layout_add_attribute(widget, setting, column);
+        }
+}
         
+void add_cell_renderer(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_add_renderer(setting);
+        } else if (type == TYPE_COMBO_BOX) {
+                combo_box_add_renderer(setting);
+        }
+}
+
 void set_reorderable(char *setting)
 {
         widget_type type = getsymtype(this);

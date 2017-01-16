@@ -9,6 +9,11 @@ void combo_box_new(char *widget);
 void combo_box_new_with_entry(char *widget);
 
 /*
+ * Add render into GtkComboBox
+ */
+void combo_box_add_renderer(char *setting);
+
+/*
  * Sets the wrap width of combo_box to be width . The wrap width is basically
  * the preferred number of columns when you want the popup to be layed out in a
  * table.

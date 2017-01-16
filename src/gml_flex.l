@@ -34,6 +34,8 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+End                                   return END;
+
 LIST_STORE                            return LIST_STORE;
 Column_types                          return COLUMN_TYPES;
 Column                                return COLUMN;

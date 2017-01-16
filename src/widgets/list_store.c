@@ -24,9 +24,10 @@ void list_store_new(char *widget)
         char *column, *columns, *tmp;
         symrec *sym;
        
-        syminst(TYPE_ITER, "iter", "&iter");
-
-        prtstr(2, "GtkTreeIter ", "iter;\n");
+        if (getsymval("iter") == NULL) {
+                syminst(TYPE_ITER, "iter", "&iter");
+                prtstr(2, "GtkTreeIter ", "iter;\n");
+        }
 
         sym = get_symbol_by_type(TYPE_COLUMN);
         column = sym->value;

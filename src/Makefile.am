@@ -56,6 +56,7 @@ gml_SOURCES =                                     \
 								widgets/cell_renderer_pixbuf.c    \
 								widgets/cell_renderer_text.c      \
 								widgets/list_store.c              \
+								widgets/cell_layout.c             \
 								$(NULL)
 
 noinst_HEADERS = gml.h

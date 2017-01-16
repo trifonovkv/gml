@@ -45,6 +45,16 @@ LIST_STORE liststore1
   SET Id 4 TRUE
 ;
 
+LIST_STORE lrmodel
+  ADD Column 0 G_TYPE_STRING
+  SET Row
+  SET Id 0 "Left"
+  SET Row
+  SET Id 0 "Middle"
+  SET Row
+  SET Id 0 "Right"
+;
+
 TEXT_VIEW textview1
   SET Text "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   SET Wrap_mode GTK_WRAP_WORD
@@ -556,36 +566,61 @@ COMBO_BOX_TEXT combobox5
   SIGNAL "show" combobox2_show 
 ;
 
-COMBO_BOX_TEXT combobox4
-  CMN Hexpand TRUE 
-  SIGNAL "show" combobox2_show 
+CELL_RENDERER_TEXT cellrenderertext3a
 ;
 
-COMBO_BOX_TEXT combobox3
-  CMN Hexpand TRUE 
-  SIGNAL "show" combobox2_show 
+COMBO_BOX combobox3a
+  SET Model lrmodel
+  SET Active 2
+  ADD Cell_renderer cellrenderertext3a
+  SET Attribute cellrenderertext3a "text" 0
 ;
 
-HBOX hbox3v2
-  ADD combobox3
-  ADD combobox4
-  ADD combobox5
+CELL_RENDERER_TEXT cellrenderertext2a
+;
+
+COMBO_BOX combobox2a
+  SET Model lrmodel
+  SET Active 1
+  ADD Cell_renderer cellrenderertext2a
+  SET Attribute cellrenderertext2a "text" 0
+;
+
+CELL_RENDERER_TEXT cellrenderertext1a
+;
+
+COMBO_BOX combobox1a
+  SET Model lrmodel
+  SET Active 0
+  ADD Cell_renderer cellrenderertext1a
+  SET Attribute cellrenderertext1a "text" 0
+;
+
+HBOX hbox
   STYLE Add_class "linked"
+  ADD combobox1a
+  PACK combobox1a Expand TRUE
+  ADD combobox2a
+  PACK combobox2a Expand TRUE
+  ADD combobox3a
+  PACK combobox3a Expand TRUE
 ;
 
-ENTRY entry3
-  SET Text "entry"
-  CMN Hexpand TRUE
-;
-
-BUTTON button
+BUTTON button224
   SIGNAL "show" button_show
 ;
 
-HBOX hbox2v2
-  ADD entry3
-  ADD button
+ENTRY entry24
+  SET Text "entry"
+;
+
+HBOX box223
   STYLE Add_class "linked"
+  ADD entry24
+  PACK entry24 Expand TRUE
+  ADD button224
+  PACK button224 Fill FALSE
+  PACK button224 Position 1
 ;
 
 ENTRY entry2
@@ -593,57 +628,62 @@ ENTRY entry2
   CMN Sensitive FALSE
 ;
 
-ENTRY entry
+ENTRY entry1
   SIGNAL "show" entry_show
   SIGNAL "icon-release" on_entry_icon_release
 ;
 
-COMBO_BOX_TEXT_ENTRY combobox2
+COMBO_BOX_TEXT_ENTRY comboboxtext2
   SIGNAL "show" combobox_show
   CMN Sensitive FALSE
 ;
 
-COMBO_BOX_TEXT_ENTRY combobox
+COMBO_BOX_TEXT_ENTRY comboboxtext1
   SIGNAL "show" combobox_show
 ;
 
-VBOX vbox2h1
+VBOX box3
   SET Spacing 10
-  ADD combobox
-  ADD combobox2
-  ADD entry
+  ADD comboboxtext1
+  PACK comboboxtext1 Fill FALSE
+  ADD comboboxtext2
+  PACK comboboxtext2 Fill FALSE
+  PACK comboboxtext2 Position 1
+  ADD entry1
+  PACK entry1 Fill FALSE
+  PACK entry1 Position 2
   ADD entry2
-  ADD hbox2v2
-  ADD hbox3v2
-  ADD hbox4v2
-  ADD grid1
+  PACK entry2 Fill FALSE
+  PACK entry2 Position 3
+  ADD box223
+  PACK box223 Position 4
+  ADD hbox
 ;
 
-HBOX hbox1v1
+HBOX box2
   SET Spacing 10
-  ADD vbox2h1
-  ADD separator1
-  ADD vbox3h1
-  ADD separator2
-  ADD vbox3h2
-  ADD separator3
-  ADD box26
-  ADD separator4
-  ADD box4
+  ADD box3
 ;
 
-VBOX vbox1
-  CMN Border_width 10
+VBOX page1
   SET Spacing 10
-  ADD hbox1v1
+  ADD box2
 ;
 
-STACK stack
-  ADD Titled vbox1 "Page1" "Page1"
+STACK toplevel_stack
+  SET Transition_duration 1000
+  ADD page1
+;
+
+VBOX box1
+  ADD toplevel_stack
+/*
+  <property name="margin">10</property>
+*/
 ;
 
 STACK_SWITCHER stack_switcher
-  SET Stack_switcher_stack stack
+  SET Stack_switcher_stack toplevel_stack
 ;
 
 BUTTON_FROM_ICON_NAME menu_button
@@ -659,5 +699,5 @@ HEADER_BAR header_bar
 
 WINDOW window
   SET Titlebar header_bar
-  ADD stack
+  ADD box1
 ;

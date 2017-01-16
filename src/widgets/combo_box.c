@@ -16,6 +16,18 @@ void combo_box_new_with_entry(char *widget)
         putdef("GtkWidget *", widget, "gtk_combo_box_new_with_entry", 0);
 }
 
+void combo_box_add_renderer(char *setting)
+{
+        char *widget = wrptype("GTK_CELL_LAYOUT", this);
+        char *render = wrptype("GTK_CELL_RENDERER", setting);
+
+        putfun("gtk_cell_layout_pack_start", 3, widget, render, "TRUE");
+
+        free(widget);
+        free(render);
+        free(setting);
+}
+
 void combo_box_set_wrap_width(char *setting)
 {
         char *widget = wrptype("GTK_COMBO_BOX", this);
@@ -79,9 +91,11 @@ void combo_box_set_active_id(char *setting)
 void combo_box_set_model(char *setting)
 {
         char *widget = wrptype("GTK_COMBO_BOX", this);
+        char *model = wrptype("GTK_TREE_MODEL", setting);
 
-        putfun("gtk_combo_box_set_model", 2, widget, setting);
+        putfun("gtk_combo_box_set_model", 2, widget, model);
 
+        free(model);
         free(widget);
         free(setting);
 }
