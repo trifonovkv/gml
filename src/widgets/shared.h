@@ -26,7 +26,17 @@
 #include "tree_view_column.h"
 #include "cell_layout.h"
 
-void add_attribute(char *widget, char *setting, char *column)
+void set_max_width_chars(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_LABEL) {
+                label_set_max_width_chars(setting);
+        } else if (type == TYPE_ENTRY) {
+                entry_set_max_width_chars(setting);
+        }
+}
+ void add_attribute(char *widget, char *setting, char *column)
 {
         widget_type type = getsymtype(this);
 

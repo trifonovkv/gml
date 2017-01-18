@@ -59,6 +59,7 @@ typedef enum
         , TYPE_LIST_STORE
         , TYPE_COLUMN
         , TYPE_ITER
+        , TYPE_COLOR_CHOOSER
 } widget_type;
 
 /* Keyboard accelerators and action */

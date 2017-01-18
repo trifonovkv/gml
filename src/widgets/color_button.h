@@ -7,11 +7,6 @@
  */
 void color_button_new(char *widget);
 
-/*
- *Creates a new color button.
- */
-void color_button_new_with_rgba(char *widget, char *setting);
-
 /* 
  * Sets the title for the color selection dialog.
  */

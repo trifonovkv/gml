@@ -5,7 +5,15 @@ ADJUSTMENT adjustment3
   SET Page_increment 1.0
 ;
 
-ADJUSTMENT adjustment1
+ADJUSTMENT adjustment2
+  SET Upper 1000.0
+  SET Lower 1.0
+  SET Value 50.0
+  SET Step_increment 1.0
+  SET Page_increment 10.0
+;
+
+ADJUSTMENT adjustmen1
   SET Upper 100.0
   SET Lower 1.0
   SET Value 50.0
@@ -60,9 +68,6 @@ TEXT_VIEW textview1
   SET Wrap_mode GTK_WRAP_WORD
   SET Left_margin 10
   SET Right_margin 11
-/*
-  SET Populate_all">1</property>
-*/
   CMN Hexpand TRUE
 ;
 
@@ -71,31 +76,9 @@ SCROLLED_WINDOW scrolledwindow2
   ADD textview1
   CMN Hexpand TRUE
 ;
-/*
-                          </object>
-                          <packing>
-                            <property name="expand">1</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">1</property>
-                        <property name="position">8</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-<child>
-*/
 
 CELL_RENDERER_TEXT cellrenderertext3
-/*
-       <property name="ellipsize">end</property>
-*/
+  SET Ellipsize PANGO_ELLIPSIZE_END
 ;
 
 TREE_VIEW_COLUMN treeviewcolumn1
@@ -109,9 +92,7 @@ TREE_VIEW_COLUMN treeviewcolumn1
 ;
 
 CELL_RENDERER_TEXT cellrenderertext4
-/*
-       <property name="ellipsize">end</property>
-*/
+  SET Ellipsize PANGO_ELLIPSIZE_END
 ;
 
 TREE_VIEW_COLUMN treeviewcolumn2
@@ -152,7 +133,6 @@ TREE_VIEW treeview1
   ADD Column treeviewcolumn4
   ADD Column treeviewcolumn1
   ADD Column treeviewcolumn2
-  CMN Hexpand TRUE
 ;
 
 SCROLLED_WINDOW scrolledwindow1
@@ -160,14 +140,16 @@ SCROLLED_WINDOW scrolledwindow1
   SET Policy GTK_POLICY_AUTOMATIC GTK_POLICY_ALWAYS
   SET Shadow_type GTK_SHADOW_IN
   ADD treeview1
-  CMN Hexpand TRUE
 ;
 
 VBOX box4
   SET Homogeneous TRUE
   SET Spacing 6
   ADD scrolledwindow1
+  PACK scrolledwindow1 Expand TRUE
   ADD scrolledwindow2
+  PACK scrolledwindow2 Expand TRUE
+  PACK scrolledwindow2 Position 1
 ;
 
 SEPARATOR separator4
@@ -175,7 +157,7 @@ SEPARATOR separator4
 ;
 
 LABEL label18
-  SET Text "Etched out"
+  SET Text "<b>Etched out</b>"
   SET Label_use_markup TRUE
 ;
 
@@ -185,7 +167,7 @@ FRAME frame4
 ;
 
 LABEL label17
-  SET Text "Etched in"
+  SET Text "<b>Etched in</b>"
   SET Label_use_markup TRUE
 ;
 
@@ -195,7 +177,7 @@ FRAME frame3
 ;
 
 LABEL label2
-  SET Text "Out"
+  SET Text "<b>Out</b>"
   SET Label_use_markup TRUE
 ;
 
@@ -205,7 +187,7 @@ FRAME frame2
 ;
 
 LABEL label1
-  SET Text "In"
+  SET Text "<b>In</b>"
   SET Label_use_markup TRUE
 ;
 
@@ -225,6 +207,9 @@ VBOX box26
   PACK frame2 Expand TRUE
   PACK frame3 Expand TRUE
   PACK frame4 Expand TRUE
+  PACK frame2 Position 1
+  PACK frame3 Position 2
+  PACK frame4 Position 3
 ;
 
 SEPARATOR separator3
@@ -233,23 +218,33 @@ SEPARATOR separator3
 
 SCALE scale4
   ARG GTK_ORIENTATION_VERTICAL
-  ARG adjustment1
+  ARG adjustmen1
   CMN Size_request 0 100
   CMN Sensitive FALSE
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
-  SET Draw_value FALSE
+  SET Draw_value TRUE
   SET Digits -1
+  SIGNAL "format-value" scale_format_value_blank
 ;
 
 SCALE scale3
   ARG GTK_ORIENTATION_VERTICAL
-  ARG adjustment1
+  ARG adjustmen1
   CMN Size_request 0 100
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
-  SET Draw_value FALSE
+  SET Draw_value TRUE
   SET Digits -1
+  SIGNAL "format-value" scale_format_value
+;
+
+HBOX box23
+  SET Spacing 6
+  CMN Vexpand TRUE
+  ADD scale3
+  ADD scale4
+  PACK scale4 Position 1
 ;
 
 PROGRESS_BAR progressbar6
@@ -263,14 +258,21 @@ PROGRESS_BAR progressbar5
   SET Fraction 0.5
 ;
 
-HBOX hbox1v3
-  CMN Vexpand TRUE
-  SET Homogeneous TRUE
+HBOX box28
   SET Spacing 6
+  CMN Vexpand TRUE
   ADD progressbar5
   ADD progressbar6
-  ADD scale3
-  ADD scale4
+  PACK progressbar6 Position 1
+;
+
+HBOX box25
+  SET Homogeneous TRUE
+  ADD box28
+  PACK box28 Fill FALSE
+  ADD box23
+  PACK box23 Fill FALSE
+  PACK box23 Position 1
 ;
 
 SCALE scale5
@@ -289,7 +291,7 @@ SCALE scale5
 
 SCALE scale2
   ARG GTK_ORIENTATION_HORIZONTAL
-  ARG adjustment1
+  ARG adjustmen1
   CMN Sensitive FALSE
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
@@ -298,10 +300,23 @@ SCALE scale2
                                   
 SCALE scale1
   ARG GTK_ORIENTATION_HORIZONTAL
-  ARG adjustment1
+  ARG adjustmen1
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
   SET Draw_value FALSE
+;
+
+VBOX box24
+  SET Homogeneous TRUE
+  CMN Hexpand TRUE
+  ADD scale1
+  ADD scale2
+  PACK scale1 Position 1
+;
+
+HBOX box27
+  ADD box24
+  PACK box24 Expand TRUE
 ;
 
 LEVEL_BAR levelbar2
@@ -331,50 +346,38 @@ PROGRESS_BAR progressbar1
   SET Fraction 0.5
 ;
 
-VBOX vbox3h2
+VBOX box21
   SET Spacing 6
   ADD progressbar1
+  PACK progressbar1 Fill FALSE
   ADD progressbar2
+  PACK progressbar2 Fill FALSE
+  PACK progressbar2 Position 1
   ADD progressbar3
+  PACK progressbar3 Fill FALSE
+  PACK progressbar3 Position 2
   ADD levelbar1
+  PACK levelbar1 Position 10
   ADD levelbar2
-  ADD scale1
-  ADD scale2
+  PACK levelbar2 Position 11
+;
+
+VBOX box20
+  SET Spacing 6
+  ADD box21
+  PACK box21 Fill FALSE
+  ADD box27
+  PACK box27 Fill FALSE
+  PACK box27 Position 1
   ADD scale5
-  ADD hbox1v3
+  PACK scale5 Position 2
+  ADD box25
+  PACK box25 Expand TRUE
+  PACK box25 Position 3
 ;
 
-COMBO_BOX_TEXT combo_box1
-  SET Active 0
-  SIGNAL "show" combobox3_show 
-;
-
-COMBO_BOX_TEXT combo_box2
-  SET Active 1
-  CMN Sensitive FALSE
-  SIGNAL "show" combobox3_show 
-;
-
-FONT_BUTTON fontbutton1
-;
-
-COLOR_BUTTON_WITH_RGBA colorbutton1
-  SET Rgba "#31316867a09f"
-;
-      
-FILE_CHOOSER_BUTTON filechooserbutton1
-  SET Local_only FALSE
-;
-
-LINK_BUTTON_WITH_LABEL linkbutton1
-  SET Label_text "link button"
-  SET Relief GTK_RELIEF_NONE
-  SET Uri "http://www.gtk.org"
-  CMN Has_tooltip TRUE
-;
-
-SWITCH switch1
-  CMN Halign GTK_ALIGN_CENTER
+SEPARATOR separator2
+  SET Orientation GTK_ORIENTATION_VERTICAL
 ;
 
 SWITCH switch2
@@ -382,21 +385,51 @@ SWITCH switch2
   CMN Halign GTK_ALIGN_CENTER
 ;
 
-TOGGLE_BUTTON_WITH_LABEL togglebutton1
-  SET Label_text "togglebutton"
+SWITCH switch1
+  CMN Halign GTK_ALIGN_CENTER
+;
+
+LINK_BUTTON_WITH_LABEL linkbutton1
+  SET Label_text "link button"
+  SET Relief GTK_RELIEF_NONE
+  SET Uri "http://www.gtk.org"
+  CMN Receives_default TRUE
+  CMN Has_tooltip TRUE
+;
+
+FILE_CHOOSER_BUTTON filechooserbutton1
+  SET Local_only FALSE
+;
+
+COLOR_BUTTON colorbutton1
+  SET Rgba "rgb(49,104,160)"
+  SET Use_alpha TRUE
+  CMN Receives_default TRUE
+; 
+
+FONT_BUTTON fontbutton1
   CMN Receives_default TRUE
 ;
 
-TOGGLE_BUTTON_WITH_LABEL togglebutton2
-  SET Label_text "togglebutton"
+CELL_RENDERER_TEXT cellrenderertext2
+;
+
+COMBO_BOX combo_box2
+  SET Active 1
+  SET Model liststore1
   CMN Sensitive FALSE
-  CMN Receives_default TRUE
+  ADD Cell_renderer cellrenderertext2
+  SET Attribute cellrenderertext2 "text" 2
 ;
 
-TOGGLE_BUTTON_WITH_LABEL togglebutton3
-  SET Label_text "togglebutton"
-  CMN Receives_default TRUE
-  SET Active TRUE
+CELL_RENDERER_TEXT cellrenderertext1
+;
+
+COMBO_BOX combo_box1
+  SET Active 0
+  SET Model liststore1
+  ADD Cell_renderer cellrenderertext1
+  SET Attribute cellrenderertext1 "text" 2
 ;
 
 TOGGLE_BUTTON_WITH_LABEL togglebutton4
@@ -406,24 +439,55 @@ TOGGLE_BUTTON_WITH_LABEL togglebutton4
   SET Active TRUE
 ;
 
-SEPARATOR separator2
-  SET Orientation GTK_ORIENTATION_VERTICAL
+TOGGLE_BUTTON_WITH_LABEL togglebutton3
+  SET Label_text "togglebutton"
+  CMN Receives_default TRUE
+  SET Active TRUE
 ;
 
-VBOX vbox3h1
+TOGGLE_BUTTON_WITH_LABEL togglebutton2
+  SET Label_text "togglebutton"
+  CMN Sensitive FALSE
+  CMN Receives_default TRUE
+;
+
+TOGGLE_BUTTON_WITH_LABEL togglebutton1
+  SET Label_text "togglebutton"
+  CMN Receives_default TRUE
+;
+
+VBOX box19
   SET Spacing 10
   ADD togglebutton1
+  PACK togglebutton1 Fill FALSE
   ADD togglebutton2
+  PACK togglebutton2 Fill FALSE
+  PACK togglebutton2 Position 1
   ADD togglebutton3
+  PACK togglebutton3 Fill FALSE
+  PACK togglebutton3 Position 2
   ADD togglebutton4
+  PACK togglebutton4 Fill FALSE
+  PACK togglebutton4 Position 3
   ADD combo_box1
+  PACK combo_box1 Fill FALSE
+  PACK combo_box1 Position 5
   ADD combo_box2
+  PACK combo_box2 Fill FALSE
+  PACK combo_box1 Position 6
   ADD fontbutton1
+  PACK fontbutton1 Fill FALSE
+  PACK fontbutton1 Position 6
   ADD colorbutton1
+  PACK colorbutton1 Position 8
   ADD filechooserbutton1
+  PACK filechooserbutton1 Position 8
   ADD linkbutton1
+  PACK linkbutton1 Position 9
   ADD switch1
+  PACK switch1 Position 10
   ADD switch2
+  PACK switch2 Position 11
 ;
 
 SEPARATOR separator1
@@ -533,37 +597,37 @@ GRID grid1
 ;
 
 SPIN_BUTTON spin_button2
-  CMN Hexpand TRUE 
   CMN Sensitive FALSE
+  SET Width_chars 2
+  SET Max_width_chars 2
 ;
 
 SPIN_BUTTON spin_button1
-  CMN Hexpand TRUE 
-  SET Adjustment adjustment1
+  SET Width_chars 2
+  SET Max_width_chars 2
+  SET Adjustment adjustment2
 ;
 
-LABEL label2s
-  CMN Hexpand TRUE 
+LABEL label4
   SET Text "label"
   CMN Sensitive FALSE
 ;
 
-LABEL label1s
-  CMN Hexpand TRUE 
+LABEL label3
   SET Text "label"
 ;
 
-HBOX hbox4v2
+HBOX box18
   SET Spacing 20
-  ADD label1s
-  ADD label2s
+  ADD label3
+  ADD label4
+  PACK label4 Position 1
   ADD spin_button1
+  PACK spin_button1 Fill FALSE
+  PACK spin_button1 Position 2
   ADD spin_button2
-;
-
-COMBO_BOX_TEXT combobox5
-  CMN Hexpand TRUE 
-  SIGNAL "show" combobox2_show 
+  PACK spin_button2 Fill FALSE
+  PACK spin_button2 Position 3
 ;
 
 CELL_RENDERER_TEXT cellrenderertext3a
@@ -658,11 +722,37 @@ VBOX box3
   ADD box223
   PACK box223 Position 4
   ADD hbox
+  PACK hbox Fill TRUE
+  ADD box18
+  PACK box18 Fill FALSE
+  ADD grid1
+  PACK grid1 Fill FALSE
+
 ;
 
 HBOX box2
   SET Spacing 10
   ADD box3
+  PACK box3 Fill FALSE
+  ADD separator1
+  PACK separator1 Position 1
+  ADD box19
+  PACK box19 Fill FALSE
+  PACK box19 Position 2
+  ADD separator2
+  PACK separator2 Position 3
+  ADD box20
+  PACK box20 Position 4
+  ADD separator3
+  PACK separator3 Position 5
+  ADD box26
+  PACK box26 Expand TRUE
+  PACK box26 Position 6
+  ADD separator4
+  PACK separator4 Position 7
+  ADD box4
+  PACK box4 Expand TRUE
+  PACK box4 Position 8
 ;
 
 VBOX page1
@@ -676,10 +766,11 @@ STACK toplevel_stack
 ;
 
 VBOX box1
+  CMN Margin_top 10
+  CMN Margin_bottom 10
+  CMN Margin_start 10
+  CMN Margin_end 10
   ADD toplevel_stack
-/*
-  <property name="margin">10</property>
-*/
 ;
 
 STACK_SWITCHER stack_switcher

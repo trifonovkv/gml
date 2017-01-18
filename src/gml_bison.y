@@ -45,6 +45,7 @@
 #include "widgets/cell_renderer_text.h"
 #include "widgets/list_store.h"
 #include "widgets/cell_layout.h"
+#include "widgets/color_chooser.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -104,7 +105,7 @@ int yylex();
   
 %token FILE_CHOOSER_BUTTON 
 
-%token COLOR_BUTTON COLOR_BUTTON_WITH_RGBA RGBA
+%token COLOR_BUTTON COLOR_BUTTON_WITH_RGBA RGBA USE_ALPHA
 
 %token FONT_BUTTON FONT FONT_NAME SHOW_STYLE SHOW_SIZE 
 %token USE_FONT USE_SIZE
@@ -194,7 +195,7 @@ int yylex();
 }
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label
-%type <string> set_mnemonics set_orientation set_rgba arg_id
+%type <string> set_mnemonics set_orientation arg_id
 %%
 
 main:
@@ -242,7 +243,9 @@ widget:
         | separator
         | font_button
         | color_button
-        | color_button_with_rgba
+        /*
+         * | color_button_with_rgba
+         */
         | file_chooser_button
         | link_button
         | link_button_with_label
@@ -280,10 +283,12 @@ arg_id:
         ARG IDENTIFIER                                              { $$ = $2; }
         ;
 
-set_rgba:
-        SET RGBA STRING                                             { $$ = $3; }
-        ;
-
+/*
+ * set_rgba:
+ *         SET RGBA STRING                                             { $$ = $3; }
+ *         ;
+ * 
+ */
 set_orientation:
         SET ORIENTATION IDENTIFIER                                  { $$ = $3; }
         ;
@@ -391,12 +396,14 @@ color_button:
         params SEMICOLON                                    { block_close($2); }
         ;
 
-color_button_with_rgba:
-        COLOR_BUTTON_WITH_RGBA IDENTIFIER set_rgba  
-                                         { color_button_new_with_rgba($2, $3); }
-        params SEMICOLON                                    { block_close($2); }
-        ;
-
+/*
+ * color_button_with_rgba:
+ *         COLOR_BUTTON_WITH_RGBA IDENTIFIER set_rgba  
+ *                                          { color_button_new_with_rgba($2, $3); }
+ *         params SEMICOLON                                    { block_close($2); }
+ *         ;
+ * 
+ */
 font_button:
         FONT_BUTTON IDENTIFIER                          { font_button_new($2); }
         params SEMICOLON                                    { block_close($2); }
@@ -634,6 +641,7 @@ set:
         | set_alignment
         | set_spacing
         | set_reorderable                
+        | set_max_width_chars
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -729,7 +737,6 @@ set:
         | set_label_justify
         | set_label_xalign
         | set_label_yalign
-        | set_label_max_width_chars
         | set_label_line_wrap
         | set_label_line_wrap_mode
         | set_label_lines
@@ -838,6 +845,16 @@ set:
         | set_list_store_column
         | set_list_store_row
         | set_cell_layout_attribute
+        | set_color_chooser_rgba
+        | set_color_chooser_use_alpha
+        ;
+
+set_color_chooser_rgba:
+        SET RGBA STRING                          { color_chooser_set_rgba($3); }
+        ;
+
+set_color_chooser_use_alpha:
+        SET USE_ALPHA IDENTIFIER            { color_chooser_set_use_alpha($3); }
         ;
 
 set_cell_layout_attribute:
@@ -1269,10 +1286,6 @@ set_label_yalign:
         SET YALIGN FLOAT                               { label_set_yalign($3); }
         ;
 
-set_label_max_width_chars:
-        SET MAX_WIDTH_CHARS NUMBER            { label_set_max_width_chars($3); }
-        ;
-
 set_label_line_wrap:
         SET LINE_WRAP IDENTIFIER                    { label_set_line_wrap($3); }
         ;
@@ -1694,6 +1707,10 @@ set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
 
+set_max_width_chars:
+        SET MAX_WIDTH_CHARS NUMBER                  { set_max_width_chars($3); }
+        ;
+  
 set_reorderable:
         SET REORDERABLE IDENTIFIER                      { set_reorderable($3); }
         ;

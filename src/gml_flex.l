@@ -144,6 +144,7 @@ FILE_CHOOSER_BUTTON                   return FILE_CHOOSER_BUTTON;
 COLOR_BUTTON                          return COLOR_BUTTON;
 COLOR_BUTTON_WITH_RGBA                return COLOR_BUTTON_WITH_RGBA;
 Rgba                                  return RGBA;
+Use_alpha                             return USE_ALPHA;
 
 FONT_BUTTON                           return FONT_BUTTON;
 Font                                  return FONT;

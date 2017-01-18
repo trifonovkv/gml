@@ -1,5 +1,9 @@
 #include <gtk/gtk.h>
 
+char *scale_format_value_blank (GtkScale *scale, gdouble value);
+
+char *scale_format_value    (GtkScale *scale, gdouble value);
+
 void button_show            (GtkWidget *widget, 
                              GdkEvent  *event, 
                              gpointer   user_data);

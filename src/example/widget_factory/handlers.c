@@ -4,6 +4,15 @@
 gint pulse_time = 250;
 gint pulse_entry_mode = 0;
 
+char *scale_format_value_blank (GtkScale *scale, gdouble value)
+{
+        return g_strdup (" ");
+}
+char *scale_format_value (GtkScale *scale, gdouble value)
+{
+        return g_strdup_printf ("%0.*f", 1, value);
+}
+
 void button_show(GtkWidget *widget, 
                  GdkEvent  *event, 
                  gpointer   user_data)

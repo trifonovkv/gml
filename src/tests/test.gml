@@ -46,7 +46,7 @@ FILE_CHOOSER_BUTTON filechooserbutton1
   SET Use_preview_label TRUE
 ;
 
-COLOR_BUTTON_WITH_RGBA colorbutton1
+COLOR_BUTTON colorbutton1
   SET Rgba "#31316867a09f"
   SET Title "colorbutton"
 ;
