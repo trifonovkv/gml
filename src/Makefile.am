@@ -58,6 +58,7 @@ gml_SOURCES =                                     \
 								widgets/list_store.c              \
 								widgets/cell_layout.c             \
 								widgets/color_chooser.c           \
+								widgets/notebook.c                \
 								$(NULL)
 
 noinst_HEADERS = gml.h

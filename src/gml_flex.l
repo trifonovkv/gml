@@ -34,6 +34,21 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+NOTEBOOK                              return NOTEBOOK;
+Tab_pos                               return TAB_POS;
+Show_tabs                             return SHOW_TABS;
+Show_border                           return SHOW_BORDER;
+Scrollable                            return SCROLLABLE;
+Popup_enable                          return POPUP_ENABLE;
+Menu_label                            return MENU_LABEL;
+Menu_label_text                       return MENU_LABEL_TEXT;
+Tab_label                             return TAB_LABEL;
+Tab_label_text                        return TAB_LABEL_TEXT;
+Tab_reorderable                       return TAB_REORDERABLE;
+Tab_detachable                        return TAB_DETACHABLE;
+Group_name                            return GROUP_NAME;
+Action_widget                         return ACTION_WIDGET;
+
 End                                   return END;
 
 LIST_STORE                            return LIST_STORE;
@@ -133,7 +148,6 @@ Create_folders                        return CREATE_FOLDERS;
 Current_name                          return CURRENT_NAME;
 Filename                              return FILENAME;
 Current_folder                        return CURRENT_FOLDER;
-Uri                                   return URI;
 Current_folder_uri                    return CURRENT_FOLDER_URI;
 Preview_widget                        return PREVIEW_WIDGET;
 Preview_widget_active                 return PREVIEW_WIDGET_ACTIVE;
@@ -326,11 +340,9 @@ Name                                  return NAME;
 Relief                                return RELIEF;
 Label                                 return LABEL_BUTTON; 
 Use_underline                         return USE_UNDERLINE;
-Focus_on_click                        return FOCUS_ON_CLICK;
 Image                                 return IMAGE;
 Image_position                        return IMAGE_POSITION;
 Always_show_image                     return ALWAYS_SHOW_IMAGE;
-Icon_name                             return ICON_NAME;
 Size                                  return SIZE;
 
 Subtitle                              return SUBTITLE;

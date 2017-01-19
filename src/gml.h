@@ -60,6 +60,7 @@ typedef enum
         , TYPE_COLUMN
         , TYPE_ITER
         , TYPE_COLOR_CHOOSER
+        , TYPE_NOTEBOOK
 } widget_type;
 
 /* Keyboard accelerators and action */

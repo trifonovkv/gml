@@ -63,6 +63,142 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+LABEL label16
+  SET Text "page 3"
+;
+
+VBOX box17
+;
+
+LABEL label15
+  SET Text "page 2"
+;
+
+VBOX box16
+;
+
+LABEL label14
+  SET Text "page 1"
+;
+
+VBOX box15
+;
+
+NOTEBOOK notebook4
+  SET Tab_pos GTK_POS_LEFT
+  ADD box15
+  SET Tab_label box15 label14
+  ADD box16
+  SET Tab_label box16 label15
+  ADD box17
+  SET Tab_label box17 label16
+;
+
+LABEL label13
+  SET Text "page 3"
+;
+
+VBOX box14
+;
+
+LABEL label12
+  SET Text "page 2"
+;
+
+VBOX box13
+;
+
+LABEL label11
+  SET Text "page 1"
+;
+
+VBOX box12
+;
+
+NOTEBOOK notebook3
+  SET Tab_pos GTK_POS_BOTTOM
+  ADD box12
+  SET Tab_label box12 label11
+  ADD box13
+  SET Tab_label box13 label12
+  ADD box14
+  SET Tab_label box14 label13
+;
+
+LABEL label10
+  SET Text "page 3"
+;
+
+VBOX box11
+;
+
+LABEL label9
+  SET Text "page 2"
+;
+
+VBOX box10
+;
+
+LABEL label8
+  SET Text "page 1"
+;
+
+VBOX box9
+;
+
+NOTEBOOK notebook2
+  SET Tab_pos GTK_POS_RIGHT
+  ADD box9
+  SET Tab_label box9 label8
+  ADD box10
+  SET Tab_label box10 label9
+  ADD box11
+  SET Tab_label box11 label10
+;
+
+LABEL label7
+  SET Text "page 3"
+;
+
+VBOX box8
+;
+
+LABEL label6
+  SET Text "page 2"
+;
+
+VBOX box7
+;
+
+LABEL label5
+  SET Text "page 1"
+;
+
+VBOX box6
+;
+
+NOTEBOOK notebook1
+  ADD box6
+  SET Tab_label box6 label5
+  ADD box7
+  SET Tab_label box7 label6
+  ADD box8
+  SET Tab_label box8 label7
+;
+
+HBOX box5
+  SET Spacing 10
+  SET Homogeneous TRUE
+  ADD notebook1
+  ADD notebook2
+  ADD notebook3
+  ADD notebook4
+;
+
+SEPARATOR separator5
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
+;
+
 TEXT_VIEW textview1
   SET Text "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   SET Wrap_mode GTK_WRAP_WORD
@@ -758,6 +894,12 @@ HBOX box2
 VBOX page1
   SET Spacing 10
   ADD box2
+  PACK box2 Position 2
+  ADD separator5
+  PACK separator5 Position 3
+  ADD box5
+  PACK box5 Expand TRUE
+  PACK box5 Position 4
 ;
 
 STACK toplevel_stack

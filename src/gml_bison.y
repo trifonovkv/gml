@@ -46,6 +46,7 @@
 #include "widgets/list_store.h"
 #include "widgets/cell_layout.h"
 #include "widgets/color_chooser.h"
+#include "widgets/notebook.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -63,6 +64,10 @@ int yywrap()
 int yylex();
 
 %}
+%token NOTEBOOK TAB_POS SHOW_TABS SHOW_BORDER SCROLLABLE POPUP_ENABLE
+%token MENU_LABEL MENU_LABEL_TEXT TAB_LABEL TAB_LABEL_TEXT 
+%token TAB_REORDERABLE TAB_DETACHABLE GROUP_NAME ACTION_WIDGET
+
 %token END
     
 %token TEXT_BUFFER MODIFIED 
@@ -243,9 +248,6 @@ widget:
         | separator
         | font_button
         | color_button
-        /*
-         * | color_button_with_rgba
-         */
         | file_chooser_button
         | link_button
         | link_button_with_label
@@ -260,6 +262,7 @@ widget:
         | cell_renderer_pixbuf
         | cell_renderer_text
         | list_store
+        | notebook
         ;
 
 params: 
@@ -283,12 +286,6 @@ arg_id:
         ARG IDENTIFIER                                              { $$ = $2; }
         ;
 
-/*
- * set_rgba:
- *         SET RGBA STRING                                             { $$ = $3; }
- *         ;
- * 
- */
 set_orientation:
         SET ORIENTATION IDENTIFIER                                  { $$ = $3; }
         ;
@@ -319,6 +316,10 @@ bbox_child_set:
                                { button_box_set_child_non_homogeneous($3, $4); }
         ;
 
+notebook:
+        NOTEBOOK IDENTIFIER                                { notebook_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
 
 list_store:
         LIST_STORE IDENTIFIER columns                    { list_store_new($2); }
@@ -396,14 +397,6 @@ color_button:
         params SEMICOLON                                    { block_close($2); }
         ;
 
-/*
- * color_button_with_rgba:
- *         COLOR_BUTTON_WITH_RGBA IDENTIFIER set_rgba  
- *                                          { color_button_new_with_rgba($2, $3); }
- *         params SEMICOLON                                    { block_close($2); }
- *         ;
- * 
- */
 font_button:
         FONT_BUTTON IDENTIFIER                          { font_button_new($2); }
         params SEMICOLON                                    { block_close($2); }
@@ -847,6 +840,77 @@ set:
         | set_cell_layout_attribute
         | set_color_chooser_rgba
         | set_color_chooser_use_alpha
+        | set_notebook_tab_pos
+        | set_notebook_show_tabs
+        | set_notebook_show_border
+        | set_notebook_scrollable
+        | set_notebook_popup_enable
+        | set_notebook_menu_label
+        | set_notebook_menu_label_text
+        | set_notebook_tab_label
+        | set_notebook_tab_label_text
+        | set_notebook_tab_reorderable
+        | set_notebook_tab_detachable
+        | set_notebook_group_name
+        | set_notebook_action_widget
+        ;
+
+set_notebook_tab_pos:
+        SET TAB_POS IDENTIFIER                     { notebook_set_tab_pos($3); }
+        ;
+
+set_notebook_show_tabs:
+        SET SHOW_TABS IDENTIFIER                 { notebook_set_show_tabs($3); }
+        ;
+
+set_notebook_show_border:
+        SET SHOW_BORDER IDENTIFIER             { notebook_set_show_border($3); }
+        ;
+
+set_notebook_scrollable:
+        SET SCROLLABLE IDENTIFIER               { notebook_set_scrollable($3); }
+        ;
+
+set_notebook_popup_enable:
+        SET POPUP_ENABLE IDENTIFIER           { notebook_set_popup_enable($3); }
+        ;
+
+set_notebook_menu_label:
+        SET MENU_LABEL IDENTIFIER IDENTIFIER 
+                                            { notebook_set_menu_label($3, $4); }
+        ;
+
+set_notebook_menu_label_text:
+        SET MENU_LABEL_TEXT IDENTIFIER STRING
+                                       { notebook_set_menu_label_text($3, $4); }
+        ;
+
+set_notebook_tab_label:
+        SET TAB_LABEL IDENTIFIER IDENTIFIER  { notebook_set_tab_label($3, $4); }
+        ;
+
+set_notebook_tab_label_text:
+        SET TAB_LABEL_TEXT IDENTIFIER STRING
+                                        { notebook_set_tab_label_text($3, $4); }
+        ;
+
+set_notebook_tab_reorderable:
+        SET TAB_REORDERABLE IDENTIFIER IDENTIFIER
+                                       { notebook_set_tab_reorderable($3, $4); }
+        ;
+
+set_notebook_tab_detachable:
+        SET TAB_DETACHABLE IDENTIFIER IDENTIFIER
+                                        { notebook_set_tab_detachable($3, $4); }
+        ;
+
+set_notebook_group_name:
+        SET GROUP_NAME STRING                   { notebook_set_group_name($3); }
+        ;
+
+set_notebook_action_widget:
+        SET ACTION_WIDGET IDENTIFIER IDENTIFIER
+                                         { notebook_set_action_widget($3, $4); }
         ;
 
 set_color_chooser_rgba:
