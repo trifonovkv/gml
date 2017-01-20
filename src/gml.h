@@ -61,6 +61,8 @@ typedef enum
         , TYPE_ITER
         , TYPE_COLOR_CHOOSER
         , TYPE_NOTEBOOK
+        , TYPE_OVERLAY
+        , TYPE_REVEALER
 } widget_type;
 
 /* Keyboard accelerators and action */

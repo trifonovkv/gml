@@ -25,6 +25,40 @@
 #include "cell_renderer_toggle.h"
 #include "tree_view_column.h"
 #include "cell_layout.h"
+#include "revealer.h"
+
+void set_label(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_LABEL) {
+                label_set_label(setting);
+        } else if (type == TYPE_BUTTON) {
+                button_set_label(setting);
+        }
+}
+
+void set_transition_type(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_STACK) {
+                stack_set_transition_type(setting);
+        } else if (type == TYPE_REVEALER) {
+                revealer_set_transition_type(setting);
+        }
+}
+
+void set_transition_duration(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_STACK) {
+                stack_set_transition_duration(setting);
+        } else if (type == TYPE_REVEALER) {
+                revealer_set_transition_duration(setting);
+        }
+}
 
 void set_max_width_chars(char *setting)
 {
@@ -36,7 +70,8 @@ void set_max_width_chars(char *setting)
                 entry_set_max_width_chars(setting);
         }
 }
- void add_attribute(char *widget, char *setting, char *column)
+
+void add_attribute(char *widget, char *setting, char *column)
 {
         widget_type type = getsymtype(this);
 

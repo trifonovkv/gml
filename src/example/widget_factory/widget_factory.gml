@@ -63,6 +63,36 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+LABEL page2note
+  SET Label "NEWS!"
+  CMN Hexpand TRUE
+  CMN Halign GTK_ALIGN_START
+;
+
+HBOX page2box
+  SET Spacing 20
+  CMN Margin_top 10
+  CMN Margin_bottom 10
+  CMN Margin_start 10
+  CMN Margin_end 10
+  ADD page2note
+;
+
+FRAME page2frame
+  STYLE Add_class "app-notification"
+  ADD page2box
+;
+
+REVEALER page2revealer
+  CMN Halign GTK_ALIGN_CENTER
+  CMN Valign GTK_ALIGN_START
+  ADD page2frame
+;
+
+OVERLAY page2
+  ADD Overlay page2revealer  
+;
+
 LABEL label16
   SET Text "page 3"
 ;
@@ -904,7 +934,8 @@ VBOX page1
 
 STACK toplevel_stack
   SET Transition_duration 1000
-  ADD page1
+  ADD Titled page1 "Page 1" "Page 1"
+  ADD Titled page2 "Page 2" "Page 2"
 ;
 
 VBOX box1

@@ -47,6 +47,8 @@
 #include "widgets/cell_layout.h"
 #include "widgets/color_chooser.h"
 #include "widgets/notebook.h"
+#include "widgets/overlay.h"
+#include "widgets/revealer.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -64,6 +66,11 @@ int yywrap()
 int yylex();
 
 %}
+
+%token REVEALER REVEAL_CHILD
+
+%token OVERLAY_PASS_THROUGH OVERLAY ADD_OVERLAY 
+
 %token NOTEBOOK TAB_POS SHOW_TABS SHOW_BORDER SCROLLABLE POPUP_ENABLE
 %token MENU_LABEL MENU_LABEL_TEXT TAB_LABEL TAB_LABEL_TEXT 
 %token TAB_REORDERABLE TAB_DETACHABLE GROUP_NAME ACTION_WIDGET
@@ -169,7 +176,7 @@ int yylex();
 %token SENSITIVE NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS VISIBLE 
 %token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME FOCUS_ON_CLICK
 
-%token BUTTON BUTTON_FROM_ICON_NAME RELIEF LABEL_BUTTON USE_UNDERLINE 
+%token BUTTON BUTTON_FROM_ICON_NAME RELIEF USE_UNDERLINE 
 %token ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
 
 %token HEADER_BAR SUBTITLE HAS_SUBTITLE CUSTOM_TITLE SHOW_CLOSE_BUTTON
@@ -199,7 +206,7 @@ int yylex();
         char  *string;
 }
 
-%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label
+%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label_text
 %type <string> set_mnemonics set_orientation arg_id
 %%
 
@@ -263,6 +270,8 @@ widget:
         | cell_renderer_text
         | list_store
         | notebook
+        | overlay
+        | revealer
         ;
 
 params: 
@@ -290,7 +299,7 @@ set_orientation:
         SET ORIENTATION IDENTIFIER                                  { $$ = $3; }
         ;
 
-set_label:
+set_label_text:
         SET LABEL_TEXT STRING                                       { $$ = $3; }
         ;
 
@@ -314,6 +323,16 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+revealer:
+        REVEALER IDENTIFIER                                { revealer_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+overlay:
+        OVERLAY IDENTIFIER                                  { overlay_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 notebook:
@@ -382,7 +401,7 @@ link_button:
         ;
 
 link_button_with_label:
-        LINK_BUTTON_WITH_LABEL IDENTIFIER set_label
+        LINK_BUTTON_WITH_LABEL IDENTIFIER set_label_text
                                          { link_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -418,7 +437,7 @@ toggle_button:
         ;
 
 toggle_button_with_label:
-        TOGGLE_BUTTON_WITH_LABEL IDENTIFIER set_label 
+        TOGGLE_BUTTON_WITH_LABEL IDENTIFIER set_label_text 
                                        { toggle_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -435,7 +454,7 @@ radio_button:
         ;
 
 radio_button_with_label:
-        RADIO_BUTTON_WITH_LABEL IDENTIFIER set_label 
+        RADIO_BUTTON_WITH_LABEL IDENTIFIER set_label_text 
                                         { radio_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -452,7 +471,7 @@ check_button:
         ;
 
 check_button_with_label:
-        CHECK_BUTTON_WITH_LABEL IDENTIFIER set_label 
+        CHECK_BUTTON_WITH_LABEL IDENTIFIER set_label_text 
                                         { check_button_new_with_label($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -635,6 +654,9 @@ set:
         | set_spacing
         | set_reorderable                
         | set_max_width_chars
+        | set_transition_duration
+        | set_transition_type
+        | set_label
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -669,7 +691,6 @@ set:
         | set_entry_has_frame
         | set_entry_visibility
         | set_button_relief
-        | set_button_label
         | set_button_image
         | set_button_image_position
         | set_button_always_show_image
@@ -710,8 +731,6 @@ set:
         | set_text_view_input_hints
         | set_stack_hhomogeneous
         | set_stack_vhomogeneous
-        | set_stack_transition_duration
-        | set_stack_transition_type
         | set_stack_switcher_stack
         | set_application_accels_for_action
         | set_application_flags
@@ -736,7 +755,6 @@ set:
         | set_label_region
         | set_label_selectable
         | set_label_text_with_mnemonic
-        | set_label_label
         | set_label_use_markup
         | set_label_single_line_mode
         | set_label_angle
@@ -853,6 +871,17 @@ set:
         | set_notebook_tab_detachable
         | set_notebook_group_name
         | set_notebook_action_widget
+        | set_overlay_overlay_pass_through
+        | set_revealer_reveal_child
+        ;
+
+set_revealer_reveal_child:
+        SET REVEAL_CHILD IDENTIFIER           { revealer_set_reveal_child($3); }
+        ;
+
+set_overlay_overlay_pass_through:
+        SET OVERLAY_PASS_THROUGH IDENTIFIER IDENTIFIER 
+                                   { overlay_set_overlay_pass_through($3, $4); }
         ;
 
 set_notebook_tab_pos:
@@ -1374,10 +1403,6 @@ set_label_text_with_mnemonic:
         SET TEXT_WITH_MNEMONIC STRING      { label_set_text_with_mnemonic($3); }
         ;
 
-set_label_label:
-        SET LABEL_TEXT  STRING                          { label_set_label($3); }
-        ;
-
 set_label_use_markup:
         SET LABEL_USE_MARKUP IDENTIFIER            { label_set_use_markup($3); }
         ;
@@ -1461,14 +1486,6 @@ set_stack_hhomogeneous:
 
 set_stack_vhomogeneous:
         SET VHOMOGENEOUS IDENTIFIER              { stack_set_vhomogeneous($3); }
-        ;
-
-set_stack_transition_duration:
-        SET TRANSITION_DURATION NUMBER    { stack_set_transition_duration($3); }
-        ;
-
-set_stack_transition_type:
-        SET TRANSITION_TYPE IDENTIFIER        { stack_set_transition_type($3); }
         ;
 
 set_text_view_border_window_size:
@@ -1619,10 +1636,6 @@ set_button_relief:
         SET RELIEF IDENTIFIER                         { button_set_relief($3); }
         ;
 
-set_button_label:
-        SET LABEL_BUTTON STRING                        { button_set_label($3); }
-        ;
-
 set_button_image:
         SET IMAGE IDENTIFIER                           { button_set_image($3); }
         ;
@@ -1771,6 +1784,18 @@ set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
 
+set_label:
+        SET LABEL_TEXT STRING                                 { set_label($3); }
+        ;
+
+set_transition_duration:
+        SET TRANSITION_DURATION NUMBER          { set_transition_duration($3); }
+        ;
+ 
+set_transition_type:
+        SET TRANSITION_TYPE IDENTIFIER              { set_transition_type($3); }
+        ;
+ 
 set_max_width_chars:
         SET MAX_WIDTH_CHARS NUMBER                  { set_max_width_chars($3); }
         ;
@@ -1883,6 +1908,7 @@ add:
         | ADD ROW                                       { list_store_append(); }
         | ADD COLUMN IDENTIFIER                 { tree_view_append_column($3); }
         | ADD CELL_RENDERER IDENTIFIER                { add_cell_renderer($3); }
+        | ADD ADD_OVERLAY IDENTIFIER                { overlay_add_overlay($3); }
         ;
 
 common:

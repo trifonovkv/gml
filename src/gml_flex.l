@@ -34,6 +34,13 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+REVEALER                              return REVEALER;
+Reveal_child                          return REVEAL_CHILD;
+
+OVERLAY                               return OVERLAY;
+Overlay_pass_through                  return OVERLAY_PASS_THROUGH;
+Overlay                               return ADD_OVERLAY;
+
 NOTEBOOK                              return NOTEBOOK;
 Tab_pos                               return TAB_POS;
 Show_tabs                             return SHOW_TABS;
@@ -338,7 +345,7 @@ Tooltip_text                          return TOOLTIP_TEXT;
 Name                                  return NAME;
 
 Relief                                return RELIEF;
-Label                                 return LABEL_BUTTON; 
+Label                                 return LABEL_TEXT; 
 Use_underline                         return USE_UNDERLINE;
 Image                                 return IMAGE;
 Image_position                        return IMAGE_POSITION;

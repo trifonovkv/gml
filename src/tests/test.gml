@@ -60,7 +60,7 @@ FONT_BUTTON fontbutton1
 ;
 
 TOGGLE_BUTTON_WITH_LABEL togglebutton1
-  SET Label_text "togglebutton"
+  SET Label "togglebutton"
   SET Mode FALSE
   SET Inconsistent TRUE
   SET Active TRUE
@@ -95,9 +95,6 @@ CHECK_BUTTON_WITH_LABEL check_button1
   SET Label_text "Check button"
   SET Mode FALSE
 ;
-/*
-  SET Mnemonics    
-*/
 
 GRID grid
   SET Row_homogeneous TRUE
