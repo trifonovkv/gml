@@ -1,7 +1,6 @@
 #include "gml.h"
 #include "fmtout.h"
 #include "list_store.h" 
-#include <math.h>         /* floor(), log10() */
 
 void list_store_set_column(char *id, char *value)
 {
@@ -21,7 +20,7 @@ void list_store_add_column(char *id, char *column_type)
 void list_store_new(char *widget)
 {
         int n = 0;
-        char *column, *columns, *tmp;
+        char *column, *columns, *tmp, *n_columns;
         symrec *sym;
        
         if (getsymval("iter") == NULL) {
@@ -29,24 +28,27 @@ void list_store_new(char *widget)
                 prtstr(2, "GtkTreeIter ", "iter;\n");
         }
 
-        sym = get_symbol_by_type(TYPE_COLUMN);
-        column = sym->value;
-        delete_symbol(sym);
-        columns = concat("", column);
-        n++;
+        if ((sym = get_symbol_by_type(TYPE_COLUMN)) != NULL) {
+                column = strdup(sym->value);
+                delete_symbol(sym);
+                columns = concat("", column);
+                free(column);
+                n++;
  
-        while ((sym = get_symbol_by_type(TYPE_COLUMN)) != NULL) {
-              column = sym->value;
-              delete_symbol(sym);
-              tmp = concatv(3, columns, ", ", column);
-              free(columns);
-              columns = tmp;
-              n++;
+                while ((sym = get_symbol_by_type(TYPE_COLUMN)) != NULL) {
+                      column = strdup(sym->value);
+                      delete_symbol(sym);
+                      tmp = concatv(3, columns, ", ", column);
+                      free(column);
+                      free(columns);
+                      columns = tmp;
+                      n++;
+                }
+        } else {
+                columns = "";
         }
 
-        int n_digits = floor(log10(abs(n))) + 1;
-        char n_columns[n_digits];
-        sprintf(n_columns, "%d", n);
+        n_columns = itoa(n);
 
         this = syminst(TYPE_LIST_STORE, widget, widget);
 
@@ -56,6 +58,8 @@ void list_store_new(char *widget)
              , 2
              , n_columns
              , columns);
+
+        free(n_columns);
 }
 
 void list_store_set_column_types(char *n_columns, char *types)

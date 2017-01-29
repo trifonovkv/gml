@@ -63,6 +63,10 @@ typedef enum
         , TYPE_NOTEBOOK
         , TYPE_OVERLAY
         , TYPE_REVEALER
+        , TYPE_VOLUME_BUTTON
+        , TYPE_SCALE_BUTTON
+        , TYPE_ICON
+        , TYPE_ICONS
 } widget_type;
 
 /* Keyboard accelerators and action */

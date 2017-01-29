@@ -1,3 +1,4 @@
+char* itoa    (int num);
 int   tabget  ();
 int   tabdec  (int n);
 int   tabinc  (int n);

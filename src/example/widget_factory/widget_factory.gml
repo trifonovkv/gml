@@ -63,6 +63,79 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+SCALE_BUTTON mic_button
+  SET Size GTK_ICON_SIZE_SMALL_TOOLBAR
+  SET Min 0.0
+  SET Max 100.0
+  SET Step 2.0
+  ADD Icon "microphone-sensitivity-medium-symbolic"
+  ADD Icon "microphone-sensitivity-low-symbolic"
+  ADD Icon "microphone-sensitivity-high-symbolic"
+  ADD Icon "microphone-sensitivity-muted-symbolic"
+  SET Value 0.5
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Halign GTK_ALIGN_CENTER
+  CMN Has_tooltip TRUE
+  SIGNAL "query-tooltip" on_scale_button_query_tooltip
+  SIGNAL "value-changed" on_scale_button_value_changed
+;
+
+VOLUME_BUTTON volumebutton1a
+  SET Orientation GTK_ORIENTATION_VERTICAL
+  SET Value 0.5
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Halign GTK_ALIGN_CENTER
+;
+
+GRID grid1a
+  SET Row_spacing 6
+  SET Column_spacing 6
+  CMN Halign GTK_ALIGN_CENTER
+  CMN Valign GTK_ALIGN_CENTER
+  ADD Atach volumebutton1a 0 0 1 1
+  ADD Atach mic_button 1 0 1 1
+;
+
+SPIN_BUTTON verticalspin2
+  SET Orientation GTK_ORIENTATION_VERTICAL
+  SET Adjustment adjustment2
+  CMN Sensitive FALSE
+;
+
+SPIN_BUTTON verticalspin1
+  SET Orientation GTK_ORIENTATION_VERTICAL
+  SET Adjustment adjustment2
+;
+
+HBOX box3a
+  SET Spacing 6
+  ADD verticalspin1
+  ADD verticalspin2
+  ADD grid1a
+;
+
+VBOX box2a
+  SET Spacing 10
+  ADD box3a
+;
+
+HBOX box1a
+  SET Spacing 10
+  ADD box2a
+;
+
+BUTTON_FROM_ICON_NAME page2dismiss
+  SET Icon_name "window-close-symbolic"
+  SET Size GTK_ICON_SIZE_BUTTON
+  SET Relief GTK_RELIEF_NONE
+  CMN Focus_on_click FALSE
+;
+
+BUTTON page2reset
+  CMN Valign GTK_ALIGN_CENTER
+  SET Label "Reset"
+;
+
 LABEL page2note
   SET Label "NEWS!"
   CMN Hexpand TRUE
@@ -76,6 +149,8 @@ HBOX page2box
   CMN Margin_start 10
   CMN Margin_end 10
   ADD page2note
+  ADD page2reset
+  ADD page2dismiss
 ;
 
 FRAME page2frame
@@ -91,6 +166,7 @@ REVEALER page2revealer
 
 OVERLAY page2
   ADD Overlay page2revealer  
+  ADD box1a
 ;
 
 LABEL label16

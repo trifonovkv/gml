@@ -1,13 +1,61 @@
 #include "handlers.h"
 #include <stdio.h>
+#include <glib/gi18n.h>
+
+#define EPSILON (1e-10)
 
 gint pulse_time = 250;
 gint pulse_entry_mode = 0;
+
+void on_scale_button_value_changed (GtkScaleButton *button,
+                                    gdouble         value,
+                                    gpointer        user_data) 
+{
+        gtk_widget_trigger_tooltip_query (GTK_WIDGET (button));
+}
+
+gboolean on_scale_button_query_tooltip (GtkWidget  *button,
+                                        gint        x,
+                                        gint        y,
+                                        gboolean    keyboard_mode,
+                                        GtkTooltip *tooltip,
+                                        gpointer    user_data)
+{
+        GtkScaleButton *scale_button = GTK_SCALE_BUTTON (button);
+        GtkAdjustment *adjustment;
+        gdouble val;
+        gchar *str;
+        AtkImage *image;
+
+        image = ATK_IMAGE (gtk_widget_get_accessible (button));
+
+        adjustment = gtk_scale_button_get_adjustment (scale_button);
+        val = gtk_scale_button_get_value (scale_button);
+
+        if (val < (gtk_adjustment_get_lower (adjustment) + EPSILON)) {
+                str = g_strdup (_("Muted"));
+        } else if (val >= (gtk_adjustment_get_upper (adjustment) - EPSILON)) {
+                str = g_strdup (_("Full Volume"));
+        } else {
+                gint percent;
+
+                percent = (gint) (100. * val / (gtk_adjustment_get_upper (adjustment) - gtk_adjustment_get_lower (adjustment)) + .5);
+
+                str = g_strdup_printf (C_("volume percentage", "%d %%"), percent);
+        }
+
+        gtk_tooltip_set_text (tooltip, str);
+        atk_image_set_image_description (image, str);
+        g_free (str);
+
+        return TRUE;
+}
 
 char *scale_format_value_blank (GtkScale *scale, gdouble value)
 {
         return g_strdup (" ");
 }
+
 char *scale_format_value (GtkScale *scale, gdouble value)
 {
         return g_strdup_printf ("%0.*f", 1, value);

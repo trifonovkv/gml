@@ -49,6 +49,7 @@
 #include "widgets/notebook.h"
 #include "widgets/overlay.h"
 #include "widgets/revealer.h"
+#include "widgets/volume_button.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -66,6 +67,9 @@ int yywrap()
 int yylex();
 
 %}
+%token SCALE_BUTTON ICON MIN MAX STEP
+
+%token VOLUME_BUTTON
 
 %token REVEALER REVEAL_CHILD
 
@@ -206,8 +210,9 @@ int yylex();
         char  *string;
 }
 
-%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags set_label_text
-%type <string> set_mnemonics set_orientation arg_id
+%type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
+%type <string> set_label_text set_mnemonics set_orientation arg_id
+%type <string> min max step
 %%
 
 main:
@@ -272,6 +277,8 @@ widget:
         | notebook
         | overlay
         | revealer
+        | volume_button
+        | scale_button
         ;
 
 params: 
@@ -289,6 +296,7 @@ param:
         | stack_add
         | style
         | grid_add
+        | icon_add
         ;
 
 arg_id:
@@ -317,12 +325,35 @@ size:
 style:
         STYLE ADD_CLASS STRING                  { style_context_add_class($3); }
         ;
+min:
+        SET MIN FLOAT                                               { $$ = $3; }
+        ;
+
+max:
+        SET MAX FLOAT                                               { $$ = $3; }
+        ;
+
+step:
+        SET STEP FLOAT                                              { $$ = $3; }
+        ;
 
 bbox_child_set:
         SET CHILD_SECONDARY IDENTIFIER IDENTIFIER
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+scale_button:
+        SCALE_BUTTON IDENTIFIER size min max step
+                                       { scale_button_new($2, $3, $4, $5, $6); }
+        params SEMICOLON          { scale_button_set_icons(); block_close($2); }
+        ;
+
+
+volume_button:
+        VOLUME_BUTTON IDENTIFIER                      { volume_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 revealer:
@@ -657,6 +688,7 @@ set:
         | set_transition_duration
         | set_transition_type
         | set_label
+        | set_adjustment
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -759,7 +791,6 @@ set:
         | set_label_single_line_mode
         | set_label_angle
         | set_label_track_visited_links
-        | set_spin_button_adjustment
         | set_spin_button_increments
         | set_spin_button_range
         | set_spin_button_update_policy
@@ -1331,10 +1362,6 @@ set_grid_row_baseline_position:
                                     { grid_set_row_baseline_position($3, $4); }
         ;
 
-set_spin_button_adjustment:
-        SET SET_ADJUSTMENT IDENTIFIER        { spin_button_set_adjustment($3); }
-        ;
-
 set_spin_button_increments:
         SET INCREMENTS FLOAT FLOAT       { spin_button_set_increments($3, $4); }
         ;
@@ -1783,6 +1810,9 @@ set_window_deletable:
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
+set_adjustment:
+        SET SET_ADJUSTMENT IDENTIFIER                    { set_adjustment($3); }
+        ;
 
 set_label:
         SET LABEL_TEXT STRING                                 { set_label($3); }
@@ -1884,6 +1914,10 @@ columns:
 
 column:
         ADD COLUMN NUMBER IDENTIFIER           { list_store_add_column($3,$4); }
+        ;
+
+icon_add:
+        ADD ICON STRING                           { scale_button_add_icon($3); }
         ;
 
 grid_add:

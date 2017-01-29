@@ -34,6 +34,14 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+SCALE_BUTTON                          return SCALE_BUTTON;
+Icon                                  return ICON;
+Min                                   return MIN;
+Max                                   return MAX;
+Step                                  return STEP;
+
+VOLUME_BUTTON                         return VOLUME_BUTTON;
+
 REVEALER                              return REVEALER;
 Reveal_child                          return REVEAL_CHILD;
 

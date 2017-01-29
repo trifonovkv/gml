@@ -26,6 +26,18 @@
 #include "tree_view_column.h"
 #include "cell_layout.h"
 #include "revealer.h"
+#include "scale_button.h"
+
+void set_adjustment(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_SPIN_BUTTON) {
+                spin_button_set_adjustment(setting);
+        } else if (type == TYPE_SCALE_BUTTON) {
+                scale_button_set_adjustment(setting);
+        }
+}
 
 void set_label(char *setting)
 {
@@ -239,6 +251,8 @@ void set_value(char *setting)
                 adjustment_set_value(setting);
         } else if (type == TYPE_LEVEL_BAR) {
                 level_bar_set_value(setting);
+        } else if (type == TYPE_SCALE_BUTTON || type == TYPE_VOLUME_BUTTON) {
+                scale_button_set_value(setting);
         }
 }
 
