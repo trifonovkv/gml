@@ -67,6 +67,7 @@ typedef enum
         , TYPE_SCALE_BUTTON
         , TYPE_ICON
         , TYPE_ICONS
+        , TYPE_TEXT_BUFFER
 } widget_type;
 
 /* Keyboard accelerators and action */

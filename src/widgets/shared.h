@@ -27,6 +27,7 @@
 #include "cell_layout.h"
 #include "revealer.h"
 #include "scale_button.h"
+#include "text_buffer.h"
 
 void set_adjustment(char *setting)
 {
@@ -293,7 +294,9 @@ void set_text(char *setting)
                 progress_bar_set_text(setting);
         } else if (type == TYPE_TEXT_VIEW) {
                 text_view_set_text(setting);
-        } 
+        } else if (type == TYPE_TEXT_BUFFER) {
+                text_buffer_set_text(setting);
+        }
 }
 
 void set_title(char *string)

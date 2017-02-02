@@ -34,6 +34,8 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+TEXT_BUFFER                           return TEXT_BUFFER;
+
 SCALE_BUTTON                          return SCALE_BUTTON;
 Icon                                  return ICON;
 Min                                   return MIN;
@@ -413,7 +415,7 @@ App_id                                return APP_ID;
 App_flags                             return APP_FLAGS;
 Accels_for_action                     return ACCELS_FOR_ACTION;
   
-\"(\\.|[^\\"])*\"                     yylval.string=strdup(yytext); return STRING;  
+\"(\\.|\\\n|[^\\"])*\"                     yylval.string=strdup(yytext); return STRING;  
 {ID}+                                 yylval.string=strdup(yytext); return IDENTIFIER;
 ;                                     return SEMICOLON;
 "|"                                   return OR;

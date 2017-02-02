@@ -50,6 +50,7 @@
 #include "widgets/overlay.h"
 #include "widgets/revealer.h"
 #include "widgets/volume_button.h"
+#include "widgets/text_buffer.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -67,6 +68,8 @@ int yywrap()
 int yylex();
 
 %}
+%token TEXT_BUFFER
+
 %token SCALE_BUTTON ICON MIN MAX STEP
 
 %token VOLUME_BUTTON
@@ -81,8 +84,6 @@ int yylex();
 
 %token END
     
-%token TEXT_BUFFER MODIFIED 
-
 %token LIST_STORE COLUMN_TYPES COLUMN ROW ID
 
 %token CELL_RENDERER_PIXBUF CELL_RENDERER_TEXT
@@ -279,6 +280,7 @@ widget:
         | revealer
         | volume_button
         | scale_button
+        | text_buffer
         ;
 
 params: 
@@ -342,6 +344,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+text_buffer:
+        TEXT_BUFFER IDENTIFIER                          { text_buffer_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 scale_button:

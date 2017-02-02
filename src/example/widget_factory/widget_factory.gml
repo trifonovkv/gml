@@ -63,6 +63,100 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+TEXT_BUFFER textbuffer2
+  SET Text "Aragonese\
+Assamese\
+Basque\
+Brazilian Portuguese\
+Dutch\
+German\
+Hebrew\
+Hungarian\
+Polish\
+Portuguese\
+Serbian\
+Slovenian\
+Spanish\
+Uyghur"
+;
+
+TEXT_VIEW tvo
+/*
+  SET Buffer textbuffer2
+*/
+  SET Left_margin 10
+  SET Right_margin 10
+;
+
+SCROLLED_WINDOW swo
+  SET Policy GTK_POLICY_NEVER GTK_POLICY_AUTOMATIC
+  ADD tvo
+;
+
+STACK stack
+  SET Transition_type GTK_STACK_TRANSITION_TYPE_CROSSFADE
+  SET Transition_duration 1000
+  ADD swo
+/*
+            </object>
+            <packing>
+              <property name="name">page1</property>
+              <property name="icon-name">preferences-desktop-locale-symbolic</property>
+              <property name="title">News</property>
+            </packing>
+          </child>
+*/
+;
+
+VBOX box4a
+  ADD stack
+;
+
+FRAME page2frame1
+  ADD box4a
+;
+/*
+          <child>
+            <object class="GtkImage" id="imageo">
+              <property name="icon-name">gtk3-widget-factory</property>
+              <property name="pixel-size">256</property>
+            </object>
+            <packing>
+              <property name="name">page2</property>
+              <property name="icon-name">folder-pictures-symbolic</property>
+              <property name="title">Logo</property>
+            </packing>
+          </child>
+        </object>
+      </child>
+      <child>
+        <object class="GtkActionBar" id="actionbar1">
+          <child type="center">
+            <object class="GtkStackSwitcher" id="switcher">
+              <property name="stack">stack</property>
+              <property name="halign">center</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkMenuButton">
+              <property name="menu-model">dinner_menu</property>
+              <property name="halign">center</property>
+              <property name="valign">center</property>
+              <property name="icon-name">emblem-system-symbolic</property>
+            </object>
+            <packing>
+              <property name="pack_type">end</property>
+            </packing>
+          </child>
+        </object>
+      </child>
+    </object>
+*/
+
+SEPARATOR separator6
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
+;
+
 SCALE_BUTTON mic_button
   SET Size GTK_ICON_SIZE_SMALL_TOOLBAR
   SET Min 0.0
@@ -93,7 +187,7 @@ GRID grid1a
   CMN Halign GTK_ALIGN_CENTER
   CMN Valign GTK_ALIGN_CENTER
   ADD Atach volumebutton1a 0 0 1 1
-  ADD Atach mic_button 1 0 1 1
+  ADD Atach mic_button 0 1 1 1
 ;
 
 SPIN_BUTTON verticalspin2
@@ -117,6 +211,7 @@ HBOX box3a
 VBOX box2a
   SET Spacing 10
   ADD box3a
+  ADD separator6
 ;
 
 HBOX box1a

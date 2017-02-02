@@ -63,6 +63,7 @@ gml_SOURCES =                                     \
 								widgets/revealer.c                \
 								widgets/volume_button.c           \
 								widgets/scale_button.c            \
+								widgets/text_buffer.c             \
 								$(NULL)
 
 noinst_HEADERS = gml.h
