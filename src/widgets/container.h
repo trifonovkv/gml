@@ -50,3 +50,9 @@ void container_set_focus_hadjustment(char *setting);
  * “margin-top”.
  */
 void container_set_border_width(char *setting);
+
+/*
+ * Sets a child property for child and container.
+ */
+void container_child_set_property(char *child, char *name, char *value);
+

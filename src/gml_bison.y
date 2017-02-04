@@ -51,6 +51,8 @@
 #include "widgets/revealer.h"
 #include "widgets/volume_button.h"
 #include "widgets/text_buffer.h"
+#include "widgets/image.h"
+#include "widgets/object.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -68,6 +70,11 @@ int yywrap()
 int yylex();
 
 %}
+%token PROPERTY
+
+%token IMAGE_WIDGET IMAGE_FROM_FILE IMAGE_FROM_ICON_NAME IMAGE_FROM_RESOURCE 
+%token IMAGE_PIXEL_SIZE
+
 %token TEXT_BUFFER
 
 %token SCALE_BUTTON ICON MIN MAX STEP
@@ -141,7 +148,7 @@ int yylex();
 %token GRID ROW_HOMOGENEOUS ROW_SPACING COLUMN_HOMOGENEOUS COLUMN_SPACING
 %token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO 
  
-%token COMMON FOCUS_VADJUSTMENT FOCUS_HADJUSTMENT BORDER_WIDTH 
+%token COMMON FOCUS_VADJUSTMENT FOCUS_HADJUSTMENT BORDER_WIDTH CHILD_PROPERTY
 
 %token SPIN_BUTTON SET_ADJUSTMENT DIGITS INCREMENTS RANGE UPDATE_POLICY
 %token NUMERIC SPIN WRAP SNAP_TO_TICKS
@@ -281,6 +288,7 @@ widget:
         | volume_button
         | scale_button
         | text_buffer
+        | image
         ;
 
 params: 
@@ -299,6 +307,7 @@ param:
         | style
         | grid_add
         | icon_add
+        | properties
         ;
 
 arg_id:
@@ -344,6 +353,11 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+image:
+        IMAGE_WIDGET IDENTIFIER                               { image_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 text_buffer:
@@ -911,6 +925,27 @@ set:
         | set_notebook_action_widget
         | set_overlay_overlay_pass_through
         | set_revealer_reveal_child
+        | set_image_from_file
+        | set_image_from_icon_name
+        | set_image_from_resource
+        | set_image_pixel_size
+        ;
+
+set_image_from_file:
+        SET IMAGE_FROM_FILE STRING                  { image_set_from_file($3); }
+        ;
+
+set_image_from_icon_name:
+        SET IMAGE_FROM_ICON_NAME STRING IDENTIFIER 
+                                           { image_set_from_icon_name($3, $4); }
+        ;
+
+set_image_from_resource:
+        SET IMAGE_FROM_RESOURCE STRING          { image_set_from_resource($3); }
+        ;
+
+set_image_pixel_size:
+        SET IMAGE_PIXEL_SIZE NUMBER                { image_set_pixel_size($3); }
         ;
 
 set_revealer_reveal_child:
@@ -1980,6 +2015,7 @@ common:
         | set_container_focus_vadjustment
         | set_container_focus_hadjustment
         | set_container_border_width
+        | set_container_child_property
         ;
 
 set_container_focus_vadjustment:
@@ -1994,6 +2030,11 @@ set_container_focus_hadjustment:
 
 set_container_border_width:
         COMMON BORDER_WIDTH NUMBER           { container_set_border_width($3); }
+        ;
+        
+set_container_child_property:
+        SET CHILD_PROPERTY IDENTIFIER STRING STRING    
+                                   { container_child_set_property($3, $4, $5); }
         ;
 
 widget_set_focus_on_click:
@@ -2102,6 +2143,10 @@ signal:
 flags:
         IDENTIFIER                                                  { $$ = $1; }
         | flags OR IDENTIFIER               { $$ = append_flag($$, " | ", $3); }
+        ;
+
+properties:
+        PROPERTY STRING STRING                           { object_set($2, $3); }
         ;
 %%
 

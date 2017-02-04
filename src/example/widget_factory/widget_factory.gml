@@ -63,6 +63,11 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+IMAGE imageo
+  SET Image_from_icon_name "gtk3-widget-factory" GTK_ICON_SIZE_BUTTON
+  SET Image_pixel_size 256
+;
+
 TEXT_BUFFER textbuffer2
   SET Text "Aragonese\
 Assamese\
@@ -81,9 +86,7 @@ Uyghur"
 ;
 
 TEXT_VIEW tvo
-/*
   SET Buffer textbuffer2
-*/
   SET Left_margin 10
   SET Right_margin 10
 ;
@@ -91,21 +94,15 @@ TEXT_VIEW tvo
 SCROLLED_WINDOW swo
   SET Policy GTK_POLICY_NEVER GTK_POLICY_AUTOMATIC
   ADD tvo
-;
+ ;
 
 STACK stack
   SET Transition_type GTK_STACK_TRANSITION_TYPE_CROSSFADE
   SET Transition_duration 1000
-  ADD swo
-/*
-            </object>
-            <packing>
-              <property name="name">page1</property>
-              <property name="icon-name">preferences-desktop-locale-symbolic</property>
-              <property name="title">News</property>
-            </packing>
-          </child>
-*/
+  ADD Titled swo "page1" "News"
+  SET Child_property swo "icon-name" "preferences-desktop-locale-symbolic"
+  ADD Titled imageo "page2" "Logo"
+  SET Child_property imageo "icon-name" "folder-pictures-symbolic"
 ;
 
 VBOX box4a
@@ -116,17 +113,6 @@ FRAME page2frame1
   ADD box4a
 ;
 /*
-          <child>
-            <object class="GtkImage" id="imageo">
-              <property name="icon-name">gtk3-widget-factory</property>
-              <property name="pixel-size">256</property>
-            </object>
-            <packing>
-              <property name="name">page2</property>
-              <property name="icon-name">folder-pictures-symbolic</property>
-              <property name="title">Logo</property>
-            </packing>
-          </child>
         </object>
       </child>
       <child>

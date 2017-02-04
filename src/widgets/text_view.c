@@ -24,7 +24,7 @@ void text_view_set_text(char *setting)
 void text_view_set_buffer(char *setting)
 {
         char *widget = wrptype("GTK_TEXT_VIEW", this);
-        char *buffer = wrptype("GTK_TEXT_BUFFER", this);
+        char *buffer = wrptype("GTK_TEXT_BUFFER", setting);
 
         putfun("gtk_text_view_set_buffer", 2, widget, buffer);
 

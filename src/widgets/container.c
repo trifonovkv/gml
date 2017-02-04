@@ -41,3 +41,20 @@ void container_set_border_width(char *setting)
         free(setting);
 }
 
+void container_child_set_property(char *child, char *name, char *value)
+{
+        char *container = wrptype("GTK_CONTAINER", this);
+
+        putfun("gtk_container_child_set"
+             , 5
+             , container
+             , child
+             , name
+             , value
+             , "NULL");
+
+        free(container);
+        free(name);
+        free(value);
+}
+

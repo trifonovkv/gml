@@ -34,6 +34,14 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+PRT                                   return PROPERTY;
+
+IMAGE                                 return IMAGE_WIDGET;
+Image_from_file                       return IMAGE_FROM_FILE;
+Image_from_icon_name                  return IMAGE_FROM_ICON_NAME;
+Image_from_resource                   return IMAGE_FROM_RESOURCE;
+Image_pixel_size                      return IMAGE_PIXEL_SIZE;
+
 TEXT_BUFFER                           return TEXT_BUFFER;
 
 SCALE_BUTTON                          return SCALE_BUTTON;
@@ -222,6 +230,7 @@ CMN                                   return COMMON;
 Focus_vadjustment                     return FOCUS_VADJUSTMENT;
 Focus_hadjustment                     return FOCUS_HADJUSTMENT;
 Border_width                          return BORDER_WIDTH;
+Child_property                        return CHILD_PROPERTY;
 
 SPIN_BUTTON                           return SPIN_BUTTON;
 Adjustment                            return SET_ADJUSTMENT; 
