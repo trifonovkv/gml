@@ -34,6 +34,22 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+MENU                                  return MENU;
+Item                                  return ITEM;
+Section                               return SECTION;
+Submenu                               return SUBMENU; 
+
+MENU_BUTTON                           return MENU_BUTTON;
+Popup                                 return POPUP;
+Popover                               return POPOVER;
+Menu_model                            return MENU_MODEL;
+Use_popover                           return USE_POPOVER;
+Direction                             return DIRECTION;
+Align_widget                          return ALIGN_WIDGET;
+
+ACTION_BAR                            return ACTION_BAR;
+Pack_center                           return PACK_CENTER;
+
 PRT                                   return PROPERTY;
 
 IMAGE                                 return IMAGE_WIDGET;

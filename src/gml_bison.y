@@ -53,6 +53,9 @@
 #include "widgets/text_buffer.h"
 #include "widgets/image.h"
 #include "widgets/object.h"
+#include "widgets/action_bar.h"
+#include "widgets/menu_button.h"
+#include "widgets/menu.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -70,6 +73,12 @@ int yywrap()
 int yylex();
 
 %}
+%token MENU ITEM SECTION SUBMENU 
+
+%token MENU_BUTTON POPUP POPOVER MENU_MODEL USE_POPOVER DIRECTION ALIGN_WIDGET
+
+%token ACTION_BAR PACK_CENTER
+
 %token PROPERTY
 
 %token IMAGE_WIDGET IMAGE_FROM_FILE IMAGE_FROM_ICON_NAME IMAGE_FROM_RESOURCE 
@@ -289,6 +298,9 @@ widget:
         | scale_button
         | text_buffer
         | image
+        | action_bar
+        | menu_button
+        | menu
         ;
 
 params: 
@@ -302,7 +314,7 @@ param:
         | signal
         | pack
         | bbox_child_set
-        | hb_pack
+        | bar_pack
         | stack_add
         | style
         | grid_add
@@ -353,6 +365,21 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+menu:
+        MENU IDENTIFIER                                        { menu_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+action_bar:
+        ACTION_BAR IDENTIFIER                            { action_bar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+menu_button:
+        MENU_BUTTON IDENTIFIER                          { menu_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 image:
@@ -929,6 +956,41 @@ set:
         | set_image_from_icon_name
         | set_image_from_resource
         | set_image_pixel_size
+        | set_menu_button_popup
+        | set_menu_button_popover
+        | set_menu_button_menu_model
+        | set_menu_button_use_popover
+        | set_menu_button_direction
+        | set_menu_button_align_widget
+        | set_menu_item_attribute
+        ;
+
+set_menu_item_attribute:
+            SET ATTRIBUTE STRING STRING     { menu_item_set_attribute($3, $4); }
+        ;
+
+set_menu_button_popup:
+        SET POPUP IDENTIFIER                      { menu_button_set_popup($3); }
+        ;
+
+set_menu_button_popover:
+        SET POPOVER IDENTIFIER                  { menu_button_set_popover($3); }
+        ;
+
+set_menu_button_menu_model:
+        SET MENU_MODEL IDENTIFIER            { menu_button_set_menu_model($3); }
+        ;
+
+set_menu_button_use_popover:
+        SET USE_POPOVER IDENTIFIER          { menu_button_set_use_popover($3); }
+        ;
+
+set_menu_button_direction:
+        SET DIRECTION IDENTIFIER              { menu_button_set_direction($3); }
+        ;
+
+set_menu_button_align_widget:
+        SET ALIGN_WIDGET IDENTIFIER        { menu_button_set_align_widget($3); }
         ;
 
 set_image_from_file:
@@ -1969,9 +2031,10 @@ grid_add:
                                     { grid_attach_next_to($3, $4, $5, $6, $7); }
         ;
 
-hb_pack:
-        ADD PACK_START IDENTIFIER                 { header_bar_pack_start($3); }
-        | ADD PACK_END IDENTIFIER                   { header_bar_pack_end($3); }
+bar_pack:
+        ADD PACK_START IDENTIFIER                            { pack_start($3); }
+        | ADD PACK_END IDENTIFIER                              { pack_end($3); }
+        | ADD PACK_CENTER IDENTIFIER       { action_bar_set_center_widget($3); }
         ;
 
 stack_add:
@@ -1985,6 +2048,9 @@ add:
         | ADD COLUMN IDENTIFIER                 { tree_view_append_column($3); }
         | ADD CELL_RENDERER IDENTIFIER                { add_cell_renderer($3); }
         | ADD ADD_OVERLAY IDENTIFIER                { overlay_add_overlay($3); }
+        | ADD ITEM STRING STRING               { menu_append_new_item($3, $4); }
+        | ADD SECTION STRING IDENTIFIER     { menu_append_new_section($3, $4); }
+        | ADD SUBMENU STRING IDENTIFIER     { menu_append_new_submenu($3, $4); }
         ;
 
 common:

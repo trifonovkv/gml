@@ -63,26 +63,87 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+TEXT_BUFFER textbuffer2
+  SET Text "Aragonese\n\
+Assamese\n\
+Basque\n\
+Brazilian Portuguese\n\
+Dutch\n\
+German\n\
+Hebrew\n\
+Hungarian\n\
+Polish\n\
+Portuguese\n\
+Serbian\n\
+Slovenian\n\
+Spanish\n\
+Uyghur"
+;
+
+MENU section5
+  ADD Item "Cash" "app.pay"
+  SET Attribute "target" "cash"
+  SET Attribute "verb-icon" "document-save-symbolic"
+  ADD Item "Credit Card" "app.pay"
+  SET Attribute "target" "card"
+  SET Attribute "verb-icon" "document-send-symbolic"
+  ADD Item "Cheque" "app.pay"
+  SET Attribute "target" "cheque"
+  SET Attribute "verb-icon" "document-save-as-symbolic"
+;
+
+MENU section4
+  ADD Item "Brownies" "app.dessert"
+  SET Attribute "target" "brownies"
+  ADD Item "Banana Sundae" "app.dessert"
+  SET Attribute "target" "sundae"
+  ADD Item "Lemon Bars" "app.dessert"
+  SET Attribute "target" "bars"
+;
+
+MENU submenu
+  ADD Section "" section4
+;
+
+MENU section3
+  ADD Submenu "Dessert" submenu
+  ADD Section "" section5
+  SET Attribute "display-hint" "horizontal-buttons"
+;
+
+MENU section2
+  ADD Item "Wine" "app.wine"
+  ADD Item "Beer" "app.beer"
+  ADD Item "Water" "app.water"
+;
+
+MENU section1
+  ADD Item "Steak" "app.main"
+  SET Attribute "target" "steak"
+  ADD Item "Pizza" "app.main"
+  SET Attribute "target" "pizza"
+;
+
+MENU dinner_menu
+  ADD Section "" section1
+  ADD Section "" section2
+  ADD Section "" section3
+;
+
+IMAGE image_menu_button
+  SET Image_from_icon_name "emblem-system-symbolic" GTK_ICON_SIZE_BUTTON
+;
+
+MENU_BUTTON menu_button1a
+  SET Menu_model dinner_menu
+  SET Image image_menu_button
+  CMN Halign GTK_ALIGN_CENTER
+  CMN Valign GTK_ALIGN_CENTER
+;
+
 IMAGE imageo
   SET Image_from_icon_name "gtk3-widget-factory" GTK_ICON_SIZE_BUTTON
   SET Image_pixel_size 256
-;
-
-TEXT_BUFFER textbuffer2
-  SET Text "Aragonese\
-Assamese\
-Basque\
-Brazilian Portuguese\
-Dutch\
-German\
-Hebrew\
-Hungarian\
-Polish\
-Portuguese\
-Serbian\
-Slovenian\
-Spanish\
-Uyghur"
 ;
 
 TEXT_VIEW tvo
@@ -105,39 +166,24 @@ STACK stack
   SET Child_property imageo "icon-name" "folder-pictures-symbolic"
 ;
 
+STACK_SWITCHER switcher
+  SET Stack_switcher_stack stack
+  CMN Halign GTK_ALIGN_CENTER
+;
+
+ACTION_BAR actionbar1
+  ADD Pack_center switcher
+  ADD Pack_end menu_button1a
+;
+
 VBOX box4a
   ADD stack
+  ADD actionbar1
 ;
 
 FRAME page2frame1
   ADD box4a
 ;
-/*
-        </object>
-      </child>
-      <child>
-        <object class="GtkActionBar" id="actionbar1">
-          <child type="center">
-            <object class="GtkStackSwitcher" id="switcher">
-              <property name="stack">stack</property>
-              <property name="halign">center</property>
-            </object>
-          </child>
-          <child>
-            <object class="GtkMenuButton">
-              <property name="menu-model">dinner_menu</property>
-              <property name="halign">center</property>
-              <property name="valign">center</property>
-              <property name="icon-name">emblem-system-symbolic</property>
-            </object>
-            <packing>
-              <property name="pack_type">end</property>
-            </packing>
-          </child>
-        </object>
-      </child>
-    </object>
-*/
 
 SEPARATOR separator6
   SET Orientation GTK_ORIENTATION_HORIZONTAL
@@ -198,6 +244,7 @@ VBOX box2a
   SET Spacing 10
   ADD box3a
   ADD separator6
+  ADD page2frame1
 ;
 
 HBOX box1a

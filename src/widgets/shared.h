@@ -28,6 +28,30 @@
 #include "revealer.h"
 #include "scale_button.h"
 #include "text_buffer.h"
+#include "header_bar.h"
+#include "action_bar.h"
+
+void pack_start(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_HEADER_BAR) {
+                header_bar_pack_start(setting);
+        } else if (type == TYPE_ACTION_BAR) {
+                action_bar_pack_start(setting);
+        }
+}
+
+void pack_end(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_HEADER_BAR) {
+                header_bar_pack_end(setting);
+        } else if (type == TYPE_ACTION_BAR) {
+                action_bar_pack_end(setting);
+        }
+}
 
 void set_adjustment(char *setting)
 {

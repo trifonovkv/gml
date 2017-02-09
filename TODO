@@ -5,3 +5,5 @@ add bison, flex and gtk3-devel check in configure script
 rebuild GtkTextBuffer
 del duplicate Labe and Label_text in gml_flex.l
 fix the sequence of icons on mic_button
+add support action groups
+
