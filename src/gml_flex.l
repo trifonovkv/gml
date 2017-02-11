@@ -34,6 +34,15 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+SIZE_GROUP                            return SIZE_GROUP;
+
+LIST_BOX                              return LIST_BOX;
+LIST_BOX_ROW                          return LIST_BOX_ROW;
+Header_func                           return HEADER_FUNC;
+Selection_mode                        return SELECTION_MODE;
+Placeholder                           return PLACEHOLDER;
+Header                                return HEADER;
+
 MENU                                  return MENU;
 Item                                  return ITEM;
 Section                               return SECTION;

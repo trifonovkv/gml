@@ -13,7 +13,7 @@ ADJUSTMENT adjustment2
   SET Page_increment 10.0
 ;
 
-ADJUSTMENT adjustmen1
+ADJUSTMENT adjustment1
   SET Upper 100.0
   SET Lower 1.0
   SET Value 50.0
@@ -64,20 +64,21 @@ LIST_STORE lrmodel
 ;
 
 TEXT_BUFFER textbuffer2
-  SET Text "Aragonese\n\
-Assamese\n\
-Basque\n\
-Brazilian Portuguese\n\
-Dutch\n\
-German\n\
-Hebrew\n\
-Hungarian\n\
-Polish\n\
-Portuguese\n\
-Serbian\n\
-Slovenian\n\
-Spanish\n\
-Uyghur"
+  SET Text "* Translation updates:\n\
+ Aragonese\n\
+ Assamese\n\
+ Basque\n\
+ Brazilian Portuguese\n\
+ Dutch\n\
+ German\n\
+ Hebrew\n\
+ Hungarian\n\
+ Polish\n\
+ Portuguese\n\
+ Serbian\n\
+ Slovenian\n\
+ Spanish\n\
+ Uyghur"
 ;
 
 MENU section5
@@ -128,6 +129,232 @@ MENU dinner_menu
   ADD Section "" section1
   ADD Section "" section2
   ADD Section "" section3
+;
+
+SWITCH listboxrow1switch
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 12
+  CMN Margin_end 12
+;
+
+IMAGE listboxrow3image
+  SET Image_from_icon_name "object-select-symbolic" GTK_ICON_SIZE_MENU
+  CMN Halign GTK_ALIGN_END
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 12
+  CMN Margin_end 12
+  CMN Opacity 0.0
+;
+
+SCALE scale1a
+  ARG GTK_ORIENTATION_HORIZONTAL
+  ARG adjustment1
+  SET Draw_value FALSE
+  CMN Halign GTK_ALIGN_END
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 12
+  CMN Margin_end 12
+  CMN Size_request 150 0
+;
+
+IMAGE image1a
+  SET Image_from_icon_name "object-select-symbolic" GTK_ICON_SIZE_MENU
+  CMN Halign GTK_ALIGN_END
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 12
+  CMN Margin_end 12
+  CMN Opacity 0.0
+;
+
+IMAGE listboxrow5buttonimage  
+  SET Image_from_icon_name "appointment-soon-symbolic" GTK_ICON_SIZE_BUTTON
+;
+
+BUTTON listboxrow5button
+  CMN Halign GTK_ALIGN_END
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 12
+  CMN Margin_end 12
+  SET Image listboxrow5buttonimage
+;
+
+CHECK_BUTTON checkbutton1a
+  CMN Halign GTK_ALIGN_END
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 12
+  CMN Margin_end 12
+;
+
+LABEL label1a
+  SET Label "Row 1"
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 6
+  CMN Margin_end 6
+;
+
+LABEL label2a
+  SET Label "Row 2"
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 6
+  CMN Margin_end 6
+;
+
+LABEL label3a
+  SET Label "Row 3"
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 6
+  CMN Margin_end 6
+;
+
+LABEL label4a
+  SET Label "Row 4"
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 6
+  CMN Margin_end 6
+;
+
+LABEL label5a
+  SET Label "Row 5"
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 6
+  CMN Margin_end 6
+;
+
+LABEL label6a
+  SET Label "Row 6"
+  CMN Halign GTK_ALIGN_START
+  CMN Valign GTK_ALIGN_CENTER
+  CMN Margin_top 6
+  CMN Margin_bottom 6
+  CMN Margin_start 6
+  CMN Margin_end 6
+;
+
+HBOX box5a
+  ADD label1a
+  PACK label1a Expand TRUE
+  ADD listboxrow1switch
+;
+
+HBOX box6a
+  ADD label2a
+  PACK label2a Expand TRUE
+  ADD scale1a
+;
+
+HBOX box7a
+  ADD label3a
+  PACK label3a Expand TRUE
+  ADD listboxrow3image
+;
+
+HBOX box8a
+  ADD label4a
+  PACK label4a Expand TRUE
+  ADD image1a
+;
+
+HBOX box9a
+  ADD label5a
+  PACK label5a Expand TRUE
+  ADD listboxrow5button
+;
+
+HBOX box10a
+  ADD label6a
+  PACK label6a Expand TRUE
+  ADD checkbutton1a
+;
+
+LIST_BOX_ROW listboxrow1
+  SET Activatable FALSE
+  SET Selectable FALSE
+  ADD box5a
+;
+
+LIST_BOX_ROW listboxrow2
+  SET Activatable FALSE
+  ADD box6a
+;
+
+LIST_BOX_ROW listboxrow3
+  ADD box7a
+;
+
+LIST_BOX_ROW listboxrow4
+  ADD box8a
+;
+
+LIST_BOX_ROW listboxrow5
+  SET Activatable FALSE
+  ADD box9a
+;
+
+LIST_BOX_ROW listboxrow6
+  SET Activatable FALSE
+  ADD box10a
+;
+
+SIZE_GROUP size_group
+  SET Mode GTK_SIZE_GROUP_VERTICAL
+  ADD Widget listboxrow1
+  ADD Widget listboxrow2
+  ADD Widget listboxrow3
+  ADD Widget listboxrow4
+  ADD Widget listboxrow5
+  ADD Widget listboxrow6
+; 
+
+
+LIST_BOX listbox
+  SET Selection_mode GTK_SELECTION_NONE
+  SET Header_func update_header NULL NULL
+  ADD listboxrow1
+  ADD listboxrow2
+  ADD listboxrow3
+  ADD listboxrow4
+  ADD listboxrow5
+  ADD listboxrow6
+  SIGNAL "row-activated" row_activated NULL
+;
+
+SCROLLED_WINDOW scrolledwindow1a
+  SET Shadow_type GTK_SHADOW_IN
+  SET Policy GTK_POLICY_NEVER GTK_POLICY_AUTOMATIC
+  SET Min_content_height 200
+  ADD listbox
+;
+
+SEPARATOR separator7
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
 ;
 
 IMAGE image_menu_button
@@ -245,6 +472,8 @@ VBOX box2a
   ADD box3a
   ADD separator6
   ADD page2frame1
+  ADD separator7
+  ADD scrolledwindow1a
 ;
 
 HBOX box1a
@@ -588,7 +817,7 @@ SEPARATOR separator3
 
 SCALE scale4
   ARG GTK_ORIENTATION_VERTICAL
-  ARG adjustmen1
+  ARG adjustment1
   CMN Size_request 0 100
   CMN Sensitive FALSE
   SET Range_restrict_to_fill_level FALSE
@@ -600,7 +829,7 @@ SCALE scale4
 
 SCALE scale3
   ARG GTK_ORIENTATION_VERTICAL
-  ARG adjustmen1
+  ARG adjustment1
   CMN Size_request 0 100
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
@@ -661,7 +890,7 @@ SCALE scale5
 
 SCALE scale2
   ARG GTK_ORIENTATION_HORIZONTAL
-  ARG adjustmen1
+  ARG adjustment1
   CMN Sensitive FALSE
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
@@ -670,7 +899,7 @@ SCALE scale2
                                   
 SCALE scale1
   ARG GTK_ORIENTATION_HORIZONTAL
-  ARG adjustmen1
+  ARG adjustment1
   SET Range_restrict_to_fill_level FALSE
   SET Range_fill_level 75.0
   SET Draw_value FALSE

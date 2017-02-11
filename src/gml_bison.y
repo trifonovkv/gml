@@ -56,6 +56,8 @@
 #include "widgets/action_bar.h"
 #include "widgets/menu_button.h"
 #include "widgets/menu.h"
+#include "widgets/list_box.h"
+#include "widgets/size_group.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -73,6 +75,10 @@ int yywrap()
 int yylex();
 
 %}
+%token SIZE_GROUP
+
+%token LIST_BOX LIST_BOX_ROW SELECTION_MODE PLACEHOLDER HEADER HEADER_FUNC 
+
 %token MENU ITEM SECTION SUBMENU 
 
 %token MENU_BUTTON POPUP POPOVER MENU_MODEL USE_POPOVER DIRECTION ALIGN_WIDGET
@@ -301,6 +307,9 @@ widget:
         | action_bar
         | menu_button
         | menu
+        | list_box
+        | list_box_row
+        | size_group
         ;
 
 params: 
@@ -365,6 +374,21 @@ bbox_child_set:
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+size_group:
+        SIZE_GROUP IDENTIFIER                            { size_group_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+list_box:
+        LIST_BOX IDENTIFIER                                { list_box_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+list_box_row:
+        LIST_BOX_ROW IDENTIFIER                        { list_box_row_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 menu:
@@ -737,6 +761,9 @@ set:
         | set_transition_type
         | set_label
         | set_adjustment
+        | set_selectable
+        | set_activatable
+        | set_activate_on_single_click
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -833,7 +860,6 @@ set:
         | set_label_line_wrap_mode
         | set_label_lines
         | set_label_region
-        | set_label_selectable
         | set_label_text_with_mnemonic
         | set_label_use_markup
         | set_label_single_line_mode
@@ -906,7 +932,6 @@ set:
         | set_tree_view_show_expanders
         | set_tree_view_headers_visible
         | set_tree_view_headers_clickable
-        | set_tree_view_activate_on_single_click
         | set_tree_view_expander_column
         | set_tree_view_enable_search
         | set_tree_view_search_column
@@ -919,7 +944,6 @@ set:
         | set_tree_view_grid_lines
         | set_tree_view_tooltip_column
         | set_cell_renderer_toggle_radio
-        | set_cell_renderer_toggle_activatable
         | set_tree_view_column_visible
         | set_tree_view_column_sizing
         | set_tree_view_column_fixed_width
@@ -963,6 +987,27 @@ set:
         | set_menu_button_direction
         | set_menu_button_align_widget
         | set_menu_item_attribute
+        | set_list_box_selection_mode
+        | set_list_box_placeholder
+        | set_list_box_header_func
+        | set_list_box_row_header
+        ;
+
+set_list_box_selection_mode:
+        SET SELECTION_MODE IDENTIFIER       { list_box_set_selection_mode($3); }
+        ;
+
+set_list_box_placeholder:
+        SET PLACEHOLDER IDENTIFIER             { list_box_set_placeholder($3); }
+        ;
+
+set_list_box_header_func:
+        SET HEADER_FUNC IDENTIFIER IDENTIFIER IDENTIFIER
+                                       { list_box_set_header_func($3, $4, $5); }
+        ;
+
+set_list_box_row_header:
+        SET HEADER IDENTIFIER                   { list_box_row_set_header($3); }
         ;
 
 set_menu_item_attribute:
@@ -1155,11 +1200,6 @@ set_cell_renderer_toggle_radio:
         SET RADIO IDENTIFIER             { cell_renderer_toggle_set_radio($3); }
         ;
 
-set_cell_renderer_toggle_activatable:
-        SET ACTIVATABLE IDENTIFIER { cell_renderer_toggle_set_activatable($3); }
-        ;
-        
-
 set_text_view_buffer:
         SET BUFFER IDENTIFIER                      { text_view_set_buffer($3); }
         ;
@@ -1179,11 +1219,6 @@ set_tree_view_headers_visible:
 set_tree_view_headers_clickable:
         SET HEADERS_CLICKABLE IDENTIFIER
                                         { tree_view_set_headers_clickable($3); }
-        ;
-
-set_tree_view_activate_on_single_click:
-        SET ACTIVATE_ON_SINGLE_CLICK IDENTIFIER
-                                 { tree_view_set_activate_on_single_click($3); }
         ;
 
 set_tree_view_expander_column:
@@ -1524,10 +1559,6 @@ set_label_lines:
 
 set_label_region:
         SET SELECT_REGION NUMBER NUMBER         { label_select_region($3, $4); }
-        ;
-
-set_label_selectable:
-        SET SELECTABLE IDENTIFIER                  { label_set_selectable($3); }
         ;
 
 set_label_text_with_mnemonic:
@@ -1914,6 +1945,20 @@ set_window_deletable:
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
+
+set_selectable:
+        SET SELECTABLE IDENTIFIER                        { set_selectable($3); }
+        ;
+
+set_activatable:
+        SET ACTIVATABLE IDENTIFIER                      { set_activatable($3); }
+        ;
+
+set_activate_on_single_click:
+        SET ACTIVATE_ON_SINGLE_CLICK IDENTIFIER 
+                                           { set_activate_on_single_click($3); }
+        ;
+
 set_adjustment:
         SET SET_ADJUSTMENT IDENTIFIER                    { set_adjustment($3); }
         ;
@@ -2051,6 +2096,7 @@ add:
         | ADD ITEM STRING STRING               { menu_append_new_item($3, $4); }
         | ADD SECTION STRING IDENTIFIER     { menu_append_new_section($3, $4); }
         | ADD SUBMENU STRING IDENTIFIER     { menu_append_new_submenu($3, $4); }
+        | ADD WIDGET IDENTIFIER                   { size_group_add_widget($3); }
         ;
 
 common:

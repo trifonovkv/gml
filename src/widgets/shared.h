@@ -30,6 +30,41 @@
 #include "text_buffer.h"
 #include "header_bar.h"
 #include "action_bar.h"
+#include "list_box.h"
+#include "size_group.h"
+
+void set_activate_on_single_click(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW) {
+                tree_view_set_activate_on_single_click(setting);
+        } else if (type == TYPE_LIST_BOX) {
+                list_box_set_activate_on_single_click(setting);
+        }
+}
+
+void set_activatable(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_CELL_RENDERER_TOGGLE) {
+                cell_renderer_toggle_set_activatable(setting);
+        } else if (type == TYPE_LIST_BOX_ROW) {
+                list_box_row_set_activatable(setting);
+        }
+}
+
+void set_selectable(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_LABEL) {
+                label_set_selectable(setting);
+        } else if (type == TYPE_LIST_BOX_ROW) {
+                list_box_row_set_selectable(setting);
+        }
+}
 
 void pack_start(char *setting)
 {
@@ -61,6 +96,8 @@ void set_adjustment(char *setting)
                 spin_button_set_adjustment(setting);
         } else if (type == TYPE_SCALE_BUTTON) {
                 scale_button_set_adjustment(setting);
+        } else if (type == TYPE_LIST_BOX) {
+                list_box_set_adjustment(setting);
         }
 }
 
@@ -215,6 +252,8 @@ void set_mode(char *setting)
                 level_bar_set_mode(setting);
         } else if (type == TYPE_TOGGLE_BUTTON) {
                 toggle_button_set_mode(setting);
+        } else if (type == TYPE_SIZE_GROUP) {
+                size_group_set_mode(setting);
         }
 }
 

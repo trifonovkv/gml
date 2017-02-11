@@ -7,19 +7,50 @@
 gint pulse_time = 250;
 gint pulse_entry_mode = 0;
 
-void on_scale_button_value_changed (GtkScaleButton *button,
-                                    gdouble         value,
-                                    gpointer        user_data) 
+void row_activated(GtkListBox *box, GtkListBoxRow *row) {
+        GtkWidget *image;
+        GtkWidget *dialog;
+
+        image = (GtkWidget *)g_object_get_data(G_OBJECT(row), "image");
+        dialog = (GtkWidget *)g_object_get_data(G_OBJECT(row), "dialog");
+
+        if (image) {
+                if (gtk_widget_get_opacity (image) > 0)
+                        gtk_widget_set_opacity (image, 0);
+                else
+                        gtk_widget_set_opacity (image, 1);
+        }
+        else if (dialog) {
+                gtk_window_present (GTK_WINDOW (dialog));
+        }
+}
+
+void update_header(GtkListBoxRow *row,
+                   GtkListBoxRow *before,
+                   gpointer       data)
+{
+        if (before != NULL && gtk_list_box_row_get_header (row) == NULL) {
+                  GtkWidget *separator;
+
+                  separator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
+                  gtk_widget_show (separator);
+                  gtk_list_box_row_set_header (row, separator);
+        }
+}
+
+void on_scale_button_value_changed(GtkScaleButton *button,
+                                   gdouble         value,
+                                   gpointer        user_data) 
 {
         gtk_widget_trigger_tooltip_query (GTK_WIDGET (button));
 }
 
-gboolean on_scale_button_query_tooltip (GtkWidget  *button,
-                                        gint        x,
-                                        gint        y,
-                                        gboolean    keyboard_mode,
-                                        GtkTooltip *tooltip,
-                                        gpointer    user_data)
+gboolean on_scale_button_query_tooltip(GtkWidget  *button,
+                                       gint        x,
+                                       gint        y,
+                                       gboolean    keyboard_mode,
+                                       GtkTooltip *tooltip,
+                                       gpointer    user_data)
 {
         GtkScaleButton *scale_button = GTK_SCALE_BUTTON (button);
         GtkAdjustment *adjustment;
@@ -51,12 +82,12 @@ gboolean on_scale_button_query_tooltip (GtkWidget  *button,
         return TRUE;
 }
 
-char *scale_format_value_blank (GtkScale *scale, gdouble value)
+char *scale_format_value_blank(GtkScale *scale, gdouble value)
 {
         return g_strdup (" ");
 }
 
-char *scale_format_value (GtkScale *scale, gdouble value)
+char *scale_format_value(GtkScale *scale, gdouble value)
 {
         return g_strdup_printf ("%0.*f", 1, value);
 }

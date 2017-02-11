@@ -69,6 +69,8 @@ gml_SOURCES =                                     \
 								widgets/action_bar.c              \
 								widgets/menu_button.c             \
 								widgets/menu.c                    \
+								widgets/list_box.c                \
+								widgets/size_group.c              \
 								$(NULL)
 
 noinst_HEADERS = gml.h

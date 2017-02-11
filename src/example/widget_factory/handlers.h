@@ -1,15 +1,19 @@
 #include <gtk/gtk.h>
 
-void on_scale_button_value_changed (GtkScaleButton *button,
-                                    gdouble         value,
-                                    gpointer        user_data);
+void row_activated(GtkListBox *box, GtkListBoxRow *row);
 
-gboolean on_scale_button_query_tooltip (GtkWidget  *button,
-                                        gint        x,
-                                        gint        y,
-                                        gboolean    keyboard_mode,
-                                        GtkTooltip *tooltip,
-                                        gpointer    user_data);
+void update_header(GtkListBoxRow *row, GtkListBoxRow *before, gpointer data);
+
+void on_scale_button_value_changed(GtkScaleButton *button,
+                                   gdouble         value,
+                                   gpointer        user_data);
+
+gboolean on_scale_button_query_tooltip(GtkWidget  *button,
+                                       gint        x,
+                                       gint        y,
+                                       gboolean    keyboard_mode,
+                                       GtkTooltip *tooltip,
+                                       gpointer    user_data);
 
 char *scale_format_value_blank (GtkScale *scale, gdouble value);
 

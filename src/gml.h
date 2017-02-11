@@ -72,6 +72,9 @@ typedef enum
         , TYPE_ACTION_BAR
         , TYPE_MENU_BUTTON
         , TYPE_MENU
+        , TYPE_LIST_BOX
+        , TYPE_LIST_BOX_ROW
+        , TYPE_SIZE_GROUP
 } widget_type;
 
 /* Keyboard accelerators and action */
