@@ -71,10 +71,25 @@ typedef enum
         , TYPE_IMAGE
         , TYPE_ACTION_BAR
         , TYPE_MENU_BUTTON
-        , TYPE_MENU
+        , TYPE_G_MENU
         , TYPE_LIST_BOX
         , TYPE_LIST_BOX_ROW
         , TYPE_SIZE_GROUP
+        , TYPE_MENU_ITEM
+        , TYPE_SEPARATOR_MENU_ITEM
+        , TYPE_MENU
+        , TYPE_CHECK_MENU_ITEM
+        , TYPE_RADIO_MENU_ITEM
+        , TYPE_MENU_BAR
+        , TYPE_TOOL_BUTTON
+        , TYPE_TOOL_ITEM
+        , TYPE_TOOLBAR
+        , TYPE_SEARCH_ENTRY
+        , TYPE_SEARCH_BAR
+        , TYPE_INFO_BAR
+        , TYPE_STATUSBAR
+        , TYPE_PANED
+        , TYPE_ACCEL_GROUP
 } widget_type;
 
 /* Keyboard accelerators and action */

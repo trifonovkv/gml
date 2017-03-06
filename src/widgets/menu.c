@@ -2,68 +2,105 @@
 #include "fmtout.h"
 #include "menu.h" 
 
-void menu_new(char *menu)
+void menu_new(char *widget)
 {
-        this = syminst(TYPE_MENU, menu, menu);
+        this = syminst(TYPE_MENU, widget, widget);
 
-        if (getsymval("item") == NULL) {
-                syminst(TYPE_ITER, "item", "item");
-                prtstr(2, "GMenuItem * ", "item;\n");
-        }
-
-        putdef("GMenu *", menu, "g_menu_new", 0);
+        putdef("GtkWidget *", widget, "gtk_menu_new", 0);
 }
 
-void menu_append_new_item(char *label, char *detailed_action)
+void menu_new_from_model(char *widget, char *setting)
 {
-        char *menu = wrptype("G_MENU", this);
+        this = syminst(TYPE_MENU, widget, widget);
+        char *model = wrptype("G_MENU_MODEL", setting);
 
-        putdef("", "item", "g_menu_item_new", 2, label, detailed_action);
-        putfun("g_menu_append_item", 2, menu, "item");
+        putdef("GtkWidget *", widget, "gtk_menu_new_from_model", 1, model);
 
-        free(menu);
-        free(label);
-        free(detailed_action);
-}
-
-void menu_append_new_section(char *label, char *section)
-{
-        char *menu = wrptype("G_MENU", this);
-        char *model = wrptype("G_MENU_MODEL", section);
-
-        putdef("", "item", "g_menu_item_new_section", 2, label, model);
-        putfun("g_menu_append_item", 2, menu, "item");
-
-        free(menu);
-        free(label);
         free(model);
-        free(section);
 }
 
-void menu_append_new_submenu(char *label, char *submenu)
+void menu_set_screen(char *setting)
 {
-        char *menu = wrptype("G_MENU", this);
-        char *model = wrptype("G_MENU_MODEL", submenu);
+        char *widget = wrptype("GTK_MENU", this);
 
-        putdef("", "item", "g_menu_item_new_submenu", 2, label, model);
-        putfun("g_menu_append_item", 2, menu, "item");
+        putfun("gtk_menu_set_screen", 2, widget, setting);
 
-        free(menu);
-        free(label);
-        free(model);
-        free(submenu);
+        free(widget);
+        free(setting);
 }
 
-void menu_item_set_attribute(char *attribute, char *format_string)
+void menu_attach(char *child, char *left, char *right, char *top, char *bottom)
 {
-        putfun("g_menu_item_set_attribute"
-             , 4
-             , "item"
-             , attribute
-             , "\"s\""
-             , format_string);
-                
-        free(attribute);
-        free(format_string);
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_attach", 6, widget, child, left, right, top, bottom);
+
+        free(widget);
+        free(child);
+        free(left);
+        free(right);
+        free(top);
+        free(bottom);
 }
- 
+
+void menu_set_accel_group(char *setting)
+{
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_set_accel_group", 2, widget, setting);
+
+        free(widget);
+        free(setting);
+}
+
+void menu_set_accel_path(char *setting)
+{
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_set_accel_path", 2, widget, setting);
+
+        free(widget);
+        free(setting);
+}
+
+void menu_set_monitor(char *setting)
+{
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_set_monitor", 2, widget, setting);
+
+        free(widget);
+        free(setting);
+}
+
+void menu_set_reserve_toggle_size(char *setting)
+{
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_set_reserve_toggle_size", 2, widget, setting);
+
+        free(widget);
+        free(setting);
+}
+
+void menu_set_active(char *setting)
+{
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_set_active", 2, widget, setting);
+
+        free(widget);
+        free(setting);
+}
+
+void menu_attach_to_widget(char *attach_widget, char *detacher)
+{
+        char *widget = wrptype("GTK_MENU", this);
+
+        putfun("gtk_menu_attach_to_widget", 3, widget, attach_widget, detacher);
+
+        free(widget);
+        free(attach_widget);
+        free(detacher);
+}
+

@@ -1,4 +1,21 @@
 /*
+ * Adds an action to the window.
+ */
+void window_add_action(char *name
+                     , char *activate
+                     , char *parameter_type
+                     , char *state
+                     , char *change_state
+                     , char *user_data);
+
+/*
+ * Associate accel_group with window, such that calling
+ * gtk_accel_groups_activate() on window will activate accelerators in
+ * accel_group.
+ */
+void window_add_accel_group(char *setting);
+
+/*
  * Sets a custom titlebar for window.
  * If you set a custom titlebar, GTK+ will do its best to convince the window
  * manager not to put its own titlebar on the window. Depending on the system,

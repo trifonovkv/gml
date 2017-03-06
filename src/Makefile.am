@@ -68,9 +68,24 @@ gml_SOURCES =                                     \
 								widgets/object.c                  \
 								widgets/action_bar.c              \
 								widgets/menu_button.c             \
-								widgets/menu.c                    \
+								widgets/g_menu.c                  \
 								widgets/list_box.c                \
 								widgets/size_group.c              \
+								widgets/menu_item.c               \
+								widgets/separator_menu_item.c     \
+								widgets/menu.c                    \
+								widgets/check_menu_item.c         \
+								widgets/radio_menu_item.c         \
+								widgets/menu_bar.c                \
+								widgets/tool_button.c             \
+								widgets/tool_item.c               \
+								widgets/toolbar.c                 \
+								widgets/search_entry.c            \
+								widgets/search_bar.c              \
+								widgets/info_bar.c                \
+								widgets/statusbar.c               \
+								widgets/paned.c                   \
+								widgets/accel_group.c             \
 								$(NULL)
 
 noinst_HEADERS = gml.h

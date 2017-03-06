@@ -3,11 +3,340 @@
 #include <glib/gi18n.h>
 
 #define EPSILON (1e-10)
+#define PACKAGE_VERSION "3.22.7"
 
 gint pulse_time = 250;
 gint pulse_entry_mode = 0;
+gint current_page = 0;
 
-void row_activated(GtkListBox *box, GtkListBoxRow *row) {
+typedef struct {
+        GtkWidget *flowbox;
+        gchar *filename;
+} BackgroundData;
+
+void activate_lock(GSimpleAction *action,
+                   GVariant      *parameter,
+                   gpointer       user_data)
+{
+        GtkWidget *window = user_data;
+        GtkWidget *button;
+
+        if (!on_page(3))
+                return;
+
+        button = GTK_WIDGET(g_object_get_data(G_OBJECT(window), "lockbutton"));
+        gtk_button_clicked(GTK_BUTTON(button));
+}
+
+void activate_record(GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data)
+{
+        GtkWidget *window = user_data;
+        GtkWidget *button;
+
+        if (!on_page(3))
+                return;
+
+        button = GTK_WIDGET(g_object_get_data(G_OBJECT(window), 
+                                             "record_button"));
+        gtk_button_clicked(GTK_BUTTON(button));
+}
+
+void background_loaded_cb(GObject      *source,
+                          GAsyncResult *res,
+                          gpointer      data)
+{
+        BackgroundData *bd = data;
+        GtkWidget *child;
+        GdkPixbuf *pixbuf;
+        GError *error = NULL;
+        
+        pixbuf = gdk_pixbuf_new_from_stream_finish(res, &error);
+        if (error) {
+                g_warning("Error loading '%s': %s", 
+                          bd->filename, 
+                          error->message);
+                g_error_free(error);
+                return;
+        }
+        
+        child = gtk_image_new_from_pixbuf(pixbuf);
+        gtk_widget_show(child);
+        gtk_flow_box_insert(GTK_FLOW_BOX(bd->flowbox), child, -1);
+        child = gtk_widget_get_parent(child);
+        g_object_set_data_full(G_OBJECT(child), 
+                              "filename", 
+                               bd->filename, 
+                               g_free);
+        g_free(bd);
+}
+
+void populate_flowbox(GtkWidget *flowbox)
+{
+        const gchar *location;
+        GDir *dir;
+        GError *error = NULL;
+        const gchar *name;
+        gchar *filename;
+        GFile *file;
+        GInputStream *stream;
+        BackgroundData *bd;
+        GdkPixbuf *pixbuf;
+        GtkWidget *child;
+
+        if (GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(flowbox), "populated")))
+                return;
+
+        g_object_set_data(G_OBJECT(flowbox), "populated", GUINT_TO_POINTER(1));
+
+        pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, 110, 70);
+        gdk_pixbuf_fill(pixbuf, 0xffffffff);
+        child = gtk_image_new_from_pixbuf(pixbuf);
+        gtk_widget_show(child);
+        gtk_flow_box_insert(GTK_FLOW_BOX(flowbox), child, -1);
+
+        location = "/usr/share/backgrounds/gnome";
+        dir = g_dir_open(location, 0, &error);
+        if (error) {
+                g_warning("%s", error->message);
+                g_error_free(error);
+                return;
+        }
+
+        while ((name = g_dir_read_name(dir)) != NULL) {
+            filename = g_build_filename(location, name, NULL);
+            file = g_file_new_for_path(filename);
+            stream = G_INPUT_STREAM(g_file_read(file, NULL, &error));
+            if (error) {
+                g_warning("%s", error->message);
+                g_clear_error(&error);
+                g_free(filename); 
+            } else {
+                bd = g_new(BackgroundData, 1);
+                bd->flowbox = flowbox;
+                bd->filename = filename;
+                gdk_pixbuf_new_from_stream_at_scale_async(stream, 
+                                                          110, 
+                                                          110, 
+                                                          TRUE, 
+                                                          NULL, 
+                                                          background_loaded_cb,
+                                                          bd);
+            }
+
+            g_object_unref(file);
+            g_object_unref(stream);
+        }
+
+        g_dir_close(dir);
+}
+
+void activate_background(GSimpleAction *action,
+                         GVariant      *parameter,
+                         gpointer       user_data)
+{
+  GtkWidget *window = user_data;
+  GtkWidget *dialog;
+  GtkWidget *flowbox;
+
+  if (!on_page(2))
+          return;
+
+  dialog = GTK_WIDGET(g_object_get_data(G_OBJECT(window), "selection_dialog"));
+  flowbox = GTK_WIDGET(g_object_get_data(G_OBJECT(window), 
+                      "selection_flowbox"));
+
+  gtk_widget_show(dialog);
+  populate_flowbox(flowbox);
+}
+
+void activate_open(GSimpleAction *action,
+                   GVariant      *parameter,
+                   gpointer       user_data)
+{
+        GtkWidget *window = user_data;
+        GtkWidget *button;
+
+        if (!on_page(3))
+                return;
+
+        button = GTK_WIDGET(g_object_get_data(G_OBJECT(window), 
+                           "open_menubutton"));
+        gtk_button_clicked(GTK_BUTTON(button));
+}
+
+gboolean get_idle(gpointer data)
+{
+        GtkWidget *window = data;
+        GtkApplication *app = gtk_window_get_application(GTK_WINDOW(window));
+
+        gtk_widget_set_sensitive(window, TRUE);
+        gdk_window_set_cursor(gtk_widget_get_window(window), NULL);
+        g_application_unmark_busy(G_APPLICATION(app));
+
+        return G_SOURCE_REMOVE;
+}
+
+void get_busy(GSimpleAction *action,
+              GVariant      *parameter,
+              gpointer       user_data)
+{
+        GtkWidget *window = user_data;
+        GdkCursor *cursor;
+        GtkApplication *app = gtk_window_get_application(GTK_WINDOW(window));
+
+        g_application_mark_busy(G_APPLICATION(app));
+        cursor = gdk_cursor_new_from_name(gtk_widget_get_display(window), 
+                                          "wait");
+        gdk_window_set_cursor(gtk_widget_get_window(window), cursor);
+        g_object_unref(cursor);
+        g_timeout_add(5000, get_idle, window);
+
+        gtk_widget_set_sensitive(window, FALSE);
+}
+
+void activate_delete(GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data)
+{
+        GtkWidget *window = user_data;
+        GtkWidget *infobar;
+
+        if (!on_page (2))
+                return;
+
+        infobar = GTK_WIDGET(g_object_get_data(G_OBJECT(window), "infobar"));
+        gtk_widget_show(infobar);
+}
+
+
+void change_transition_state(GSimpleAction *action,
+                             GVariant      *state,
+                             gpointer       user_data)
+{
+        GtkStackTransitionType transition;
+        GtkStack *page_stack = GTK_STACK(user_data);
+     
+        if (g_variant_get_boolean(state))
+                transition = GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT;
+        else
+                transition = GTK_STACK_TRANSITION_TYPE_NONE;
+
+        gtk_stack_set_transition_type(page_stack, transition);
+
+        g_simple_action_set_state(action, state);
+}
+
+void change_theme_state(GSimpleAction *action,
+                        GVariant      *state,
+                        gpointer       user_data)
+{
+        GtkSettings *settings = gtk_settings_get_default();
+
+        g_object_set(G_OBJECT(settings),
+                     "gtk-application-prefer-dark-theme",
+                     g_variant_get_boolean(state),
+                     NULL);
+
+        g_simple_action_set_state(action, state);
+}
+
+void activate_quit(GSimpleAction *action,
+                   GVariant      *parameter,
+                   gpointer       user_data)
+{
+        GtkApplication *app = user_data;
+        GtkWidget *win;
+        GList *list, *next;
+
+        list = gtk_application_get_windows(app);
+        while (list) {
+                win = list->data;
+                next = list->next;
+
+                gtk_widget_destroy(GTK_WIDGET(win));
+
+                list = next;
+        }
+}
+
+void activate_about(GSimpleAction *action,
+                    GVariant      *parameter,
+                    gpointer       user_data)
+{
+        GtkApplication *app = user_data;
+        const gchar *authors[] = {
+                "Andrea Cimitan",
+                "Cosimo Cecchi",
+                NULL
+        };
+        gchar *version;
+        GString *s;
+
+        s = g_string_new("");
+
+        g_string_append(s, "System libraries\n");
+        g_string_append_printf(s, "\tGLib\t%d.%d.%d\n",
+                               glib_major_version,
+                               glib_minor_version,
+                               glib_micro_version);
+        g_string_append_printf(s, "\tGTK+\t%d.%d.%d\n",
+                               gtk_get_major_version(),
+                               gtk_get_minor_version(),
+                               gtk_get_micro_version());
+        g_string_append_printf(s, "\nA link can apppear here: <http://www.gtk.org>");
+
+        version = g_strdup_printf("%s\nRunning against GTK+ %d.%d.%d",
+                                  PACKAGE_VERSION,
+                                  gtk_get_major_version(),
+                                  gtk_get_minor_version(),
+                                  gtk_get_micro_version());
+
+        gtk_show_about_dialog(GTK_WINDOW(gtk_application_get_active_window(app)),
+                              "program-name", "GTK+ Widget Factory",
+                              "version", version,
+                              "copyright", "(C) 1997-2013 The GTK+ Team",
+                              "license-type", GTK_LICENSE_LGPL_2_1,
+                              "website", "http://www.gtk.org",
+                              "comments", "Program to demonstrate GTK+ themes and widgets",
+                              "authors", authors,
+                              "logo-icon-name", "gtk4-widget-factory",
+                              "title", "About GTK+ Widget Factory",
+                              "system-information", s->str,
+                              NULL);
+
+        g_string_free(s, TRUE);
+        g_free(version);
+}
+
+void info_bar_response(GtkWidget *infobar, gint response_id) 
+{
+        if (response_id == GTK_RESPONSE_CLOSE)
+                gtk_widget_hide(infobar);
+}
+
+gboolean on_page(gint i) 
+{
+        return current_page == i;
+}
+
+void activate_search(GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data) 
+{
+        GtkWidget *searchbar = GTK_WIDGET(user_data);
+
+        
+        if (!on_page(2))
+                return;
+        
+
+        gtk_search_bar_set_search_mode(GTK_SEARCH_BAR(searchbar), TRUE);
+}
+
+void row_activated(GtkListBox *box, GtkListBoxRow *row) 
+{
         GtkWidget *image;
         GtkWidget *dialog;
 

@@ -11,13 +11,14 @@ void text_buffer_new(char *widget)
 
 void text_buffer_set_text(char *setting)
 {
+        char *str = concat(this, "_str");
         char *widget = wrptype("GTK_TEXT_BUFFER", this);
 
-        prtstr(3, "char *str = ", setting, ";\n");
+        prtstr(5, "char *", str, " = ", setting, ";\n");
          
-         
-        putfun("gtk_text_buffer_set_text", 3, widget, "str", "-1");
+        putfun("gtk_text_buffer_set_text", 3, widget, str, "-1");
 
+        free(str);
         free(setting);
 }
 

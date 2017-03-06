@@ -5,6 +5,29 @@
 
 int tabs_count = 0;
 
+char* dequote(char *s) 
+{
+        char *ps = s;
+        char *result = malloc(strlen(s) + 1);
+        char *presult = result;
+
+        if (!result) {
+            fprintf(stderr, "malloc() failed: insufficient memory!\n");
+            return NULL;
+        }
+
+        while (*ps) {
+                if (*ps != '\"') {
+                        *(presult++) = *ps;
+                }
+                ps++;
+        }
+                        
+        *presult = *ps;
+
+        return result;
+}
+
 char *itoa(int num) 
 {
         char *str = malloc(floor(log10(abs(num + 1))));

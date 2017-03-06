@@ -83,12 +83,12 @@ RADIO_BUTTON_WITH_LABEL radio_button3
 
 RADIO_BUTTON_WITH_LABEL radio_button2
   SET Label_text "Radio button 2"
-  SET Join radio_button3
+  SET Join_group radio_button3
 ;
 
 RADIO_BUTTON_WITH_LABEL radio_button1
   SET Label_text "Radio button 1"
-  SET Join radio_button2
+  SET Join_group radio_button2
 ;
 
 CHECK_BUTTON_WITH_LABEL check_button1

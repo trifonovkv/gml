@@ -1,5 +1,57 @@
 #include <gtk/gtk.h>
 
+void activate_lock(GSimpleAction *action,
+                   GVariant      *parameter,
+                   gpointer       user_data);
+
+void activate_record(GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data);
+
+void populate_flowbox(GtkWidget *flowbox);
+
+void activate_background(GSimpleAction *action,
+                         GVariant      *parameter,
+                         gpointer       user_data);
+
+void activate_open(GSimpleAction *action,
+                   GVariant      *parameter,
+                   gpointer       user_data);
+
+gboolean get_idle(gpointer data);
+
+void get_busy(GSimpleAction *action,
+              GVariant      *parameter,
+              gpointer       user_data);
+
+void activate_delete(GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data);
+
+void change_transition_state(GSimpleAction *action,
+                             GVariant      *state,
+                             gpointer       user_data);
+
+void change_theme_state(GSimpleAction *action,
+                        GVariant      *state,
+                        gpointer       user_data);
+
+void activate_quit(GSimpleAction *action,
+                   GVariant      *parameter,
+                   gpointer       user_data);
+
+void activate_about(GSimpleAction *action,
+                    GVariant      *parameter,
+                    gpointer       user_data);
+
+void info_bar_response(GtkWidget *infobar, gint response_id);
+
+gboolean on_page(gint i);
+
+void activate_search(GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data);
+
 void row_activated(GtkListBox *box, GtkListBoxRow *row);
 
 void update_header(GtkListBoxRow *row, GtkListBoxRow *before, gpointer data);

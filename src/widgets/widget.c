@@ -128,7 +128,7 @@ void widget_set_receives_default(char *setting)
 
 void widget_set_sensitive(char *setting)
 {
-        char *widget = this;
+        char *widget = wrptype("GTK_WIDGET", this);
 
         putfun("gtk_widget_set_sensitive", 2, widget, setting);
 

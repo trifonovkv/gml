@@ -5,9 +5,11 @@
 void container_add(char *widget)
 {
         char *container = wrptype("GTK_CONTAINER", this);
+        char *wd = wrptype("GTK_WIDGET", widget);
 
-        putfun("gtk_container_add", 2, container, widget);
+        putfun("gtk_container_add", 2, container, wd);
         
+        free(wd);
         free(container);
 }
 

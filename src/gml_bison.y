@@ -55,9 +55,24 @@
 #include "widgets/object.h"
 #include "widgets/action_bar.h"
 #include "widgets/menu_button.h"
-#include "widgets/menu.h"
+#include "widgets/g_menu.h"
 #include "widgets/list_box.h"
 #include "widgets/size_group.h"
+#include "widgets/menu_item.h"
+#include "widgets/separator_menu_item.h"
+#include "widgets/menu.h"
+#include "widgets/check_menu_item.h"
+#include "widgets/radio_menu_item.h"
+#include "widgets/menu_bar.h"
+#include "widgets/tool_button.h"
+#include "widgets/tool_item.h"
+#include "widgets/toolbar.h"
+#include "widgets/search_entry.h"
+#include "widgets/search_bar.h"
+#include "widgets/info_bar.h"
+#include "widgets/statusbar.h"
+#include "widgets/paned.h"
+#include "widgets/accel_group.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -75,11 +90,44 @@ int yywrap()
 int yylex();
 
 %}
+%token ACCEL_GROUP ACCEL_GROUP_WIDGET ACCELERATOR_DEFAULT_MOD_MASK ACCELERATOR 
+
+%token PANED WIDE_HANDLE PACK1 PACK2
+
+%token STATUSBAR
+
+%token INFO_BAR RESPONSE_SENSITIVE DEFAULT_RESPONSE MESSAGE_TYPE BUTTON
+%token CONTENT_AREA
+ 
+%token SEARCH_BAR CONNECT_ENTRY SEARCH_MODE 
+
+%token SEARCH_ENTRY_WIDGET
+
+%token TOOLBAR SHOW_ARROW ICON_SIZE
+
+%token TOOL_ITEM PROXY_MENU_ITEM MENU_ITEM_WITH_MNEMONIC 
+%token USE_DRAG_WINDOW VISIBLE_HORIZONTAL VISIBLE_VERTICAL IS_IMPORTANT 
+
+%token TOOL_BUTTON ICON_WIDGET 
+
+%token MENU_BAR MENU_BAR_FROM_MODEL BAR_PACK_DIRECTION CHILD_PACK_DIRECTION 
+
+%token RADIO_MENU_ITEM RADIO_MENU_ITEM_WITH_LABEL RADIO_MENU_ITEM_WITH_MNEMONIC
+
+%token CHECK_MENU_ITEM CHECK_MENU_ITEM_WITH_LABEL 
+%token CHECK_MENU_ITEM_WITH_MNEMONIC DRAW_AS_RADIO 
+
+%token MENU MENU_FROM_MODEL SCREEN MONITOR RESERVE_TOGGLE_SIZE 
+
+%token SEPARATOR_MENU_ITEM
+
+%token MENU_ITEM ACCEL_PATH RESERVE_INDICATOR 
+
 %token SIZE_GROUP
 
 %token LIST_BOX LIST_BOX_ROW SELECTION_MODE PLACEHOLDER HEADER HEADER_FUNC 
 
-%token MENU ITEM SECTION SUBMENU 
+%token G_MENU ITEM SECTION SUBMENU 
 
 %token MENU_BUTTON POPUP POPOVER MENU_MODEL USE_POPOVER DIRECTION ALIGN_WIDGET
 
@@ -156,9 +204,10 @@ int yylex();
 %token TOGGLE_BUTTON TOGGLE_BUTTON_WITH_LABEL TOGGLE_BUTTON_WITH_MNEMONIC MODE 
 %token INCONSISTENT
  
-%token RADIO_BUTTON RADIO_BUTTON_WITH_LABEL RADIO_BUTTON_WITH_MNEMONIC JOIN
+%token RADIO_BUTTON RADIO_BUTTON_WITH_LABEL RADIO_BUTTON_WITH_MNEMONIC JOIN_GROUP
 
 %token CHECK_BUTTON CHECK_BUTTON_WITH_LABEL CHECK_BUTTON_WITH_MNEMONIC MNEMONICS
+%token MNEMONIC
 
 %token GRID ROW_HOMOGENEOUS ROW_SPACING COLUMN_HOMOGENEOUS COLUMN_SPACING
 %token BASELINE_ROW ROW_BASELINE_POSITION ATACH ATACH_NEXT_TO 
@@ -203,7 +252,7 @@ int yylex();
 %token SENSITIVE NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS VISIBLE 
 %token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME FOCUS_ON_CLICK
 
-%token BUTTON BUTTON_FROM_ICON_NAME RELIEF USE_UNDERLINE 
+%token BUTTON_WIDGET BUTTON_FROM_ICON_NAME RELIEF USE_UNDERLINE 
 %token ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
 
 %token HEADER_BAR SUBTITLE HAS_SUBTITLE CUSTOM_TITLE SHOW_CLOSE_BUTTON
@@ -234,8 +283,8 @@ int yylex();
 }
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
-%type <string> set_label_text set_mnemonics set_orientation arg_id
-%type <string> min max step
+%type <string> set_label_text mnemonic orientation arg_id
+%type <string> min max step model
 %%
 
 main:
@@ -306,10 +355,32 @@ widget:
         | image
         | action_bar
         | menu_button
-        | menu
+        | g_menu
         | list_box
         | list_box_row
         | size_group
+        | menu_item
+        | menu_item_with_mnemonic
+        | separator_menu_item
+        | menu 
+        | menu_from_model
+        | check_menu_item
+        | check_menu_item_with_label
+        | check_menu_item_with_mnemonic
+        | radio_menu_item
+        | radio_menu_item_with_label
+        | radio_menu_item_with_mnemonic
+        | menu_bar
+        | menu_bar_from_model
+        | tool_button
+        | tool_item
+        | toolbar
+        | search_entry
+        | search_bar
+        | info_bar
+        | statusbar
+        | paned
+        | accel_group
         ;
 
 params: 
@@ -335,7 +406,7 @@ arg_id:
         ARG IDENTIFIER                                              { $$ = $2; }
         ;
 
-set_orientation:
+orientation:
         SET ORIENTATION IDENTIFIER                                  { $$ = $3; }
         ;
 
@@ -343,8 +414,8 @@ set_label_text:
         SET LABEL_TEXT STRING                                       { $$ = $3; }
         ;
 
-set_mnemonics:
-        SET MNEMONICS STRING                                        { $$ = $3; }
+mnemonic:
+        SET MNEMONIC STRING                                        { $$ = $3; }
         ;
 
 icon_name:
@@ -369,11 +440,131 @@ step:
         SET STEP FLOAT                                              { $$ = $3; }
         ;
 
+accel_group:
+        ACCEL_GROUP_WIDGET IDENTIFIER                   { accel_group_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
 bbox_child_set:
         SET CHILD_SECONDARY IDENTIFIER IDENTIFIER
                                      { button_box_set_child_secondary($3, $4); }
         | SET CHILD_NON_HOMOGENEOUS IDENTIFIER IDENTIFIER
                                { button_box_set_child_non_homogeneous($3, $4); }
+        ;
+
+model:
+        ARG MODEL IDENTIFIER                                        { $$ = $3; }
+        ;
+
+paned:
+        PANED IDENTIFIER orientation                      { paned_new($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+statusbar:
+        STATUSBAR IDENTIFIER                              { statusbar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+info_bar:
+        INFO_BAR IDENTIFIER                                { info_bar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+search_bar:
+        SEARCH_BAR IDENTIFIER                            { search_bar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+search_entry:
+        SEARCH_ENTRY_WIDGET IDENTIFIER                 { search_entry_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+toolbar:
+        TOOLBAR IDENTIFIER                                  { toolbar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+tool_item:
+        TOOL_ITEM IDENTIFIER                              { tool_item_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+tool_button:
+        TOOL_BUTTON IDENTIFIER                          { tool_button_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+menu_bar:
+        MENU_BAR IDENTIFIER                                { menu_bar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+menu_bar_from_model:
+        MENU_BAR_FROM_MODEL IDENTIFIER model 
+                                            { menu_bar_new_from_model($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+radio_menu_item:
+        RADIO_MENU_ITEM IDENTIFIER                  { radio_menu_item_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+radio_menu_item_with_label:
+        RADIO_MENU_ITEM_WITH_LABEL IDENTIFIER set_label_text
+                                     { radio_menu_item_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+radio_menu_item_with_mnemonic:
+        RADIO_MENU_ITEM_WITH_MNEMONIC IDENTIFIER mnemonic
+                                  { radio_menu_item_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+check_menu_item:
+        CHECK_MENU_ITEM IDENTIFIER                  { check_menu_item_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+check_menu_item_with_label:
+        CHECK_MENU_ITEM_WITH_LABEL IDENTIFIER set_label_text
+                                     { check_menu_item_new_with_label($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+check_menu_item_with_mnemonic:
+        CHECK_MENU_ITEM_WITH_MNEMONIC IDENTIFIER mnemonic
+                                  { check_menu_item_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+ 
+menu:
+        MENU IDENTIFIER                                        { menu_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+menu_from_model:
+        MENU_FROM_MODEL IDENTIFIER model        { menu_new_from_model($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+separator_menu_item:
+        SEPARATOR_MENU_ITEM IDENTIFIER          { separator_menu_item_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+menu_item:
+        MENU_ITEM IDENTIFIER                              { menu_item_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+menu_item_with_mnemonic:
+        MENU_ITEM_WITH_MNEMONIC IDENTIFIER mnemonic
+                                        { menu_item_new_with_mnemonic($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 size_group:
@@ -391,8 +582,8 @@ list_box_row:
         params SEMICOLON                                    { block_close($2); }
         ;
 
-menu:
-        MENU IDENTIFIER                                        { menu_new($2); }
+g_menu:
+        G_MENU IDENTIFIER                                    { g_menu_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
@@ -525,7 +716,7 @@ font_button:
         ;
 
 separator:
-        SEPARATOR IDENTIFIER set_orientation          { separator_new($2, $3); }
+        SEPARATOR IDENTIFIER orientation              { separator_new($2, $3); }
         SEMICOLON
         ;
 
@@ -546,7 +737,7 @@ toggle_button_with_label:
         ;
 
 toggle_button_with_mnemonic:
-        TOGGLE_BUTTON_WITH_MNEMONIC IDENTIFIER set_mnemonics
+        TOGGLE_BUTTON_WITH_MNEMONIC IDENTIFIER mnemonic
                                     { toggle_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -563,7 +754,7 @@ radio_button_with_label:
         ;
 
 radio_button_with_mnemonic:
-        RADIO_BUTTON_WITH_MNEMONIC IDENTIFIER set_mnemonics
+        RADIO_BUTTON_WITH_MNEMONIC IDENTIFIER mnemonic
                                      { radio_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -580,7 +771,7 @@ check_button_with_label:
         ;
 
 check_button_with_mnemonic:
-        CHECK_BUTTON_WITH_MNEMONIC IDENTIFIER set_mnemonics 
+        CHECK_BUTTON_WITH_MNEMONIC IDENTIFIER mnemonic 
                                      { check_button_new_with_mnemonic($2, $3); }
         params SEMICOLON                                    { block_close($2); }
         ;
@@ -682,7 +873,7 @@ vbox:
         ;
 
 button:
-        BUTTON IDENTIFIER                                    { button_new($2); }
+        BUTTON_WIDGET IDENTIFIER                             { button_new($2); }
         params SEMICOLON                                    { block_close($2); }
         ;
 
@@ -764,6 +955,13 @@ set:
         | set_selectable
         | set_activatable
         | set_activate_on_single_click
+        | set_accel_path
+        | set_inconsistent
+        | set_join_group
+        | set_label_widget
+        | set_icon_name
+        | set_expand
+        | set_show_close_button
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -783,7 +981,9 @@ set:
         | set_window_keep_below
         | set_window_startup_id
         | set_window_role
-        | set_window_icon_name
+        /*
+         * | set_window_icon_name
+         */
         | set_window_mnemonics_visible
         | set_window_focus_visible
         | set_window_skip_taskbar_hint
@@ -804,7 +1004,9 @@ set:
         | set_header_bar_subtitle
         | set_header_bar_has_subtitle
         | set_header_bar_custom_title
-        | set_header_bar_show_close_button
+        /*
+         * | set_header_bar_show_close_button
+         */
         | set_header_bar_decoration_layout
         | set_scrolled_window_policy
         | set_scrolled_window_placement
@@ -847,7 +1049,9 @@ set:
         | set_combo_box_row_span_column
         | set_combo_box_column_span_column
         | set_combo_box_id_column
-        | set_combo_box_active
+        /*
+         * | set_combo_box_active
+         */
         | set_combo_box_active_id
         | set_combo_box_button_sensitivity
         | set_combo_box_entry_text_column
@@ -878,8 +1082,12 @@ set:
         | set_grid_column_spacing
         | set_grid_baseline_row
         | set_grid_row_baseline_position
-        | set_radio_button_join_group
-        | set_toggle_button_inconsistent
+        /*
+         * | set_radio_button_join_group
+         */
+        /*
+         * | set_toggle_button_inconsistent
+         */
         | set_spinner_start
         | set_spinner_stop
         | set_font_button_font_name
@@ -926,7 +1134,9 @@ set:
         | set_range_flippable
         | set_range_slider_size_fixed
         | set_orientable_orientation
-        | set_frame_label_widget
+        /*
+         * | set_frame_label_widget
+         */
         | set_frame_label_align
         | set_tree_view_level_indentation
         | set_tree_view_show_expanders
@@ -949,7 +1159,9 @@ set:
         | set_tree_view_column_fixed_width
         | set_tree_view_column_min_width
         | set_tree_view_column_max_width
-        | set_tree_view_column_expand
+        /*
+         * | set_tree_view_column_expand
+         */
         | set_tree_view_column_clickable
         | set_tree_view_column_widget
         | set_tree_view_column_sort_column_id
@@ -986,11 +1198,179 @@ set:
         | set_menu_button_use_popover
         | set_menu_button_direction
         | set_menu_button_align_widget
-        | set_menu_item_attribute
+        | set_g_menu_item_attribute
         | set_list_box_selection_mode
         | set_list_box_placeholder
         | set_list_box_header_func
         | set_list_box_row_header
+        | set_menu_item_submenu
+        | set_menu_item_reserve_indicator
+        | set_menu_screen
+        | set_menu_accel_group
+        | set_menu_monitor
+        | set_menu_reserve_toggle_size
+        /*
+         * | set_menu_active
+         */
+        | set_check_menu_item_draw_as_radio
+        /*
+         * | set_check_menu_item_inconsistent
+         */
+        | set_menu_bar_pack_direction
+        | set_menu_bar_child_pack_direction
+        | set_tool_button_icon_widget
+        /*
+         * | set_tool_item_expand
+         */
+        | set_tool_item_proxy_menu_item
+        | set_tool_item_tooltip_text
+        | set_tool_item_tooltip_markup
+        | set_tool_item_use_drag_window
+        | set_tool_item_visible_horizontal
+        | set_tool_item_visible_vertical
+        | set_tool_item_is_important
+        | set_toolbar_show_arrow
+        | set_toolbar_style
+        | set_toolbar_icon_size
+        | set_search_bar_search_mode
+        | set_search_bar_connect_entry
+        | set_info_bar_response_sensitive
+        | set_info_bar_default_response
+        | set_info_bar_message_type
+        | set_paned_position
+        | set_paned_wide_handle
+        | set_accelerator_default_mod_mask
+        ;
+        
+set_accelerator_default_mod_mask:
+        SET ACCELERATOR_DEFAULT_MOD_MASK IDENTIFIER
+                                      { accelerator_set_default_mod_mask($3); }
+        ;
+
+set_paned_position:
+        SET POSITION NUMBER                          { paned_set_position($3); }
+        ;
+
+set_paned_wide_handle:
+        SET WIDE_HANDLE IDENTIFIER                { paned_set_wide_handle($3); }
+        ;
+
+set_info_bar_response_sensitive:
+        SET RESPONSE_SENSITIVE NUMBER IDENTIFIER 
+                                    { info_bar_set_response_sensitive($3, $4); }
+        ;
+
+set_info_bar_default_response:
+        SET DEFAULT_RESPONSE NUMBER       { info_bar_set_default_response($3); }
+        ;
+
+set_info_bar_message_type:
+        SET MESSAGE_TYPE IDENTIFIER           { info_bar_set_message_type($3); }
+        ;
+
+set_search_bar_connect_entry:
+        SET CONNECT_ENTRY IDENTIFIER           { search_bar_connect_entry($3); }
+        ;
+
+set_search_bar_search_mode:
+        SET SEARCH_MODE IDENTIFIER           { search_bar_set_search_mode($3); }
+        ;
+
+set_toolbar_show_arrow:
+        SET SHOW_ARROW IDENTIFIER                { toolbar_set_show_arrow($3); }
+        ;
+
+set_toolbar_style:
+        SET STYLE IDENTIFIER                          { toolbar_set_style($3); }
+        ;
+
+set_toolbar_icon_size:
+        SET ICON_SIZE IDENTIFIER                  { toolbar_set_icon_size($3); }
+        ;
+
+set_tool_item_proxy_menu_item:
+        SET PROXY_MENU_ITEM IDENTIFIER IDENTIFIER
+                                      { tool_item_set_proxy_menu_item($3, $4); }
+        ;
+
+set_tool_item_tooltip_text:
+        SET TOOLTIP_TEXT STRING              { tool_item_set_tooltip_text($3); }
+        ;
+
+set_tool_item_tooltip_markup:
+        SET TOOLTIP_MARKUP STRING          { tool_item_set_tooltip_markup($3); }
+        ;
+
+set_tool_item_use_drag_window:
+        SET USE_DRAG_WINDOW IDENTIFIER    { tool_item_set_use_drag_window($3); }
+        ;
+
+set_tool_item_visible_horizontal:
+        SET VISIBLE_HORIZONTAL IDENTIFIER 
+                                       { tool_item_set_visible_horizontal($3); }
+        ;
+
+set_tool_item_visible_vertical:
+        SET VISIBLE_VERTICAL IDENTIFIER  { tool_item_set_visible_vertical($3); }
+        ;
+
+set_tool_item_is_important:
+        SET IS_IMPORTANT IDENTIFIER          { tool_item_set_is_important($3); }
+        ;
+
+set_tool_button_icon_widget:
+        SET ICON_WIDGET IDENTIFIER          { tool_button_set_icon_widget($3); }
+        ;
+
+set_menu_bar_pack_direction:
+        SET BAR_PACK_DIRECTION IDENTIFIER   { menu_bar_set_pack_direction($3); }
+        ;
+
+set_menu_bar_child_pack_direction:
+        SET CHILD_PACK_DIRECTION IDENTIFIER 
+                                      { menu_bar_set_child_pack_direction($3); }
+        ;
+
+/*
+ * set_check_menu_item_inconsistent:
+ *         SET INCONSISTENT IDENTIFIER    { check_menu_item_set_inconsistent($3); }
+ *         ;
+ * 
+ */
+set_check_menu_item_draw_as_radio:
+        SET DRAW_AS_RADIO IDENTIFIER  { check_menu_item_set_draw_as_radio($3); }
+        ;
+
+set_menu_screen:
+        SET SCREEN IDENTIFIER                           { menu_set_screen($3); }
+        ;
+
+set_menu_accel_group:
+        SET ACCEL_GROUP IDENTIFIER                 { menu_set_accel_group($3); }
+        ;
+
+set_menu_monitor:
+        SET MONITOR IDENTIFIER                         { menu_set_monitor($3); }
+        ;
+
+set_menu_reserve_toggle_size:
+        SET RESERVE_TOGGLE_SIZE IDENTIFIER { menu_set_reserve_toggle_size($3); }
+        ;
+
+/*
+ * set_menu_active:
+ *         SET ACTIVE 
+ * menu_set_active($3); }
+ *         ;
+ */
+
+set_menu_item_submenu:
+        SET SUBMENU IDENTIFIER                    { menu_item_set_submenu($3); }
+        ;
+
+set_menu_item_reserve_indicator:
+        SET RESERVE_INDICATOR IDENTIFIER 
+                                        { menu_item_set_reserve_indicator($3); }
         ;
 
 set_list_box_selection_mode:
@@ -1010,8 +1390,8 @@ set_list_box_row_header:
         SET HEADER IDENTIFIER                   { list_box_row_set_header($3); }
         ;
 
-set_menu_item_attribute:
-            SET ATTRIBUTE STRING STRING     { menu_item_set_attribute($3, $4); }
+set_g_menu_item_attribute:
+            SET ATTRIBUTE STRING STRING   { g_menu_item_set_attribute($3, $4); }
         ;
 
 set_menu_button_popup:
@@ -1171,9 +1551,11 @@ set_tree_view_column_max_width:
         SET MAX_WIDTH NUMBER             { tree_view_column_set_max_width($3); }
         ;
 
-set_tree_view_column_expand:
-        SET EXPAND IDENTIFIER               { tree_view_column_set_expand($3); }
-        ;
+/*
+ * set_tree_view_column_expand:
+ *         SET EXPAND IDENTIFIER               { tree_view_column_set_expand($3); }
+ *         ;
+ */
 
 set_tree_view_column_clickable:
         SET CLICKABLE IDENTIFIER         { tree_view_column_set_clickable($3); }
@@ -1267,9 +1649,11 @@ set_tree_view_tooltip_column:
         SET TOOLTIP_COLUMN IDENTIFIER      { tree_view_set_tooltip_column($3); }
         ;
 
-set_frame_label_widget:
-        SET LABEL_WIDGET IDENTIFIER              { frame_set_label_widget($3); }
-        ;
+/*
+ * set_frame_label_widget:
+ *         SET LABEL_WIDGET IDENTIFIER              { frame_set_label_widget($3); }
+ *         ;
+ */
 
 set_frame_label_align:
         SET LABEL_ALIGN FLOAT FLOAT           { frame_set_label_align($3, $4); }
@@ -1468,14 +1852,18 @@ set_spinner_stop:
         SET STOP                                             { spinner_stop(); }
         ;
 
-set_toggle_button_inconsistent:
-        SET INCONSISTENT IDENTIFIER      { toggle_button_set_inconsistent($3); }
-        ;
-
-set_radio_button_join_group:
-        SET JOIN IDENTIFIER                     { radio_button_join_group($3); }
-        ;
-
+/*
+ * set_toggle_button_inconsistent:
+ *         SET INCONSISTENT IDENTIFIER      { toggle_button_set_inconsistent($3); }
+ *         ;
+ * 
+ */
+/*
+ * set_radio_button_join_group:
+ *         SET JOIN IDENTIFIER                     { radio_button_join_group($3); }
+ *         ;
+ * 
+ */
 set_grid_row_homogeneous:
         SET ROW_HOMOGENEOUS IDENTIFIER         { grid_set_row_homogeneous($3); }
         ;
@@ -1595,9 +1983,11 @@ set_combo_box_column_span_column:
                                        { combo_box_set_column_span_column($3); }
         ;
 
-set_combo_box_active:
-        SET ACTIVE NUMBER                          { combo_box_set_active($3); }
-        ;
+/*
+ * set_combo_box_active:
+ *         SET ACTIVE NUMBER                          { combo_box_set_active($3); }
+ *         ;
+ */
  
 set_combo_box_id_column:
         SET ID_COLUMN NUMBER                    { combo_box_set_id_column($3); }
@@ -1785,10 +2175,12 @@ set_header_bar_custom_title:
         SET CUSTOM_TITLE IDENTIFIER         { header_bar_set_custom_title($3); }
         ;
 
-set_header_bar_show_close_button:
-        SET SHOW_CLOSE_BUTTON IDENTIFIER
-                                       { header_bar_set_show_close_button($3); }
-        ;
+/*
+ * set_header_bar_show_close_button:
+ *         SET SHOW_CLOSE_BUTTON IDENTIFIER
+ *                                        { header_bar_set_show_close_button($3); }
+ *         ;
+ */
 
 set_header_bar_decoration_layout:
         SET DECORATION_LAYOUT STRING   { header_bar_set_decoration_layout($3); }
@@ -1872,9 +2264,11 @@ set_window_role:
         SET ROLE STRING                                 { window_set_role($3); }
         ;
 
-set_window_icon_name:
-        SET ICON_NAME STRING                       { window_set_icon_name($3); }
-        ;
+/*
+ * set_window_icon_name:
+ *         SET ICON_NAME STRING                       { window_set_icon_name($3); }
+ *         ;
+ */
 
 set_window_mnemonics_visible:
         SET MNEMONICS_VISIBLE IDENTIFIER   { window_set_mnemonics_visible($3); }
@@ -1946,12 +2340,40 @@ set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
 
+set_label_widget:
+        SET LABEL_WIDGET IDENTIFIER                    { set_label_widget($3); }
+        ;
+
+set_show_close_button:
+        SET SHOW_CLOSE_BUTTON IDENTIFIER          { set_show_close_button($3); }
+        ;
+
+set_expand:
+        SET EXPAND IDENTIFIER                                { set_expand($3); }
+        ;
+
+set_icon_name:
+        SET ICON_NAME STRING                              { set_icon_name($3); }
+        ;
+
+set_join_group:
+        SET JOIN_GROUP IDENTIFIER                        { set_join_group($3); }
+        ;
+
+set_inconsistent:
+        SET INCONSISTENT IDENTIFIER                    { set_inconsistent($3); }
+        ;
+
 set_selectable:
         SET SELECTABLE IDENTIFIER                        { set_selectable($3); }
         ;
 
 set_activatable:
         SET ACTIVATABLE IDENTIFIER                      { set_activatable($3); }
+        ;
+
+set_accel_path:
+        SET ACCEL_PATH IDENTIFIER                        { set_accel_path($3); }
         ;
 
 set_activate_on_single_click:
@@ -2021,6 +2443,7 @@ set_ellipsize:
 
 set_active:
         SET ACTIVE IDENTIFIER                                { set_active($3); }
+        | SET ACTIVE NUMBER                                  { set_active($3); }
         ;
 
 set_uri:
@@ -2093,10 +2516,29 @@ add:
         | ADD COLUMN IDENTIFIER                 { tree_view_append_column($3); }
         | ADD CELL_RENDERER IDENTIFIER                { add_cell_renderer($3); }
         | ADD ADD_OVERLAY IDENTIFIER                { overlay_add_overlay($3); }
-        | ADD ITEM STRING STRING               { menu_append_new_item($3, $4); }
-        | ADD SECTION STRING IDENTIFIER     { menu_append_new_section($3, $4); }
-        | ADD SUBMENU STRING IDENTIFIER     { menu_append_new_submenu($3, $4); }
+        | ADD ITEM STRING STRING             { g_menu_append_new_item($3, $4); }
+        | ADD SECTION STRING IDENTIFIER   { g_menu_append_new_section($3, $4); }
+        | ADD SUBMENU STRING IDENTIFIER   { g_menu_append_new_submenu($3, $4); }
         | ADD WIDGET IDENTIFIER                   { size_group_add_widget($3); }
+        | ADD ACTION_WIDGET IDENTIFIER NUMBER 
+                                         { info_bar_add_action_widget($3, $4); }
+        | ADD BUTTON IDENTIFIER NUMBER          { info_bar_add_button($3, $4); }
+        | ADD CONTENT_AREA IDENTIFIER         { info_bar_add_content_area($3); }
+        | ADD PACK1 IDENTIFIER IDENTIFIER IDENTIFIER 
+                                                    { paned_pack1($3, $4, $5); }
+        | ADD PACK2 IDENTIFIER IDENTIFIER IDENTIFIER                    
+                                                    { paned_pack2($3, $4, $5); }
+        | ADD ACCELERATOR STRING IDENTIFIER IDENTIFIER IDENTIFIER
+                                { accel_group_add_accelerator($3, $4, $5, $6); }
+        | ADD ACCEL_GROUP IDENTIFIER             { window_add_accel_group($3); }
+        | ADD ACTION STRING IDENTIFIER STRING STRING IDENTIFIER IDENTIFIER
+                                  { window_add_action($3, $4, $5, $6, $7, $8); }
+        | ADD ACTION STRING IDENTIFIER STRING IDENTIFIER IDENTIFIER IDENTIFIER
+                                  { window_add_action($3, $4, $5, $6, $7, $8); }
+        | ADD ACTION STRING IDENTIFIER IDENTIFIER IDENTIFIER IDENTIFIER IDENTIFIER
+                                  { window_add_action($3, $4, $5, $6, $7, $8); }
+        | ADD ACTION STRING IDENTIFIER IDENTIFIER STRING IDENTIFIER IDENTIFIER
+                                  { window_add_action($3, $4, $5, $6, $7, $8); }
         ;
 
 common:

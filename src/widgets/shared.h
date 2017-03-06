@@ -32,6 +32,94 @@
 #include "action_bar.h"
 #include "list_box.h"
 #include "size_group.h"
+#include "menu_item.h"
+#include "menu.h"
+#include "check_menu_item.h"
+#include "radio_menu_item.h"
+#include "radio_button.h"
+#include "tool_button.h"
+#include "tool_item.h"
+#include "search_bar.h"
+#include "info_bar.h"
+
+void set_show_close_button(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_HEADER_BAR) {
+                header_bar_set_show_close_button(setting);
+        } else if (type == TYPE_SEARCH_BAR) {
+                search_bar_set_show_close_button(setting);
+        } else if (type == TYPE_INFO_BAR) {
+                info_bar_set_show_close_button(setting);
+        }
+}
+
+void set_expand(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TREE_VIEW_COLUMN) {
+                tree_view_column_set_expand(setting);
+        } else if (type == TYPE_TOOL_ITEM) {
+                tool_item_set_expand(setting);
+        }
+}
+
+void set_label_widget(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_FRAME) {
+                frame_set_label_widget(setting);
+        } else if (type == TYPE_TOOL_BUTTON) {
+                tool_button_set_label_widget(setting);
+        }
+}
+
+void set_icon_name(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_TOOL_BUTTON) {
+                tool_button_set_icon_name(setting);
+        } else if (type == TYPE_WINDOW) {
+                window_set_icon_name(setting);
+        }
+}
+ 
+void set_join_group(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_RADIO_MENU_ITEM) {
+                radio_menu_item_join_group(setting);
+        } else if (type == TYPE_RADIO_BUTTON) {
+                radio_button_join_group(setting);
+        }
+}
+
+void set_inconsistent(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_CHECK_MENU_ITEM) {
+                check_menu_item_set_inconsistent(setting);
+        } else if (type == TYPE_TOGGLE_BUTTON) {
+                toggle_button_set_inconsistent(setting);
+        }
+}
+
+void set_accel_path(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_MENU) {
+                menu_set_accel_path(setting);
+        } else if (type == TYPE_MENU_ITEM) {
+                menu_item_set_accel_path(setting);
+        }
+}
 
 void set_activate_on_single_click(char *setting)
 {
@@ -109,7 +197,17 @@ void set_label(char *setting)
                 label_set_label(setting);
         } else if (type == TYPE_BUTTON) {
                 button_set_label(setting);
+        } else if (type == TYPE_MENU_ITEM) {
+                menu_item_set_label(setting);
+        } else if (type == TYPE_CHECK_MENU_ITEM) {
+                menu_item_set_label(setting);
+        } else if (type == TYPE_RADIO_MENU_ITEM) {
+                menu_item_set_label(setting);
+        } else if (type == TYPE_TOOL_BUTTON) {
+                tool_button_set_label(setting);
         }
+
+
 }
 
 void set_transition_type(char *setting)
@@ -302,7 +400,14 @@ void set_active(char *setting)
                 switch_set_active(setting);
         } else if (type == TYPE_CELL_RENDERER_TOGGLE) {
                 cell_renderer_toggle_set_active(setting);
+        } else if (type == TYPE_COMBO_BOX) {
+                combo_box_set_active(setting);
+        } else if (type == TYPE_MENU) {
+                menu_set_active(setting);
+        } else if (type == TYPE_CHECK_MENU_ITEM) {
+                check_menu_item_set_active(setting);
         }
+
 }
 
 void set_value(char *setting)
@@ -328,6 +433,10 @@ void set_use_underline(char *setting)
                 button_set_use_underline(setting); 
         } else if (type == TYPE_LABEL) {
                 label_set_use_underline(setting);
+        } else if (type == TYPE_MENU_ITEM) {
+                menu_item_set_use_underline(setting);
+        } else if (type == TYPE_TOOL_BUTTON) {
+                tool_button_set_use_underline(setting);
         }
 }
 
@@ -409,6 +518,8 @@ void set_homogeneous(char *setting)
                 box_set_homogeneous(setting);
         } else if (type == TYPE_STACK) {
                 stack_set_homogeneous(setting);
+        } else if (type == TYPE_TOOL_ITEM) {
+                tool_item_set_homogeneous(setting);
         }
 }
 

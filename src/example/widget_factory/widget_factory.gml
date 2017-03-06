@@ -1,3 +1,7 @@
+ACCEL_GROUP accels
+  ADD Accelerator "<Primary>s" GTK_ACCEL_VISIBLE activate_search NULL
+;
+
 ADJUSTMENT adjustment3
   SET Upper 4.0
   SET Value 1.0
@@ -63,6 +67,25 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+TEXT_BUFFER textbuffer1
+  SET Text "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\
+Nullam fringilla, est ut feugiat ultrices, elit lacus ultricies nibh, \
+id commodo tortor nisi id elit.\nClass aptent taciti sociosqu ad litora \
+torquent per conubia nostra, per inceptos himenaeos.\nMorbi vel elit erat. \
+Maecenas dignissim, dui et pharetra rutrum, tellus lectus rutrum mi, a conval \
+is libero nisi quis tellus.\nNulla facilisi. Nullam eleifend lobortis nisl, in \
+porttitor tellus malesuada vitae.\nAenean lacus tellus, pellentesque quis \
+molestie quis, fringilla in arcu.\nDuis elementum, tellus sed tristique semper, \
+metus metus accumsan augue, et porttitor augue orci a libero.\nUt sed justo \
+ac felis placerat laoreet sed id sem. Proin mattis tincidunt odio vitae \
+tristique.\nMorbi massa libero, congue vitae scelerisque vel, ultricies vel \
+nisl.\nVestibulum in tortor diam, quis aliquet quam. Praesent ut justo neque, \
+tempus rutrum est.\nDuis eu lectus quam. Vivamus eget metus a mauris molestie \
+venenatis pulvinar eleifend nisi.\nNulla facilisi. Pellentesque at dolor sit \
+amet purus dapibus pulvinar molestie quis neque.\nSuspendisse feugiat quam quis \
+dolor accumsan cursus."
+;
+
 TEXT_BUFFER textbuffer2
   SET Text "* Translation updates:\n\
  Aragonese\n\
@@ -81,7 +104,7 @@ TEXT_BUFFER textbuffer2
  Uyghur"
 ;
 
-MENU section5
+G_MENU section5
   ADD Item "Cash" "app.pay"
   SET Attribute "target" "cash"
   SET Attribute "verb-icon" "document-save-symbolic"
@@ -93,7 +116,7 @@ MENU section5
   SET Attribute "verb-icon" "document-save-as-symbolic"
 ;
 
-MENU section4
+G_MENU section4
   ADD Item "Brownies" "app.dessert"
   SET Attribute "target" "brownies"
   ADD Item "Banana Sundae" "app.dessert"
@@ -102,33 +125,452 @@ MENU section4
   SET Attribute "target" "bars"
 ;
 
-MENU submenu
+G_MENU submenu
   ADD Section "" section4
 ;
 
-MENU section3
+G_MENU section3
   ADD Submenu "Dessert" submenu
   ADD Section "" section5
   SET Attribute "display-hint" "horizontal-buttons"
 ;
 
-MENU section2
+G_MENU section2
   ADD Item "Wine" "app.wine"
   ADD Item "Beer" "app.beer"
   ADD Item "Water" "app.water"
 ;
 
-MENU section1
+G_MENU section1
   ADD Item "Steak" "app.main"
   SET Attribute "target" "steak"
   ADD Item "Pizza" "app.main"
   SET Attribute "target" "pizza"
 ;
 
-MENU dinner_menu
+G_MENU dinner_menu
   ADD Section "" section1
   ADD Section "" section2
   ADD Section "" section3
+;
+
+SEPARATOR separator8
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
+;
+
+MENU_ITEM menuitem101
+  SET Label "_New"
+  SET Use_underline TRUE
+;
+
+MENU_ITEM menuitem102
+  SET Label "_Open"
+  SET Use_underline TRUE
+;
+
+MENU_ITEM menuitem103
+  SET Label "_Save"
+  SET Use_underline TRUE
+;
+
+MENU_ITEM menuitem104
+  SET Label "Save _As"
+  SET Use_underline TRUE
+;
+
+SEPARATOR_MENU_ITEM separatormenuitem1
+;
+
+MENU_ITEM quitmenuitem
+  SET Label "_Quit"
+  SET Use_underline TRUE
+  PRT "action_name" "app.quit"
+;
+
+MENU menu1
+  ADD menuitem101
+  ADD menuitem102
+  ADD menuitem103
+  ADD menuitem104
+  ADD separatormenuitem1
+  ADD quitmenuitem
+;
+
+MENU_ITEM menuitem1
+  SET Label "_File"
+  SET Use_underline TRUE
+  SET Submenu menu1
+;
+
+MENU_ITEM menuitem106
+  SET Label "Cu_t"
+  SET Use_underline TRUE
+;
+
+MENU_ITEM menuitem107
+  SET Label "_Copy"
+  SET Use_underline TRUE
+;
+
+MENU_ITEM menuitem108
+  SET Label "_Paste"
+  SET Use_underline TRUE
+;
+
+MENU_ITEM deletemenuitem
+  SET Label "_Delete"
+  SET Use_underline TRUE
+  PRT "action_name" "win.delete"
+;                             
+
+MENU_ITEM searchmenuitem
+  SET Label "_Search"
+  SET Use_underline TRUE
+  PRT "action_name" "win.search"
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC checkmenuitem1
+  SET Mnemonic "_Check"
+  SET Use_underline TRUE
+;                             
+
+CHECK_MENU_ITEM_WITH_MNEMONIC checkmenuitem2
+  SET Mnemonic "_Check"
+  SET Active TRUE
+  SET Use_underline TRUE
+  CMN Sensitive FALSE
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC checkmenuitem3
+  SET Mnemonic "_Check"
+  SET Use_underline TRUE
+  SET Inconsistent TRUE
+;                                                       
+
+CHECK_MENU_ITEM_WITH_MNEMONIC checkmenuitem4
+  SET Mnemonic "_Check"
+  SET Use_underline TRUE
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC checkmenuitem5
+  SET Mnemonic "_Check"
+  SET Use_underline TRUE
+  CMN Sensitive FALSE
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC checkmenuitem6
+  SET Mnemonic "_Check"
+  SET Inconsistent TRUE
+  SET Use_underline TRUE
+  CMN Sensitive FALSE
+;
+
+SEPARATOR_MENU_ITEM separatormenuitem
+;
+
+RADIO_MENU_ITEM_WITH_MNEMONIC radiomenuitem1
+  SET Mnemonic "_Radio"
+  SET Active TRUE
+  SET Use_underline TRUE
+;
+
+RADIO_MENU_ITEM_WITH_MNEMONIC radiomenuitem2
+  SET Mnemonic "_Radio"
+  SET Active TRUE
+  SET Use_underline TRUE
+  CMN Sensitive FALSE
+;
+
+RADIO_MENU_ITEM_WITH_MNEMONIC radiomenuitem3
+  SET Mnemonic "_Radio"
+  SET Inconsistent TRUE
+  SET Use_underline TRUE
+;
+
+RADIO_MENU_ITEM_WITH_MNEMONIC radiomenuitem4
+  SET Mnemonic "_Radio"
+  SET Use_underline TRUE
+; 
+
+RADIO_MENU_ITEM_WITH_MNEMONIC radiomenuitem5
+  SET Mnemonic "_Radio"
+  SET Use_underline TRUE
+  CMN Sensitive FALSE
+;
+
+RADIO_MENU_ITEM_WITH_MNEMONIC radiomenuitem6
+  SET Mnemonic "_Radio"
+  SET Use_underline TRUE
+  SET Inconsistent TRUE
+  CMN Sensitive FALSE
+;
+
+MENU togglessubmenu
+  ADD checkmenuitem1
+  ADD checkmenuitem2
+  ADD checkmenuitem3
+  ADD checkmenuitem4
+  ADD checkmenuitem5
+  ADD checkmenuitem6
+  ADD separatormenuitem
+  ADD radiomenuitem1
+  ADD radiomenuitem2
+  ADD radiomenuitem3
+  ADD radiomenuitem4
+  ADD radiomenuitem5
+  ADD radiomenuitem6
+;
+
+MENU_ITEM togglesmenuitem
+  SET Label "Checks & Radios"
+  SET Use_underline TRUE
+  SET Submenu togglessubmenu
+;
+
+MENU menu2
+  ADD menuitem106
+  ADD menuitem107
+  ADD menuitem108
+  ADD deletemenuitem
+  ADD searchmenuitem
+  ADD togglesmenuitem
+;
+
+MENU_ITEM menuitem2
+  SET Label "_Edit"
+  SET Use_underline TRUE
+  SET Submenu menu2
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC darkmenuitem
+  SET Mnemonic "_Dark theme"
+  SET Use_underline TRUE
+  PRT "action_name" "win.dark"
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC toolbarmenuitem
+  SET Mnemonic "_Toolbar"
+  SET Active TRUE
+  SET Use_underline TRUE
+  PRT "action_name" "win.toolbar"
+;
+
+CHECK_MENU_ITEM_WITH_MNEMONIC statusbarmenuitem
+  SET Mnemonic "_Statusbar"
+  SET Active TRUE
+  SET Use_underline TRUE
+  PRT "action_name" "win.statusbar"
+;
+
+MENU_ITEM_WITH_MNEMONIC bgmenuitem
+  SET Mnemonic "_Select Background"
+  SET Use_underline TRUE
+  PRT "action_name" "win.background"
+;
+
+MENU view_menu
+  ADD darkmenuitem
+  ADD toolbarmenuitem
+  ADD statusbarmenuitem
+  ADD bgmenuitem
+;
+
+MENU_ITEM menuitem3
+  SET Label "_View"
+  SET Use_underline TRUE
+  SET Submenu view_menu
+;
+
+MENU_ITEM_WITH_MNEMONIC aboutmenuitem
+  SET Mnemonic "_About"
+  SET Use_underline TRUE
+  PRT "action_name" "app.about"
+;
+
+MENU menu3
+  ADD aboutmenuitem
+;
+
+MENU_ITEM menuitem4
+  SET Label "_Help"
+  SET Use_underline TRUE
+  SET Submenu menu3
+;
+
+MENU_BAR menubar
+  ADD menuitem1
+  ADD menuitem2
+  ADD menuitem3
+  ADD menuitem4
+;
+
+TOOL_BUTTON toolbutton1a
+  SET Label "New"
+  SET Icon_name "document-new"
+  SET Tooltip_text "Create a new document"
+;
+
+TOOL_BUTTON toolbutton2a
+  SET Label "Save"
+  SET Icon_name "document-save"
+  SET Tooltip_text "Save the current document"
+;
+
+SEARCH_ENTRY searchentry
+;
+
+SEARCH_BAR searchbar
+  SET Connect_entry searchentry
+  ADD searchentry
+;
+
+TOOL_BUTTON toolbutton3a
+  SET Label "Search"
+  SET Icon_name "edit-find"
+  SET Tooltip_text "Search for it"
+/*
+  PRT "action_name" "win.search"
+*/
+  SIGNAL "clicked" activate_search searchbar
+;
+
+TOOL_BUTTON toolbutton4a
+  SET Label "Insert"
+  SET Icon_name "insert-image"
+  SET Tooltip_text "Insert something"
+  CMN Sensitive FALSE
+;
+
+TOOLBAR toolbar
+  ADD toolbutton1a
+  ADD toolbutton2a
+  ADD toolbutton3a
+  ADD toolbutton4a
+;
+
+LABEL label17a
+  SET Label "You wanted to delete something."
+;
+
+HBOX box11a
+  ADD label17a
+;
+
+INFO_BAR infobar
+  CMN Visible FALSE
+  SET Show_close_button TRUE
+  ADD Content_area box11a
+  SIGNAL "response" info_bar_response
+;
+
+/*
+<object class="MyTextView" id="text3">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="buffer">textbuffer1</property>
+                                        <property name="wrap_mode">2</property>
+                                        <property name="left_margin">10</property>
+                                        <property name="right_margin">10</property>
+                                      </object>
+*/
+
+TEXT_VIEW text3
+  SET Buffer textbuffer1
+  SET Wrap_mode GTK_WRAP_WORD
+  SET Left_margin 10 
+  SET Right_margin 10
+;
+
+SCROLLED_WINDOW scrolledwindow2a
+  SET Shadow_type GTK_SHADOW_IN
+  CMN Vexpand TRUE
+  ADD text3
+;
+
+STATUSBAR statusbar
+;
+
+VBOX box12a
+  ADD menubar
+  ADD toolbar
+  ADD searchbar
+  ADD infobar
+  ADD scrolledwindow2a
+  ADD statusbar
+;
+
+FRAME page2frame2
+  ADD box12a
+;
+
+SEPARATOR separator9
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
+;
+
+LABEL label18a
+  SET Label "Left"
+;
+
+
+LABEL label19a
+  SET Label "Right"
+;
+
+PANED paned1a
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
+  STYLE Add_class "view"
+  ADD label18a
+  ADD label19a
+;
+
+FRAME panedframe1
+  ADD paned1a
+;
+
+LABEL label20a
+  SET Label "Top"
+;
+
+LABEL label21a
+  SET Label "Bottom"
+;
+
+PANED paned2a
+  SET Orientation GTK_ORIENTATION_VERTICAL
+  STYLE Add_class "view"
+  ADD label20a
+  ADD label21a
+;
+
+FRAME panedframe2
+/*
+                                    <property name="expand">1</property>
+*/
+  ADD paned2a
+;
+
+HBOX box14a
+  SET Spacing 10
+/*
+                                <property name="expand">1</property>
+*/
+  ADD panedframe1
+  ADD panedframe2
+  PACK panedframe1 Expand TRUE
+  PACK panedframe2 Expand TRUE
+;
+
+HBOX box13a
+  ADD box14a
+  PACK box14a Expand TRUE
+;
+
+VBOX box15a
+  SET Spacing 10
+  ADD page2frame2
+  ADD separator9
+  ADD box13a
+  PACK box13a Expand TRUE
 ;
 
 SWITCH listboxrow1switch
@@ -479,6 +921,8 @@ VBOX box2a
 HBOX box1a
   SET Spacing 10
   ADD box2a
+  ADD separator8
+  ADD box15a
 ;
 
 BUTTON_FROM_ICON_NAME page2dismiss
@@ -1115,12 +1559,12 @@ RADIO_BUTTON_WITH_LABEL radiobutton1
 
 RADIO_BUTTON_WITH_LABEL radiobutton2
   SET Label_text "radiobutton"
-  SET Join radiobutton1
+  SET Join_group radiobutton1
 ;
 
 RADIO_BUTTON_WITH_LABEL radiobutton3
   SET Label_text "radiobutton"
-  SET Join radiobutton1
+  SET Join_group radiobutton1
   SET Inconsistent TRUE
 ;
 
@@ -1132,13 +1576,13 @@ RADIO_BUTTON_WITH_LABEL radiobutton4
 RADIO_BUTTON_WITH_LABEL radiobutton5
   SET Label_text "radiobutton"
   CMN Sensitive FALSE
-  SET Join radiobutton3
+  SET Join_group radiobutton3
 ;
 
 RADIO_BUTTON_WITH_LABEL radiobutton6
   SET Label_text "radiobutton"
   CMN Sensitive FALSE
-  SET Join radiobutton3
+  SET Join_group radiobutton3
   SET Inconsistent TRUE
 ;
 
@@ -1397,4 +1841,23 @@ HEADER_BAR header_bar
 WINDOW window
   SET Titlebar header_bar
   ADD box1
+  ADD Accel_group accels
+  ADD Action "about" activate_about NULL NULL NULL NULL
+  ADD Action "quit" activate_quit NULL NULL NULL NULL
+  ADD Action "main" NULL "s" "steak" NULL NULL
+  ADD Action "wine" NULL NULL "false" NULL NULL
+  ADD Action "beer" NULL NULL "false" NULL NULL
+  ADD Action "water" NULL NULL "true" NULL NULL
+  ADD Action "dessert" NULL "s" "bars" NULL NULL
+  ADD Action "pay" NULL "s" "" NULL NULL
+  ADD Action "dark" NULL NULL "false" change_theme_state NULL
+  ADD Action "transition" NULL NULL "false" change_transition_state 
+toplevel_stack
+  ADD Action "search" activate_search NULL NULL NULL NULL
+  ADD Action "delete" activate_delete NULL NULL NULL NULL 
+  ADD Action "busy" get_busy NULL NULL NULL NULL
+  ADD Action "background" activate_background NULL NULL NULL NULL
+  ADD Action "open" activate_open NULL NULL NULL NULL
+  ADD Action "record" activate_record NULL NULL NULL NULL
+  ADD Action "lock" activate_lock NULL NULL NULL NULL
 ;

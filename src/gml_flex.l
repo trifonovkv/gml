@@ -25,7 +25,7 @@ HEADER_BAR                            return HEADER_BAR;
 ENTRY                                 return ENTRY;
 HBOX                                  return HBOX;
 VBOX                                  return VBOX;
-BUTTON                                return BUTTON;
+BUTTON                                return BUTTON_WIDGET;
 BUTTON_FROM_ICON_NAME                 return BUTTON_FROM_ICON_NAME;
 WINDOW                                return WINDOW;
 SET                                   return SET;
@@ -33,6 +33,76 @@ ADD                                   return ADD;
 SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
+
+ACCEL_GROUP                           return ACCEL_GROUP_WIDGET;
+Accel_group                           return ACCEL_GROUP;
+Accelerator_default_mod_mask          return ACCELERATOR_DEFAULT_MOD_MASK;
+Accelerator                           return ACCELERATOR;
+
+PANED                                 return PANED; 
+Position                              return POSITION;
+Wide_handle                           return WIDE_HANDLE;
+Pack1                                 return PACK1;
+Pack2                                 return PACK2;
+
+STATUSBAR                             return STATUSBAR;
+
+INFO_BAR                              return INFO_BAR;
+Response_sensitive                    return RESPONSE_SENSITIVE;
+Default_response                      return DEFAULT_RESPONSE;
+Message_type                          return MESSAGE_TYPE;
+Button                                return BUTTON;
+Content_area                          return CONTENT_AREA;
+ 
+SEARCH_BAR                            return SEARCH_BAR;
+Connect_entry                         return CONNECT_ENTRY;
+Search_mode                           return SEARCH_MODE;
+
+SEARCH_ENTRY                          return SEARCH_ENTRY_WIDGET;
+
+TOOLBAR                               return TOOLBAR;
+Show_arrow                            return SHOW_ARROW;
+Icon_size                             return ICON_SIZE;
+
+TOOL_ITEM                             return TOOL_ITEM;
+Proxy_menu_item                       return PROXY_MENU_ITEM;
+Tooltip_text                          return TOOLTIP_TEXT;
+Tooltip_markup                        return TOOLTIP_MARKUP;
+Use_drag_window                       return USE_DRAG_WINDOW;
+Visible_horizontal                    return VISIBLE_HORIZONTAL;
+Visible_vertical                      return VISIBLE_VERTICAL;
+Is_important                          return IS_IMPORTANT;
+
+TOOL_BUTTON                           return TOOL_BUTTON;
+Icon_widget                           return ICON_WIDGET;
+
+MENU_BAR                              return MENU_BAR;
+MENU_BAR_FROM_MODEL                   return MENU_BAR_FROM_MODEL;
+Bar_pack_direction                    return BAR_PACK_DIRECTION;
+Child_pack_direction                  return CHILD_PACK_DIRECTION;
+
+RADIO_MENU_ITEM                       return RADIO_MENU_ITEM;
+RADIO_MENU_ITEM_WITH_LABEL            return RADIO_MENU_ITEM_WITH_LABEL;
+RADIO_MENU_ITEM_WITH_MNEMONIC         return RADIO_MENU_ITEM_WITH_MNEMONIC;
+
+CHECK_MENU_ITEM                       return CHECK_MENU_ITEM;
+CHECK_MENU_ITEM_WITH_LABEL            return CHECK_MENU_ITEM_WITH_LABEL;
+CHECK_MENU_ITEM_WITH_MNEMONIC         return CHECK_MENU_ITEM_WITH_MNEMONIC;
+Draw_as_radio                         return DRAW_AS_RADIO;
+
+MENU                                  return MENU;
+MENU_FROM_MODEL                       return MENU_FROM_MODEL;
+Screen                                return SCREEN;
+Accel_group                           return ACCEL_GROUP;
+Monitor                               return MONITOR; 
+Reserve_toggle_size                   return RESERVE_TOGGLE_SIZE;
+
+SEPARATOR_MENU_ITEM                   return SEPARATOR_MENU_ITEM;
+
+MENU_ITEM                             return MENU_ITEM;
+MENU_ITEM_WITH_MNEMONIC               return MENU_ITEM_WITH_MNEMONIC;
+Accel_path                            return ACCEL_PATH;
+Reserve_indicator                     return RESERVE_INDICATOR;
 
 SIZE_GROUP                            return SIZE_GROUP;
 
@@ -43,7 +113,7 @@ Selection_mode                        return SELECTION_MODE;
 Placeholder                           return PLACEHOLDER;
 Header                                return HEADER;
 
-MENU                                  return MENU;
+G_MENU                                return G_MENU;
 Item                                  return ITEM;
 Section                               return SECTION;
 Submenu                               return SUBMENU; 
@@ -234,12 +304,13 @@ Inconsistent                          return INCONSISTENT;
 RADIO_BUTTON                          return RADIO_BUTTON;
 RADIO_BUTTON_WITH_LABEL               return RADIO_BUTTON_WITH_LABEL;
 RADIO_BUTTON_WITH_MNEMONIC            return RADIO_BUTTON_WITH_MNEMONIC;
-Join                                  return JOIN;
+Join_group                            return JOIN_GROUP;
 
 CHECK_BUTTON                          return CHECK_BUTTON;
 CHECK_BUTTON_WITH_LABEL               return CHECK_BUTTON_WITH_LABEL;
 CHECK_BUTTON_WITH_MNEMONIC            return CHECK_BUTTON_WITH_MNEMONIC;
 Mnemonics                             return MNEMONICS;
+Mnemonic                              return MNEMONIC;
 
 GRID                                  return GRID;
 Row_homogeneous                       return ROW_HOMOGENEOUS;
