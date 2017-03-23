@@ -2,6 +2,20 @@
 #include "fmtout.h"
 #include "widget.h"
 
+void widget_show()
+{
+        char *widget = this;
+
+        putfun("gtk_widget_show", 1, widget);
+}
+
+void widget_hide()
+{
+        char *widget = this;
+
+        putfun("gtk_widget_hide", 1, widget);
+}
+
 void widget_set_focus_on_click(char *setting)
 {
         char *widget = this;
@@ -11,8 +25,10 @@ void widget_set_focus_on_click(char *setting)
         free(setting);
 }
 
-void widget_show_all(char *widget)
+void widget_show_all()
 {
+        char *widget = this;
+
         putfun("gtk_widget_show_all", 1, widget); 
 }
 

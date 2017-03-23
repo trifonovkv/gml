@@ -14,6 +14,59 @@ typedef struct {
         gchar *filename;
 } BackgroundData;
 
+void show_statusbar(GtkWidget *widget, gpointer user_data)
+{
+         gtk_statusbar_push(GTK_STATUSBAR(widget)
+                          , 0
+                          , "All systems are operating normally.");
+
+}
+
+void change_visible(GSimpleAction *action,
+                    GVariant      *parameter,
+                    gpointer       user_data)
+{
+        GtkWidget *widget = GTK_WIDGET(user_data);
+
+        if (gtk_widget_is_visible(widget))
+               gtk_widget_set_visible(widget, FALSE);
+        else
+               gtk_widget_set_visible(widget, TRUE);
+}
+
+void set_needs_attention(GtkWidget *page, gboolean needs_attention)
+{
+        GtkWidget *stack;
+
+        stack = gtk_widget_get_parent(page);
+        gtk_container_child_set(GTK_CONTAINER(stack)
+                              , page
+                              , "needs-attention"
+                              , needs_attention
+                              , NULL);
+}
+
+void page_changed_cb(GtkWidget *stack, GParamSpec *pspec, gpointer data)
+{
+        const gchar *name;
+        GtkWidget *page;
+
+        if (gtk_widget_in_destruction(stack))
+                return;
+
+        name = gtk_stack_get_visible_child_name(GTK_STACK(stack));
+
+        if (g_str_equal(name, "Page 1"))
+                current_page = 1;
+        else if (g_str_equal(name, "Page 2"))
+                current_page = 2;
+        if (g_str_equal(name, "Page 3")) {
+                current_page = 3;
+                page = gtk_stack_get_visible_child(GTK_STACK (stack));
+                set_needs_attention(GTK_WIDGET(page), FALSE);
+        }
+}
+
 void activate_lock(GSimpleAction *action,
                    GVariant      *parameter,
                    gpointer       user_data)
@@ -200,16 +253,13 @@ void activate_delete(GSimpleAction *action,
                      GVariant      *parameter,
                      gpointer       user_data)
 {
-        GtkWidget *window = user_data;
-        GtkWidget *infobar;
+        GtkWidget *infobar = GTK_WIDGET(user_data);
 
-        if (!on_page (2))
+        if (!on_page(2))
                 return;
 
-        infobar = GTK_WIDGET(g_object_get_data(G_OBJECT(window), "infobar"));
         gtk_widget_show(infobar);
 }
-
 
 void change_transition_state(GSimpleAction *action,
                              GVariant      *state,
@@ -301,9 +351,8 @@ void activate_about(GSimpleAction *action,
                               "website", "http://www.gtk.org",
                               "comments", "Program to demonstrate GTK+ themes and widgets",
                               "authors", authors,
-                              "logo-icon-name", "gtk4-widget-factory",
+                              "logo-icon-name", "gtk3-widget-factory",
                               "title", "About GTK+ Widget Factory",
-                              "system-information", s->str,
                               NULL);
 
         g_string_free(s, TRUE);
@@ -323,16 +372,14 @@ gboolean on_page(gint i)
 
 void activate_search(GSimpleAction *action,
                      GVariant      *parameter,
-                     gpointer       user_data) 
+                     gpointer       user_data)
 {
-        GtkWidget *searchbar = GTK_WIDGET(user_data);
+        GtkSearchBar *searchbar = GTK_SEARCH_BAR(user_data);
 
-        
         if (!on_page(2))
                 return;
-        
 
-        gtk_search_bar_set_search_mode(GTK_SEARCH_BAR(searchbar), TRUE);
+        gtk_search_bar_set_search_mode(searchbar, TRUE);
 }
 
 void row_activated(GtkListBox *box, GtkListBoxRow *row) 
@@ -358,12 +405,12 @@ void update_header(GtkListBoxRow *row,
                    GtkListBoxRow *before,
                    gpointer       data)
 {
-        if (before != NULL && gtk_list_box_row_get_header (row) == NULL) {
+        if (before != NULL && gtk_list_box_row_get_header(row) == NULL) {
                   GtkWidget *separator;
 
-                  separator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-                  gtk_widget_show (separator);
-                  gtk_list_box_row_set_header (row, separator);
+                  separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+                  gtk_widget_show(separator);
+                  gtk_list_box_row_set_header(row, separator);
         }
 }
 
@@ -371,7 +418,7 @@ void on_scale_button_value_changed(GtkScaleButton *button,
                                    gdouble         value,
                                    gpointer        user_data) 
 {
-        gtk_widget_trigger_tooltip_query (GTK_WIDGET (button));
+        gtk_widget_trigger_tooltip_query(GTK_WIDGET (button));
 }
 
 gboolean on_scale_button_query_tooltip(GtkWidget  *button,
@@ -381,44 +428,44 @@ gboolean on_scale_button_query_tooltip(GtkWidget  *button,
                                        GtkTooltip *tooltip,
                                        gpointer    user_data)
 {
-        GtkScaleButton *scale_button = GTK_SCALE_BUTTON (button);
+        GtkScaleButton *scale_button = GTK_SCALE_BUTTON(button);
         GtkAdjustment *adjustment;
         gdouble val;
         gchar *str;
         AtkImage *image;
 
-        image = ATK_IMAGE (gtk_widget_get_accessible (button));
+        image = ATK_IMAGE(gtk_widget_get_accessible (button));
 
         adjustment = gtk_scale_button_get_adjustment (scale_button);
-        val = gtk_scale_button_get_value (scale_button);
+        val = gtk_scale_button_get_value(scale_button);
 
         if (val < (gtk_adjustment_get_lower (adjustment) + EPSILON)) {
-                str = g_strdup (_("Muted"));
-        } else if (val >= (gtk_adjustment_get_upper (adjustment) - EPSILON)) {
-                str = g_strdup (_("Full Volume"));
+                str = g_strdup(_("Muted"));
+        } else if (val >= (gtk_adjustment_get_upper(adjustment) - EPSILON)) {
+                str = g_strdup(_("Full Volume"));
         } else {
                 gint percent;
 
-                percent = (gint) (100. * val / (gtk_adjustment_get_upper (adjustment) - gtk_adjustment_get_lower (adjustment)) + .5);
+                percent = (gint)(100. * val / (gtk_adjustment_get_upper(adjustment) - gtk_adjustment_get_lower(adjustment)) + .5);
 
-                str = g_strdup_printf (C_("volume percentage", "%d %%"), percent);
+                str = g_strdup_printf(C_("volume percentage", "%d %%"), percent);
         }
 
-        gtk_tooltip_set_text (tooltip, str);
-        atk_image_set_image_description (image, str);
-        g_free (str);
+        gtk_tooltip_set_text(tooltip, str);
+        atk_image_set_image_description(image, str);
+        g_free(str);
 
         return TRUE;
 }
 
 char *scale_format_value_blank(GtkScale *scale, gdouble value)
 {
-        return g_strdup (" ");
+        return g_strdup(" ");
 }
 
 char *scale_format_value(GtkScale *scale, gdouble value)
 {
-        return g_strdup_printf ("%0.*f", 1, value);
+        return g_strdup_printf("%0.*f", 1, value);
 }
 
 void button_show(GtkWidget *widget, 

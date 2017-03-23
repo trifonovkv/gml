@@ -1,6 +1,10 @@
 APPLICATION application
+  ARG Application_id "org.test"
+  ARG Flags G_APPLICATION_FLAGS_NONE
+/*
   SET Accels_for_action quit_activated "<Ctrl>Q"
   SET Accels_for_action print_hello "<Ctrl>P"
+*/
 ;
 
 ADJUSTMENT adjustment
@@ -292,9 +296,6 @@ VBOX vbox
   ADD comboboxentry
   ADD comboboxtextentry
   ADD label
-/*
-  ADD spin_button
-*/
   ADD grid
 ;
 

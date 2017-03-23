@@ -35,16 +35,6 @@ void freelist()
         sym_table = ptr;
 }
 
-
-void accels_add(char *action_name, char *accel_key)
-{
-        accels *ptr = (accels *)malloc(sizeof(accels));
-        ptr->action = action_name;
-        ptr->key = accel_key;
-        ptr->next = (struct accels *)accels_table;
-        accels_table = ptr;
-}
-
 char *append_flag(char *flags, char *or, char *flag)
 {
         flags = strcat(flags, or);
@@ -54,19 +44,40 @@ char *append_flag(char *flags, char *or, char *flag)
 
 void main_start()
 {
-        prtstr(2
-              , "static void activate(GtkApplication *app,"
-              , " gpointer user_data)\n{\n");
+        prtstr(3
+             , "static void activate(GtkApplication *"
+             , APP_VAR_NAME
+             , ", gpointer user_data)\n{\n");
 }
 
 void main_end()
 {
+        symrec *application_id = getsym("application_id");
+        symrec *flags = getsym("application_flags");
+
         prtstr(1, "}\n\nint main(int argc, char **argv)\n{\n");
         tabinc(1);
         prtstr(1, "int status;\n");
 
-        application();
+        prtstr(3, "GtkApplication *", APP_VAR_NAME, ";\n");
+ 
+        putdef(""
+             , APP_VAR_NAME
+             , "gtk_application_new"
+             , 2
+             , application_id->value
+             , flags->value);
+        prtstr(3
+             , "g_signal_connect("
+             , APP_VAR_NAME
+             , ", \"activate\", G_CALLBACK(activate), NULL);\n");
+        
+        prtstr(3
+             , "status=g_application_run(G_APPLICATION("
+             , APP_VAR_NAME
+             , "), argc, argv);\n");
 
+        prtstr(3, "g_object_unref(", APP_VAR_NAME, ");\n");
         prtstr(1, "return status;\n}\n");
 }
 

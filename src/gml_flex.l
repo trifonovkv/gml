@@ -15,7 +15,6 @@ void comment();
 [+-]?{DIGIT}+                         yylval.string=strdup(yytext); return NUMBER; 
 [+-]?{DIGIT}+\.{DIGIT}+               yylval.string=strdup(yytext); return FLOAT;
 STYLE                                 return STYLE;
-APPLICATION                           return APPLICATION;
 STACK                                 return STACK;
 STACK_SWITCHER                        return STACK_SWITCHER;
 TEXT_VIEW                             return TEXT_VIEW;
@@ -27,12 +26,20 @@ HBOX                                  return HBOX;
 VBOX                                  return VBOX;
 BUTTON                                return BUTTON_WIDGET;
 BUTTON_FROM_ICON_NAME                 return BUTTON_FROM_ICON_NAME;
-WINDOW                                return WINDOW;
+WINDOW                                return WINDOW_WIDGET;
 SET                                   return SET;
 ADD                                   return ADD;
 SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
+
+APPLICATION                           return APPLICATION;
+Application_id                        return APPLICATION_ID;
+Flags                                 return FLAGS;
+Window                                return WINDOW;
+App_menu                              return APP_MENU;
+Menubar                               return MENUBAR;
+Accels_for_action                     return ACCELS_FOR_ACTION;
 
 ACCEL_GROUP                           return ACCEL_GROUP_WIDGET;
 Accel_group                           return ACCEL_GROUP;
@@ -40,7 +47,6 @@ Accelerator_default_mod_mask          return ACCELERATOR_DEFAULT_MOD_MASK;
 Accelerator                           return ACCELERATOR;
 
 PANED                                 return PANED; 
-Position                              return POSITION;
 Wide_handle                           return WIDE_HANDLE;
 Pack1                                 return PACK1;
 Pack2                                 return PACK2;
@@ -66,8 +72,6 @@ Icon_size                             return ICON_SIZE;
 
 TOOL_ITEM                             return TOOL_ITEM;
 Proxy_menu_item                       return PROXY_MENU_ITEM;
-Tooltip_text                          return TOOLTIP_TEXT;
-Tooltip_markup                        return TOOLTIP_MARKUP;
 Use_drag_window                       return USE_DRAG_WINDOW;
 Visible_horizontal                    return VISIBLE_HORIZONTAL;
 Visible_vertical                      return VISIBLE_VERTICAL;
@@ -93,7 +97,6 @@ Draw_as_radio                         return DRAW_AS_RADIO;
 MENU                                  return MENU;
 MENU_FROM_MODEL                       return MENU_FROM_MODEL;
 Screen                                return SCREEN;
-Accel_group                           return ACCEL_GROUP;
 Monitor                               return MONITOR; 
 Reserve_toggle_size                   return RESERVE_TOGGLE_SIZE;
 
@@ -114,9 +117,13 @@ Placeholder                           return PLACEHOLDER;
 Header                                return HEADER;
 
 G_MENU                                return G_MENU;
+G_MENU_ITEM                           return G_MENU_ITEM;
+Detailed_action                       return DETAILED_ACTION;
+Link                                  return LINK;
 Item                                  return ITEM;
 Section                               return SECTION;
 Submenu                               return SUBMENU; 
+Accelerator_label                     return ACCELERATOR_LABEL;
 
 MENU_BUTTON                           return MENU_BUTTON;
 Popup                                 return POPUP;
@@ -434,6 +441,8 @@ Has_frame                             return HAS_FRAME;
 Visibility_char                       return VISIBILITY_CHAR;
 Visibility                            return VISIBILITY;
 
+Show                                  return SHOW;
+Hide                                  return HIDE;
 Focus_on_click                        return FOCUS_ON_CLICK;
 Size_request                          return SIZE_REQUEST;
 Margin_bottom                         return MARGIN_BOTTOM;
@@ -448,6 +457,7 @@ Hexpand_set                           return HEXPAND_SET;
 Hexpand                               return HEXPAND;
 Receives_default                      return RECEIVES_DEFAULT;
 Sensitive                             return SENSITIVE;
+Show_all                              return SHOW_ALL;
 No_show_all                           return NO_SHOW_ALL;
 App_paintable                         return APP_PAINTABLE;
 Can_default                           return CAN_DEFAULT;
@@ -516,10 +526,6 @@ Transition_duration                   return TRANSITION_DURATION;
 Transition_type                       return TRANSITION_TYPE;
 Titled                                return TITLED;
 
-App_id                                return APP_ID;
-App_flags                             return APP_FLAGS;
-Accels_for_action                     return ACCELS_FOR_ACTION;
-  
 \"(\\.|\\\n|[^\\"])*\"                     yylval.string=strdup(yytext); return STRING;  
 {ID}+                                 yylval.string=strdup(yytext); return IDENTIFIER;
 ;                                     return SEMICOLON;

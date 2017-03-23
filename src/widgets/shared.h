@@ -34,6 +34,7 @@
 #include "size_group.h"
 #include "menu_item.h"
 #include "menu.h"
+#include "g_menu.h"
 #include "check_menu_item.h"
 #include "radio_menu_item.h"
 #include "radio_button.h"
@@ -41,6 +42,17 @@
 #include "tool_item.h"
 #include "search_bar.h"
 #include "info_bar.h"
+
+void set_submenu(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (type == TYPE_G_MENU_ITEM) {
+                g_menu_item_set_submenu(setting);
+        } else if (type == TYPE_MENU_ITEM) {
+                menu_item_set_submenu(setting);
+        }
+}
 
 void set_show_close_button(char *setting)
 {
@@ -199,6 +211,8 @@ void set_label(char *setting)
                 button_set_label(setting);
         } else if (type == TYPE_MENU_ITEM) {
                 menu_item_set_label(setting);
+        } else if (type == TYPE_G_MENU_ITEM) {
+                g_menu_item_set_label(setting);
         } else if (type == TYPE_CHECK_MENU_ITEM) {
                 menu_item_set_label(setting);
         } else if (type == TYPE_RADIO_MENU_ITEM) {

@@ -1,7 +1,3 @@
-ACCEL_GROUP accels
-  ADD Accelerator "<Primary>s" GTK_ACCEL_VISIBLE activate_search NULL
-;
-
 ADJUSTMENT adjustment3
   SET Upper 4.0
   SET Value 1.0
@@ -104,54 +100,134 @@ TEXT_BUFFER textbuffer2
  Uyghur"
 ;
 
-G_MENU section5
-  ADD Item "Cash" "app.pay"
-  SET Attribute "target" "cash"
-  SET Attribute "verb-icon" "document-save-symbolic"
-  ADD Item "Credit Card" "app.pay"
-  SET Attribute "target" "card"
-  SET Attribute "verb-icon" "document-send-symbolic"
-  ADD Item "Cheque" "app.pay"
-  SET Attribute "target" "cheque"
-  SET Attribute "verb-icon" "document-save-as-symbolic"
+G_MENU_ITEM brownies
+  SET Label "Brownies" 
+  SET Detailed_action "app.dessert"
+  SET Attribute "target" "s" "brownies"
 ;
 
-G_MENU section4
-  ADD Item "Brownies" "app.dessert"
-  SET Attribute "target" "brownies"
-  ADD Item "Banana Sundae" "app.dessert"
-  SET Attribute "target" "sundae"
-  ADD Item "Lemon Bars" "app.dessert"
-  SET Attribute "target" "bars"
+G_MENU_ITEM sundae
+  SET Label "Banana Sundae" 
+  SET Detailed_action "app.dessert"
+  SET Attribute "target" "s" "sundae"
 ;
 
-G_MENU submenu
-  ADD Section "" section4
+G_MENU_ITEM bars
+  SET Label "Lemon Bars" 
+  SET Detailed_action "app.dessert"
+  SET Attribute "target" "s" "bars"
 ;
 
-G_MENU section3
-  ADD Submenu "Dessert" submenu
-  ADD Section "" section5
-  SET Attribute "display-hint" "horizontal-buttons"
+G_MENU section4_content
+  ADD Item brownies
+  ADD Item sundae
+  ADD Item bars
 ;
 
-G_MENU section2
-  ADD Item "Wine" "app.wine"
-  ADD Item "Beer" "app.beer"
-  ADD Item "Water" "app.water"
+G_MENU_ITEM section4
+  SET Section section4_content
 ;
 
-G_MENU section1
-  ADD Item "Steak" "app.main"
-  SET Attribute "target" "steak"
-  ADD Item "Pizza" "app.main"
-  SET Attribute "target" "pizza"
+G_MENU submenu_content
+  ADD Item section4
+;
+
+G_MENU_ITEM submenu
+  SET Label "Dessert"
+  SET Submenu submenu_content
+;
+
+G_MENU_ITEM cash
+  SET Label "Cash"
+  SET Detailed_action "app.pay"
+  SET Attribute "target" "s" "cash"
+  SET Attribute "verb-icon" "s" "document-save-symbolic"
+;
+
+G_MENU_ITEM card
+  SET Label "Credit Card"
+  SET Detailed_action "app.pay"
+  SET Attribute "target" "s" "card"
+  SET Attribute "verb-icon" "s" "document-send-symbolic"
+;
+
+G_MENU_ITEM cheque
+  SET Label "Cheque" 
+  SET Detailed_action "app.pay"
+  SET Attribute "target" "s" "cheque"
+  SET Attribute "verb-icon" "s" "document-save-as-symbolic"
+;
+
+G_MENU section5_content
+  ADD Item cash
+  ADD Item card
+  ADD Item cheque
+;
+
+G_MENU_ITEM section5
+  SET Section section5_content
+  SET Attribute "display-hint" "s" "horizontal-buttons"
+;
+
+G_MENU section3_content
+  ADD Item submenu
+  ADD Item section5
+;
+
+G_MENU_ITEM section3
+  SET Section section3_content
+;
+
+G_MENU_ITEM water
+  SET Label "Water" 
+  SET Detailed_action "app.water"
+;
+
+G_MENU_ITEM beer
+  SET Label "Beer" 
+  SET Detailed_action "app.beer"
+;
+
+G_MENU_ITEM wine  
+  SET Label "Wine" 
+  SET Detailed_action "app.wine"
+;
+
+G_MENU section2_content
+  ADD Item wine
+  ADD Item beer
+  ADD Item water
+;
+
+G_MENU_ITEM section2
+  SET Section section2_content
+;
+
+G_MENU_ITEM steak
+  SET Label "Steak" 
+  SET Detailed_action "app.main"
+  SET Attribute "target" "s" "steak"
+;
+
+G_MENU_ITEM pizza
+  SET Label "Pizza" 
+  SET Detailed_action "app.main"
+  SET Attribute "target" "s" "pizza"
+;
+
+G_MENU section1_content
+  ADD Item steak
+  ADD Item pizza
+;
+
+G_MENU_ITEM section1
+  SET Section section1_content
 ;
 
 G_MENU dinner_menu
-  ADD Section "" section1
-  ADD Section "" section2
-  ADD Section "" section3
+  ADD Item section1
+  ADD Item section2
+  ADD Item section3
 ;
 
 SEPARATOR separator8
@@ -184,6 +260,7 @@ SEPARATOR_MENU_ITEM separatormenuitem1
 MENU_ITEM quitmenuitem
   SET Label "_Quit"
   SET Use_underline TRUE
+  SET Accelerator_label GDK_KEY_q GDK_CONTROL_MASK
   PRT "action_name" "app.quit"
 ;
 
@@ -220,12 +297,14 @@ MENU_ITEM menuitem108
 MENU_ITEM deletemenuitem
   SET Label "_Delete"
   SET Use_underline TRUE
+  SET Accelerator_label GDK_KEY_Delete GDK_RELEASE_MASK
   PRT "action_name" "win.delete"
 ;                             
 
 MENU_ITEM searchmenuitem
   SET Label "_Search"
   SET Use_underline TRUE
+  SET Accelerator_label GDK_KEY_s GDK_CONTROL_MASK
   PRT "action_name" "win.search"
 ;
 
@@ -345,6 +424,7 @@ MENU_ITEM menuitem2
 CHECK_MENU_ITEM_WITH_MNEMONIC darkmenuitem
   SET Mnemonic "_Dark theme"
   SET Use_underline TRUE
+  SET Accelerator_label GDK_KEY_d GDK_CONTROL_MASK
   PRT "action_name" "win.dark"
 ;
 
@@ -365,6 +445,7 @@ CHECK_MENU_ITEM_WITH_MNEMONIC statusbarmenuitem
 MENU_ITEM_WITH_MNEMONIC bgmenuitem
   SET Mnemonic "_Select Background"
   SET Use_underline TRUE
+  SET Accelerator_label GDK_KEY_b GDK_CONTROL_MASK
   PRT "action_name" "win.background"
 ;
 
@@ -384,6 +465,7 @@ MENU_ITEM menuitem3
 MENU_ITEM_WITH_MNEMONIC aboutmenuitem
   SET Mnemonic "_About"
   SET Use_underline TRUE
+  SET Accelerator_label GDK_KEY_F1 GDK_RELEASE_MASK
   PRT "action_name" "app.about"
 ;
 
@@ -428,10 +510,7 @@ TOOL_BUTTON toolbutton3a
   SET Label "Search"
   SET Icon_name "edit-find"
   SET Tooltip_text "Search for it"
-/*
   PRT "action_name" "win.search"
-*/
-  SIGNAL "clicked" activate_search searchbar
 ;
 
 TOOL_BUTTON toolbutton4a
@@ -450,17 +529,20 @@ TOOLBAR toolbar
 
 LABEL label17a
   SET Label "You wanted to delete something."
+  CMN Visible TRUE
 ;
 
 HBOX box11a
   ADD label17a
+  CMN Visible TRUE
 ;
 
 INFO_BAR infobar
-  CMN Visible FALSE
   SET Show_close_button TRUE
   ADD Content_area box11a
-  SIGNAL "response" info_bar_response
+  SIGNAL "response" info_bar_response 
+  CMN Visible FALSE
+  CMN No_show_all TRUE
 ;
 
 /*
@@ -488,6 +570,7 @@ SCROLLED_WINDOW scrolledwindow2a
 ;
 
 STATUSBAR statusbar
+  SIGNAL "show" show_statusbar
 ;
 
 VBOX box12a
@@ -1813,6 +1896,7 @@ STACK toplevel_stack
   SET Transition_duration 1000
   ADD Titled page1 "Page 1" "Page 1"
   ADD Titled page2 "Page 2" "Page 2"
+  SIGNAL "notify::visible-child-name" page_changed_cb
 ;
 
 VBOX box1
@@ -1841,23 +1925,40 @@ HEADER_BAR header_bar
 WINDOW window
   SET Titlebar header_bar
   ADD box1
-  ADD Accel_group accels
-  ADD Action "about" activate_about NULL NULL NULL NULL
-  ADD Action "quit" activate_quit NULL NULL NULL NULL
-  ADD Action "main" NULL "s" "steak" NULL NULL
-  ADD Action "wine" NULL NULL "false" NULL NULL
-  ADD Action "beer" NULL NULL "false" NULL NULL
-  ADD Action "water" NULL NULL "true" NULL NULL
-  ADD Action "dessert" NULL "s" "bars" NULL NULL
-  ADD Action "pay" NULL "s" "" NULL NULL
   ADD Action "dark" NULL NULL "false" change_theme_state NULL
   ADD Action "transition" NULL NULL "false" change_transition_state 
 toplevel_stack
-  ADD Action "search" activate_search NULL NULL NULL NULL
-  ADD Action "delete" activate_delete NULL NULL NULL NULL 
-  ADD Action "busy" get_busy NULL NULL NULL NULL
-  ADD Action "background" activate_background NULL NULL NULL NULL
-  ADD Action "open" activate_open NULL NULL NULL NULL
-  ADD Action "record" activate_record NULL NULL NULL NULL
-  ADD Action "lock" activate_lock NULL NULL NULL NULL
+  ADD Action "search" activate_search NULL NULL NULL searchbar
+  ADD Action "delete" activate_delete NULL NULL NULL infobar
+  ADD Action "busy" get_busy NULL NULL NULL window
+  ADD Action "background" activate_background NULL NULL NULL window
+  ADD Action "open" activate_open NULL NULL NULL window
+  ADD Action "record" activate_record NULL NULL NULL window
+  ADD Action "lock" activate_lock NULL NULL NULL window
+  ADD Action "statusbar" change_visible NULL NULL NULL statusbar
+  ADD Action "toolbar" change_visible NULL NULL NULL toolbar
+  CMN Show_all
+;
+
+APPLICATION app
+  ARG Application_id "org.gtk.WidgetFactory"
+  ARG Flags G_APPLICATION_NON_UNIQUE
+  ADD Action "about" activate_about NULL NULL NULL app
+  ADD Action "quit" activate_quit NULL NULL NULL app
+  ADD Action "main" NULL "s" "\"steak\"" NULL NULL
+  ADD Action "wine" NULL NULL "false" NULL NULL
+  ADD Action "beer" NULL NULL "false" NULL NULL
+  ADD Action "water" NULL NULL "true" NULL NULL
+  ADD Action "dessert" NULL "s" "\"bars\"" NULL NULL
+  ADD Action "pay" NULL "s" NULL NULL NULL
+  ADD Window window
+  SET Accels_for_action "app.about" "F1"
+  SET Accels_for_action "app.quit" "<Primary>q"
+  SET Accels_for_action "win.dark" "<Primary>d"
+  SET Accels_for_action "win.search" "<Primary>s"
+  SET Accels_for_action "win.delete" "Delete"
+  SET Accels_for_action "win.background" "<Primary>b"
+  SET Accels_for_action "win.open" "<Primary>o"
+  SET Accels_for_action "win.record" "<Primary>r"
+  SET Accels_for_action "win.lock" "<Primary>l"
 ;

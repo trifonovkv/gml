@@ -9,3 +9,4 @@ void statusbar_new(char *widget)
         putdef("GtkWidget *", widget, "gtk_statusbar_new", 0);
 
 }
+

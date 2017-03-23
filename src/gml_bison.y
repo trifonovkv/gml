@@ -14,7 +14,6 @@
 #include "widgets/text_view.h"
 #include "widgets/stack.h"
 #include "widgets/stack_switcher.h"
-#include "widgets/application.h"
 #include "widgets/button_box.h"
 #include "widgets/combo_box.h"
 #include "widgets/combo_box_text.h"
@@ -73,6 +72,7 @@
 #include "widgets/statusbar.h"
 #include "widgets/paned.h"
 #include "widgets/accel_group.h"
+#include "widgets/application.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -90,6 +90,9 @@ int yywrap()
 int yylex();
 
 %}
+%token APPLICATION APPLICATION_ID WINDOW APP_MENU MENUBAR ACCELS_FOR_ACTION 
+%token FLAGS
+
 %token ACCEL_GROUP ACCEL_GROUP_WIDGET ACCELERATOR_DEFAULT_MOD_MASK ACCELERATOR 
 
 %token PANED WIDE_HANDLE PACK1 PACK2
@@ -127,7 +130,8 @@ int yylex();
 
 %token LIST_BOX LIST_BOX_ROW SELECTION_MODE PLACEHOLDER HEADER HEADER_FUNC 
 
-%token G_MENU ITEM SECTION SUBMENU 
+%token G_MENU ITEM SECTION SUBMENU G_MENU_ITEM LINK DETAILED_ACTION 
+%token ACCELERATOR_LABEL
 
 %token MENU_BUTTON POPUP POPOVER MENU_MODEL USE_POPOVER DIRECTION ALIGN_WIDGET
 
@@ -204,7 +208,8 @@ int yylex();
 %token TOGGLE_BUTTON TOGGLE_BUTTON_WITH_LABEL TOGGLE_BUTTON_WITH_MNEMONIC MODE 
 %token INCONSISTENT
  
-%token RADIO_BUTTON RADIO_BUTTON_WITH_LABEL RADIO_BUTTON_WITH_MNEMONIC JOIN_GROUP
+%token RADIO_BUTTON RADIO_BUTTON_WITH_LABEL RADIO_BUTTON_WITH_MNEMONIC 
+%token JOIN_GROUP
 
 %token CHECK_BUTTON CHECK_BUTTON_WITH_LABEL CHECK_BUTTON_WITH_MNEMONIC MNEMONICS
 %token MNEMONIC
@@ -249,8 +254,9 @@ int yylex();
 
 %token SIZE_REQUEST MARGIN_BOTTOM MARGIN_TOP MARGIN_END MARGIN_START VALIGN 
 %token HALIGN VEXPAND_SET VEXPAND HEXPAND_SET HEXPAND RECEIVES_DEFAULT
-%token SENSITIVE NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS VISIBLE 
-%token OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME FOCUS_ON_CLICK
+%token SENSITIVE SHOW_ALL NO_SHOW_ALL APP_PAINTABLE CAN_DEFAULT CAN_FOCUS 
+%token VISIBLE OPACITY TOOLTIP_MARKUP HAS_TOOLTIP TOOLTIP_TEXT NAME 
+%token FOCUS_ON_CLICK HIDE SHOW
 
 %token BUTTON_WIDGET BUTTON_FROM_ICON_NAME RELIEF USE_UNDERLINE 
 %token ALWAYS_SHOW_IMAGE IMAGE IMAGE_POSITION SIZE
@@ -272,10 +278,8 @@ int yylex();
 %token STACK STACK_SWITCHER STACK_SWITCHER_STACK HHOMOGENEOUS VHOMOGENEOUS 
 %token TRANSITION_DURATION TRANSITION_TYPE TITLED
 
-%token APPLICATION APP_ID APP_FLAGS ACCELS_FOR_ACTION
-
 %token INCLUDE SET ADD SIGNAL PACK IDENTIFIER STRING NUMBER SEMICOLON 
-%token HBOX VBOX WINDOW FLOAT CHAR OR ARG
+%token HBOX VBOX WINDOW_WIDGET TYPE FLOAT CHAR OR ARG
 
 %union
 {
@@ -284,15 +288,9 @@ int yylex();
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
 %type <string> set_label_text mnemonic orientation arg_id
-%type <string> min max step model
+%type <string> min max step model application_id 
 %%
 
-main:
-        APPLICATION IDENTIFIER params SEMICOLON widgets
-                                                   { application_set_name($2); }
-        | widgets
-        ;
-        
 widgets: 
         | widgets widget
         ;
@@ -356,6 +354,7 @@ widget:
         | action_bar
         | menu_button
         | g_menu
+        | g_menu_item
         | list_box
         | list_box_row
         | size_group
@@ -381,6 +380,7 @@ widget:
         | statusbar
         | paned
         | accel_group
+        | application
         ;
 
 params: 
@@ -400,6 +400,15 @@ param:
         | grid_add
         | icon_add
         | properties
+        ;
+
+flags:
+        ARG FLAGS IDENTIFIER                                        { $$ = $3; }
+        | flags OR IDENTIFIER               { $$ = append_flag($$, " | ", $3); }
+        ;
+
+application_id:
+        ARG APPLICATION_ID STRING                                   { $$ = $3; }
         ;
 
 arg_id:
@@ -454,6 +463,12 @@ bbox_child_set:
 
 model:
         ARG MODEL IDENTIFIER                                        { $$ = $3; }
+        ;
+        
+application:
+        APPLICATION IDENTIFIER application_id flags
+                                                { application_new($2, $3, $4); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 paned:
@@ -587,6 +602,11 @@ g_menu:
         params SEMICOLON                                    { block_close($2); }
         ;
 
+g_menu_item:
+        G_MENU_ITEM IDENTIFIER                          { g_menu_item_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
 action_bar:
         ACTION_BAR IDENTIFIER                            { action_bar_new($2); }
         params SEMICOLON                                    { block_close($2); }
@@ -667,7 +687,7 @@ tree_view:
 frame:
         FRAME IDENTIFIER                                      { frame_new($2); }
         params SEMICOLON                                    { block_close($2); }
-;
+        ;
 
 scale:
         SCALE IDENTIFIER arg_id arg_id                { scale_new($2, $3, $4); }
@@ -878,9 +898,8 @@ button:
         ;
 
 window:
-        WINDOW IDENTIFIER                                    { window_new($2); }
-        params SEMICOLON                                { widget_show_all($2);
-                                                              block_close($2); }
+        WINDOW_WIDGET IDENTIFIER                             { window_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 pack:
@@ -962,6 +981,7 @@ set:
         | set_icon_name
         | set_expand
         | set_show_close_button
+        | set_submenu
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -981,9 +1001,6 @@ set:
         | set_window_keep_below
         | set_window_startup_id
         | set_window_role
-        /*
-         * | set_window_icon_name
-         */
         | set_window_mnemonics_visible
         | set_window_focus_visible
         | set_window_skip_taskbar_hint
@@ -1004,9 +1021,6 @@ set:
         | set_header_bar_subtitle
         | set_header_bar_has_subtitle
         | set_header_bar_custom_title
-        /*
-         * | set_header_bar_show_close_button
-         */
         | set_header_bar_decoration_layout
         | set_scrolled_window_policy
         | set_scrolled_window_placement
@@ -1041,17 +1055,11 @@ set:
         | set_stack_hhomogeneous
         | set_stack_vhomogeneous
         | set_stack_switcher_stack
-        | set_application_accels_for_action
-        | set_application_flags
-        | set_application_id
         | set_button_box_layout
         | set_combo_box_wrap_width
         | set_combo_box_row_span_column
         | set_combo_box_column_span_column
         | set_combo_box_id_column
-        /*
-         * | set_combo_box_active
-         */
         | set_combo_box_active_id
         | set_combo_box_button_sensitivity
         | set_combo_box_entry_text_column
@@ -1082,12 +1090,6 @@ set:
         | set_grid_column_spacing
         | set_grid_baseline_row
         | set_grid_row_baseline_position
-        /*
-         * | set_radio_button_join_group
-         */
-        /*
-         * | set_toggle_button_inconsistent
-         */
         | set_spinner_start
         | set_spinner_stop
         | set_font_button_font_name
@@ -1134,9 +1136,6 @@ set:
         | set_range_flippable
         | set_range_slider_size_fixed
         | set_orientable_orientation
-        /*
-         * | set_frame_label_widget
-         */
         | set_frame_label_align
         | set_tree_view_level_indentation
         | set_tree_view_show_expanders
@@ -1159,9 +1158,6 @@ set:
         | set_tree_view_column_fixed_width
         | set_tree_view_column_min_width
         | set_tree_view_column_max_width
-        /*
-         * | set_tree_view_column_expand
-         */
         | set_tree_view_column_clickable
         | set_tree_view_column_widget
         | set_tree_view_column_sort_column_id
@@ -1198,30 +1194,25 @@ set:
         | set_menu_button_use_popover
         | set_menu_button_direction
         | set_menu_button_align_widget
+        | set_g_menu_item_detailed_action
+        | set_g_menu_item_icon
+        | set_g_menu_item_section
+        | set_g_menu_item_link
         | set_g_menu_item_attribute
+        | set_g_menu_item_accelerator_label
         | set_list_box_selection_mode
         | set_list_box_placeholder
         | set_list_box_header_func
         | set_list_box_row_header
-        | set_menu_item_submenu
         | set_menu_item_reserve_indicator
         | set_menu_screen
         | set_menu_accel_group
         | set_menu_monitor
         | set_menu_reserve_toggle_size
-        /*
-         * | set_menu_active
-         */
         | set_check_menu_item_draw_as_radio
-        /*
-         * | set_check_menu_item_inconsistent
-         */
         | set_menu_bar_pack_direction
         | set_menu_bar_child_pack_direction
         | set_tool_button_icon_widget
-        /*
-         * | set_tool_item_expand
-         */
         | set_tool_item_proxy_menu_item
         | set_tool_item_tooltip_text
         | set_tool_item_tooltip_markup
@@ -1240,8 +1231,24 @@ set:
         | set_paned_position
         | set_paned_wide_handle
         | set_accelerator_default_mod_mask
+        | set_application_app_menu
+        | set_application_menubar
+        | set_application_accels_for_action
         ;
-        
+
+set_application_app_menu:
+        SET APP_MENU IDENTIFIER                { application_set_app_menu($3); }
+        ;
+
+set_application_menubar:
+        SET MENUBAR IDENTIFIER                  { application_set_menubar($3); }
+        ;
+
+set_application_accels_for_action:
+        SET ACCELS_FOR_ACTION STRING STRING
+                                  { application_set_accels_for_action($3, $4); }
+        ;
+
 set_accelerator_default_mod_mask:
         SET ACCELERATOR_DEFAULT_MOD_MASK IDENTIFIER
                                       { accelerator_set_default_mod_mask($3); }
@@ -1331,12 +1338,6 @@ set_menu_bar_child_pack_direction:
                                       { menu_bar_set_child_pack_direction($3); }
         ;
 
-/*
- * set_check_menu_item_inconsistent:
- *         SET INCONSISTENT IDENTIFIER    { check_menu_item_set_inconsistent($3); }
- *         ;
- * 
- */
 set_check_menu_item_draw_as_radio:
         SET DRAW_AS_RADIO IDENTIFIER  { check_menu_item_set_draw_as_radio($3); }
         ;
@@ -1355,17 +1356,6 @@ set_menu_monitor:
 
 set_menu_reserve_toggle_size:
         SET RESERVE_TOGGLE_SIZE IDENTIFIER { menu_set_reserve_toggle_size($3); }
-        ;
-
-/*
- * set_menu_active:
- *         SET ACTIVE 
- * menu_set_active($3); }
- *         ;
- */
-
-set_menu_item_submenu:
-        SET SUBMENU IDENTIFIER                    { menu_item_set_submenu($3); }
         ;
 
 set_menu_item_reserve_indicator:
@@ -1390,8 +1380,30 @@ set_list_box_row_header:
         SET HEADER IDENTIFIER                   { list_box_row_set_header($3); }
         ;
 
+set_g_menu_item_detailed_action:
+        SET DETAILED_ACTION STRING      { g_menu_item_set_detailed_action($3); }
+        ;
+
+set_g_menu_item_icon:
+        SET ICON IDENTIFIER                        { g_menu_item_set_icon($3); }
+        ;
+
+set_g_menu_item_section:
+        SET SECTION IDENTIFIER                  { g_menu_item_set_section($3); }
+        ;
+
+set_g_menu_item_link:
+        SET LINK STRING IDENTIFIER             { g_menu_item_set_link($3, $4); }
+        ;
+
 set_g_menu_item_attribute:
-            SET ATTRIBUTE STRING STRING   { g_menu_item_set_attribute($3, $4); }
+       SET ATTRIBUTE STRING STRING STRING  
+                                      { g_menu_item_set_attribute($3, $4, $5); }
+        ;
+
+set_g_menu_item_accelerator_label:
+        SET ACCELERATOR_LABEL IDENTIFIER IDENTIFIER
+                                  { g_menu_item_set_accelerator_label($3, $4); }
         ;
 
 set_menu_button_popup:
@@ -1551,12 +1563,6 @@ set_tree_view_column_max_width:
         SET MAX_WIDTH NUMBER             { tree_view_column_set_max_width($3); }
         ;
 
-/*
- * set_tree_view_column_expand:
- *         SET EXPAND IDENTIFIER               { tree_view_column_set_expand($3); }
- *         ;
- */
-
 set_tree_view_column_clickable:
         SET CLICKABLE IDENTIFIER         { tree_view_column_set_clickable($3); }
         ;
@@ -1648,12 +1654,6 @@ set_tree_view_grid_lines:
 set_tree_view_tooltip_column:
         SET TOOLTIP_COLUMN IDENTIFIER      { tree_view_set_tooltip_column($3); }
         ;
-
-/*
- * set_frame_label_widget:
- *         SET LABEL_WIDGET IDENTIFIER              { frame_set_label_widget($3); }
- *         ;
- */
 
 set_frame_label_align:
         SET LABEL_ALIGN FLOAT FLOAT           { frame_set_label_align($3, $4); }
@@ -1852,18 +1852,6 @@ set_spinner_stop:
         SET STOP                                             { spinner_stop(); }
         ;
 
-/*
- * set_toggle_button_inconsistent:
- *         SET INCONSISTENT IDENTIFIER      { toggle_button_set_inconsistent($3); }
- *         ;
- * 
- */
-/*
- * set_radio_button_join_group:
- *         SET JOIN IDENTIFIER                     { radio_button_join_group($3); }
- *         ;
- * 
- */
 set_grid_row_homogeneous:
         SET ROW_HOMOGENEOUS IDENTIFIER         { grid_set_row_homogeneous($3); }
         ;
@@ -1983,12 +1971,6 @@ set_combo_box_column_span_column:
                                        { combo_box_set_column_span_column($3); }
         ;
 
-/*
- * set_combo_box_active:
- *         SET ACTIVE NUMBER                          { combo_box_set_active($3); }
- *         ;
- */
- 
 set_combo_box_id_column:
         SET ID_COLUMN NUMBER                    { combo_box_set_id_column($3); }
         ;
@@ -2014,18 +1996,6 @@ set_combo_box_popup_fixed_width:
 
 set_button_box_layout:
         SET BOX_LAYOUT IDENTIFIER                 { button_box_set_layout($3); }
-        ;
-
-set_application_flags:
-        SET APP_FLAGS flags                       { application_set_flags($3); }
-        ;
-
-set_application_id: 
-        SET APP_ID STRING                            { application_set_id($3); }
-        ;
-
-set_application_accels_for_action:
-        SET ACCELS_FOR_ACTION IDENTIFIER STRING          { accels_add($3, $4); }
         ;
 
 set_stack_switcher_stack:
@@ -2175,13 +2145,6 @@ set_header_bar_custom_title:
         SET CUSTOM_TITLE IDENTIFIER         { header_bar_set_custom_title($3); }
         ;
 
-/*
- * set_header_bar_show_close_button:
- *         SET SHOW_CLOSE_BUTTON IDENTIFIER
- *                                        { header_bar_set_show_close_button($3); }
- *         ;
- */
-
 set_header_bar_decoration_layout:
         SET DECORATION_LAYOUT STRING   { header_bar_set_decoration_layout($3); }
         ;
@@ -2264,12 +2227,6 @@ set_window_role:
         SET ROLE STRING                                 { window_set_role($3); }
         ;
 
-/*
- * set_window_icon_name:
- *         SET ICON_NAME STRING                       { window_set_icon_name($3); }
- *         ;
- */
-
 set_window_mnemonics_visible:
         SET MNEMONICS_VISIBLE IDENTIFIER   { window_set_mnemonics_visible($3); }
         ;
@@ -2338,6 +2295,10 @@ set_window_deletable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_submenu:
+        SET SUBMENU IDENTIFIER                              { set_submenu($3); }
         ;
 
 set_label_widget:
@@ -2516,9 +2477,7 @@ add:
         | ADD COLUMN IDENTIFIER                 { tree_view_append_column($3); }
         | ADD CELL_RENDERER IDENTIFIER                { add_cell_renderer($3); }
         | ADD ADD_OVERLAY IDENTIFIER                { overlay_add_overlay($3); }
-        | ADD ITEM STRING STRING             { g_menu_append_new_item($3, $4); }
-        | ADD SECTION STRING IDENTIFIER   { g_menu_append_new_section($3, $4); }
-        | ADD SUBMENU STRING IDENTIFIER   { g_menu_append_new_submenu($3, $4); }
+        | ADD ITEM IDENTIFIER                        { g_menu_append_item($3); }
         | ADD WIDGET IDENTIFIER                   { size_group_add_widget($3); }
         | ADD ACTION_WIDGET IDENTIFIER NUMBER 
                                          { info_bar_add_action_widget($3, $4); }
@@ -2535,10 +2494,11 @@ add:
                                   { window_add_action($3, $4, $5, $6, $7, $8); }
         | ADD ACTION STRING IDENTIFIER STRING IDENTIFIER IDENTIFIER IDENTIFIER
                                   { window_add_action($3, $4, $5, $6, $7, $8); }
-        | ADD ACTION STRING IDENTIFIER IDENTIFIER IDENTIFIER IDENTIFIER IDENTIFIER
-                                  { window_add_action($3, $4, $5, $6, $7, $8); }
+        | ADD ACTION STRING IDENTIFIER IDENTIFIER IDENTIFIER IDENTIFIER 
+                     IDENTIFIER   { window_add_action($3, $4, $5, $6, $7, $8); }
         | ADD ACTION STRING IDENTIFIER IDENTIFIER STRING IDENTIFIER IDENTIFIER
                                   { window_add_action($3, $4, $5, $6, $7, $8); }
+        | ADD WINDOW IDENTIFIER                  { application_add_window($3); }
         ;
 
 common:
@@ -2555,6 +2515,7 @@ common:
         | widget_set_hexpand
         | widget_set_receives_default
         | widget_set_sensitive
+        | widget_set_show_all
         | widget_set_no_show_all
         | widget_set_app_paintable
         | widget_set_can_default
@@ -2566,6 +2527,8 @@ common:
         | widget_set_tooltip_text
         | widget_set_name
         | widget_set_focus_on_click
+        | widget_show
+        | widget_hide
         | set_container_focus_vadjustment
         | set_container_focus_hadjustment
         | set_container_border_width
@@ -2589,6 +2552,14 @@ set_container_border_width:
 set_container_child_property:
         SET CHILD_PROPERTY IDENTIFIER STRING STRING    
                                    { container_child_set_property($3, $4, $5); }
+        ;
+
+widget_show:
+        COMMON SHOW                                           { widget_show(); }
+        ;
+
+widget_hide:
+        COMMON HIDE                                           { widget_hide(); }
         ;
 
 widget_set_focus_on_click:
@@ -2647,6 +2618,10 @@ widget_set_sensitive:
         COMMON SENSITIVE IDENTIFIER                { widget_set_sensitive($3); }
         ;
 
+widget_set_show_all:
+        COMMON SHOW_ALL                                   { widget_show_all(); }
+        ;
+
 widget_set_no_show_all:
         COMMON NO_SHOW_ALL IDENTIFIER            { widget_set_no_show_all($3); }
         ;
@@ -2691,12 +2666,6 @@ widget_set_name:
 signal:
         SIGNAL STRING IDENTIFIER IDENTIFIER      { signal_connect($2, $3, $4); }
         | SIGNAL STRING IDENTIFIER           { signal_connect($2, $3, "NULL"); }
-        ;
-
-
-flags:
-        IDENTIFIER                                                  { $$ = $1; }
-        | flags OR IDENTIFIER               { $$ = append_flag($$, " | ", $3); }
         ;
 
 properties:

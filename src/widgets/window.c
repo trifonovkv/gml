@@ -2,8 +2,6 @@
 #include "fmtout.h"
 #include "window.h" 
 
-char *WINDOW_TYPE = "GTK_WINDOW_TOPLEVEL";
-
 void window_add_action(char *name
                      , char *activate
                      , char *parameter_type
@@ -12,89 +10,92 @@ void window_add_action(char *name
                      , char *user_data)
 {
         char *dequote_name = dequote(name);
-        char *action = concat("action_", dequote_name);
-        char *variant = concat("variant_", dequote_name);
-        char *variant_type = concat("variant_type_", dequote_name);
+        char *action_var = concat("action_", dequote_name);
+        char *state_var = concat("state_", dequote_name);
+        char *parameter_type_var = concat("parameter_type_", dequote_name);
         char *action_map = wrptype("G_ACTION_MAP", this);
-        char *action_name = wrptype("G_ACTION", action);
+        char *action_name = wrptype("G_ACTION", action_var);
         char *activate_callback = wrptype("G_CALLBACK", activate);
         char *change_state_callback = wrptype("G_CALLBACK", change_state);
-        
-        if (strcmp(parameter_type, "NULL") == 0) {
-                prtstr(3, "GVariantType *", variant_type, " = NULL;\n");
 
-                putdef("GVariant *"
-                     , variant
-                     , "g_variant_new"
-                     , 2
-                     , "\"y\"" 
-                     , state);
+        prtstr(3, "const GVariantType *", parameter_type_var, ";\n");
+        prtstr(3, "GSimpleAction *", action_var, ";\n");
+
+        if (strcmp(parameter_type, "NULL") != 0) {
+                prtstr(4
+                     , parameter_type_var
+                     , " = G_VARIANT_TYPE("
+                     , parameter_type
+                     , ");\n");
+
         } else {
-        
-                putdef("GVariantType *"
-                     , variant_type
-                     , "g_variant_type_new"
-                     , 1
-                     , parameter_type);
-        
-                putdef("GVariant *"
-                      , variant
-                      , "g_variant_new"
-                      , 2
-                      , parameter_type
-                      , state);
-
+                prtstr(2, parameter_type_var, " = NULL;\n");
         }
 
-        if (strcmp(activate, "NULL") == 0) {
-                putdef("GSimpleAction *"
-                     , action
+        if (strcmp(state, "NULL") != 0) {
+                prtstr(3, "GVariant *", state_var, ";\n");
+
+                putdef(""
+                     , state_var
+                     , "g_variant_parse"
+                     , 5
+                     , "NULL"
+                     , state
+                     , "NULL"
+                     , "NULL"
+                     , "NULL");
+          
+                putdef(""
+                     , action_var
                      , "g_simple_action_new_stateful"
                      , 3
                      , name
-                     , variant_type
-                     , variant);
-        } else {
-                putdef("GSimpleAction *"
-                     , action
+                     , parameter_type_var
+                     , state_var);
+
+                prtstr(3, "g_variant_unref(", state_var, ");\n");
+      } else {
+                putdef(""
+                     , action_var
                      , "g_simple_action_new"
                      , 2
                      , name
-                     , variant_type);
-                
+                     , parameter_type_var);
+      }
+
+      if (strcmp(activate, "NULL") != 0)
                 putfun("g_signal_connect"
                      , 4
-                     , action
+                     , action_var
                      , "\"activate\""
                      , activate_callback
                      , user_data);
-        }
-        
-        if (strcmp(change_state, "NULL") != 0) {
+
+      if (strcmp(change_state, "NULL") != 0)
                 putfun("g_signal_connect"
-                                  , 4
-                                  , action
-                                  , "\"change-state\""
-                                  , change_state_callback
-                                  , user_data);
-        }
+                     , 4
+                     , action_var
+                     , "\"change-state\""
+                     , change_state_callback
+                     , user_data);
 
-        putfun("g_action_map_add_action", 2, action_map, action_name);
+      putfun("g_action_map_add_action", 2, action_map, action_name);
+      prtstr(3, "g_object_unref(", action_var, ");\n");
 
-        free(name);
-        free(dequote_name);
-        free(activate);
-        free(parameter_type);
-        free(state);
-        free(change_state);
-        free(user_data);
-        free(action);
-        free(variant);
-        free(variant_type);
-        free(action_map);
-        free(action_name);
-        free(activate_callback);
-        free(change_state_callback);
+      free(name);
+      free(dequote_name);
+      free(activate);
+      free(parameter_type);
+      free(parameter_type_var);
+      free(state);
+      free(state_var);
+      free(change_state);
+      free(user_data);
+      free(action_var);
+      free(action_map);
+      free(action_name);
+      free(activate_callback);
+      free(change_state_callback);
 }
 
 void window_add_accel_group(char *setting)
@@ -344,7 +345,11 @@ void window_new(char *widget)
 {
         this = syminst(TYPE_WINDOW, widget, widget);
 
-        putdef("GtkWidget *", widget, "gtk_application_window_new", 1, "app");
+        putdef("GtkWidget *"
+             , widget
+             , "gtk_application_window_new"
+             , 1
+             , APP_VAR_NAME );
 }
 
 void window_set_title(char *setting)

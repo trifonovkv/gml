@@ -1,4 +1,25 @@
 /*
+ * Flags a widget to be displayed. Any widget that isn’t shown will not appear
+ * on the screen. If you want to show all the widgets in a container, it’s
+ * easier to call gtk_widget_show_all() on the container, instead of
+ * individually showing the widgets.
+ * 
+ * Remember that you have to show the containers containing a widget, in
+ * addition to the widget itself, before it will appear onscreen.
+ * 
+ * When a toplevel container is shown, it is immediately realized and mapped;
+ * other shown widgets are realized and mapped when their toplevel container
+ * is realized and mapped.
+ */
+void widget_show();
+
+/*
+ * Reverses the effects of gtk_widget_show(), causing the widget to be hidden
+ * (invisible to the user).
+ */
+void widget_hide();
+
+/*
  * Sets whether the widget should grab focus when it is clicked with the mouse.
  * Making mouse clicks not grab focus is useful in places like toolbars where
  * you don’t want the keyboard focus removed from the main area of the
@@ -6,7 +27,11 @@
  */
 void widget_set_focus_on_click(char *setting);
 
-void widget_show_all(char *widget);
+/*
+ * Recursively shows a widget, and any child widgets (if the widget is a
+ * container).
+ */
+void widget_show_all();
 
 /*
  * Sets the minimum size of a widget; that is, the widget’s size request 

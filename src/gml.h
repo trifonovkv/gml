@@ -5,6 +5,8 @@
 #include <stdlib.h> /* malloc */
 #include <string.h> /* strlen */
 
+#define APP_VAR_NAME "app"
+
 extern FILE *yyin;
 extern FILE *yyout;
 
@@ -72,6 +74,7 @@ typedef enum
         , TYPE_ACTION_BAR
         , TYPE_MENU_BUTTON
         , TYPE_G_MENU
+        , TYPE_G_MENU_ITEM
         , TYPE_LIST_BOX
         , TYPE_LIST_BOX_ROW
         , TYPE_SIZE_GROUP
@@ -90,6 +93,8 @@ typedef enum
         , TYPE_STATUSBAR
         , TYPE_PANED
         , TYPE_ACCEL_GROUP
+        , TYPE_APPLICATION_ID
+        , TYPE_APPLICATION_FLAGS
 } widget_type;
 
 /* Keyboard accelerators and action */
@@ -122,7 +127,6 @@ extern symrec *sym_table;
 extern char *this;
 
 void        prtlst          ();
-void        accels_add      (char *action_name, char *accel_key);
 char*       append_flag     (char *flags, char *or, char *flag);
 void        tab_insert      ();
 void        main_start      ();

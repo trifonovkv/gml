@@ -1,5 +1,17 @@
 #include <gtk/gtk.h>
 
+void show_statusbar(GtkWidget *widget, gpointer user_data);
+
+void change_visible(GSimpleAction *action,
+                    GVariant      *parameter,
+                    gpointer       user_data);
+
+void set_accel(GtkApplication *app, GtkWidget *widget);
+
+void set_needs_attention(GtkWidget *page, gboolean needs_attention);
+
+void page_changed_cb(GtkWidget *stack, GParamSpec *pspec, gpointer data);
+
 void activate_lock(GSimpleAction *action,
                    GVariant      *parameter,
                    gpointer       user_data);
