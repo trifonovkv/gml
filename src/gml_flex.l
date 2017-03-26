@@ -33,6 +33,12 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+CALENDAR                              return CALENDAR;
+Display_options                       return DISPLAY_OPTIONS;
+Detail_func                           return DETAIL_FUNC; 
+Detail_width_chars                    return DETAIL_WIDTH_CHARS; 
+Detail_height_rows                    return DETAIL_HEIGHT_ROWS; 
+
 APPLICATION                           return APPLICATION;
 Application_id                        return APPLICATION_ID;
 Flags                                 return FLAGS;

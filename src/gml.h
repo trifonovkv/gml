@@ -95,6 +95,7 @@ typedef enum
         , TYPE_ACCEL_GROUP
         , TYPE_APPLICATION_ID
         , TYPE_APPLICATION_FLAGS
+        , TYPE_CALENDAR
 } widget_type;
 
 /* Keyboard accelerators and action */

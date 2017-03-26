@@ -230,6 +230,160 @@ G_MENU dinner_menu
   ADD Item section3
 ;
 
+
+SEPARATOR separator10
+  SET Orientation GTK_ORIENTATION_VERTICAL
+;
+
+CALENDAR calendar
+  CMN Halign GTK_ALIGN_CENTER
+;
+
+SEPARATOR separator11
+  SET Orientation GTK_ORIENTATION_HORIZONTAL
+;
+
+CELL_RENDERER_PIXBUF iconviewcell
+  PRT "stock-size" "2"
+;
+
+/*
+<object class="GtkIconView" id="iconview1">
+                                        <property name="can_focus">1</property>
+                                        <property name="selection_mode">multiple</property>
+                                        <property name="model">iconsmodel</property>
+                                        <child>
+                                          iconviewcell
+                                          <attributes>
+                                            <attribute name="icon-name">0</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+*/
+
+/*
+<object class="GtkScrolledWindow" id="scrolledwindow3">
+                                    <property name="can_focus">1</property>
+                                    <property name="shadow_type">in</property>
+                                    <property name="margin-top">6</property>
+                                    <property name="height_request">226</property>
+                                    <child>
+                                      iconview1
+                                    </child>
+                                  </object>
+*/
+
+/*
+<object class="GtkBox"> box16a
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  scrolledwindow3
+                                </child>
+                                <child>
+                                  <object class="GtkToolbar">
+                                    <property name="icon-size">1</property>
+                                    <property name="toolbar-style">icons</property>
+                                    <style>
+                                      <class name="inline-toolbar"/>
+                                    </style>
+                                    <child>
+                                      <object class="GtkToolButton" id="decrease_button">
+                                        <property name="icon-name">zoom-out-symbolic</property>
+                                        <property name="label">Remove item</property>
+                                        <signal name="clicked" handler="decrease_icon_size" object="iconview1" swapped="yes"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="increase_button">
+                                        <property name="icon-name">zoom-in-symbolic</property>
+                                        <property name="label">Add item</property>
+                                        <signal name="clicked" handler="increase_icon_size" object="iconview1" swapped="yes"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolButton" id="reset_button">
+                                        <property name="icon-name">zoom-original-symbolic</property>
+                                        <property name="label">Refresh</property>
+                                        <signal name="clicked" handler="reset_icon_size" object="iconview1" swapped="yes"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+*/
+
+/*
+<object class="GtkExpander" id="expander1">
+                            <property name="can_focus">1</property>
+                            <property name="expanded">1</property>
+                            <child>
+                              box16a
+                            </child>
+                            <child type="label">
+                              <object class="GtkLabel" id="label19">
+                                <property name="label" translatable="yes">Expander</property>
+                              </object>
+                            </child>
+                          </object>
+*/
+
+/*
+<object class="GtkBox" id="filler2">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">10</property>
+                        <child>
+                          calendar
+                        </child>
+                        <child>
+                          separator11
+                        </child>
+                        <child>
+                          expander1
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="info_dialog_button">
+                            <property name="label" translatable="yes">_Inform</property>
+                            <property name="use_underline">1</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="action_dialog_button">
+                            <property name="label" translatable="yes">_Act</property>
+                            <property name="use_underline">1</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="preference_dialog_button">
+                            <property name="label" translatable="yes">_Configure</property>
+                            <property name="use_underline">1</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="selection_dialog_button">
+                            <property name="label" translatable="yes">_Select</property>
+                            <property name="use_underline">1</property>
+                          </object>
+                        </child>
+                      </object>
+*/
+
+/*
+                    <child>
+                      separator10
+                    </child>
+                    <child>
+                      filler2
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page2</property>
+                <property name="title" translatable="yes">Page 2</property>
+              </packing>
+</child>
+*/
+
 SEPARATOR separator8
   SET Orientation GTK_ORIENTATION_HORIZONTAL
 ;

@@ -73,6 +73,7 @@
 #include "widgets/paned.h"
 #include "widgets/accel_group.h"
 #include "widgets/application.h"
+#include "widgets/calendar.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -90,6 +91,9 @@ int yywrap()
 int yylex();
 
 %}
+%token CALENDAR
+%token DISPLAY_OPTIONS DETAIL_FUNC DETAIL_WIDTH_CHARS DETAIL_HEIGHT_ROWS 
+
 %token APPLICATION APPLICATION_ID WINDOW APP_MENU MENUBAR ACCELS_FOR_ACTION 
 %token FLAGS
 
@@ -381,6 +385,7 @@ widget:
         | paned
         | accel_group
         | application
+        | calendar
         ;
 
 params: 
@@ -447,6 +452,11 @@ max:
 
 step:
         SET STEP FLOAT                                              { $$ = $3; }
+        ;
+
+calendar:
+        CALENDAR IDENTIFIER                                { calendar_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 accel_group:
@@ -1234,6 +1244,35 @@ set:
         | set_application_app_menu
         | set_application_menubar
         | set_application_accels_for_action
+        | set_calendar_display_options
+        | set_calendar_detail_func
+        | set_calendar_detail_width_chars
+        | set_calendar_detail_height_rows
+        ;
+
+/*
+ * calendar_select_month(char *month, char *year);
+ * calendar_select_day(char *setting);
+ * calendar_mark_day(char *setting);
+ * calendar_unmark_day(char *setting);
+ * calendar_clear_marks();
+ */
+
+set_calendar_display_options:
+        SET DISPLAY_OPTIONS IDENTIFIER     { calendar_set_display_options($3); }
+        ;
+
+set_calendar_detail_func:
+        SET DETAIL_FUNC IDENTIFIER IDENTIFIER IDENTIFIER  
+                                       { calendar_set_detail_func($3, $4, $5); }
+        ;
+
+set_calendar_detail_width_chars:
+        SET DETAIL_WIDTH_CHARS NUMBER   { calendar_set_detail_width_chars($3); }
+        ;
+
+set_calendar_detail_height_rows:
+        SET DETAIL_HEIGHT_ROWS NUMBER   { calendar_set_detail_height_rows($3); }
         ;
 
 set_application_app_menu:
