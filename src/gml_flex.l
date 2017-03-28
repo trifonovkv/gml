@@ -33,6 +33,18 @@ SIGNAL                                return SIGNAL;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+ICON_VIEW                             return ICON_VIEW;
+ICON_VIEW_WITH_AREA                   return ICON_VIEW_WITH_AREA;
+Area                                  return AREA;
+Text_column                           return TEXT_COLUMN;
+Markup_column                         return MARKUP_COLUMN;
+Pixbuf_column                         return PIXBUF_COLUMN;
+Item_orientation                      return ITEM_ORIENTATION;
+Columns                               return COLUMNS;
+Item_width                            return ITEM_WIDTH;
+Margin                                return MARGIN;
+Item_padding                          return ITEM_PADDING;
+
 CALENDAR                              return CALENDAR;
 Display_options                       return DISPLAY_OPTIONS;
 Detail_func                           return DETAIL_FUNC; 

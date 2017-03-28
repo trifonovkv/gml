@@ -74,6 +74,7 @@
 #include "widgets/accel_group.h"
 #include "widgets/application.h"
 #include "widgets/calendar.h"
+#include "widgets/icon_view.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -91,6 +92,9 @@ int yywrap()
 int yylex();
 
 %}
+%token ICON_VIEW ICON_VIEW_WITH_AREA AREA TEXT_COLUMN MARKUP_COLUMN 
+%token PIXBUF_COLUMN ITEM_ORIENTATION COLUMNS ITEM_WIDTH MARGIN ITEM_PADDING 
+
 %token CALENDAR
 %token DISPLAY_OPTIONS DETAIL_FUNC DETAIL_WIDTH_CHARS DETAIL_HEIGHT_ROWS 
 
@@ -291,7 +295,7 @@ int yylex();
 }
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
-%type <string> set_label_text mnemonic orientation arg_id
+%type <string> set_label_text mnemonic orientation arg_id area
 %type <string> min max step model application_id 
 %%
 
@@ -386,6 +390,8 @@ widget:
         | accel_group
         | application
         | calendar
+        | icon_view
+        | icon_view_with_area
         ;
 
 params: 
@@ -405,6 +411,10 @@ param:
         | grid_add
         | icon_add
         | properties
+        ;
+
+area:
+        ARG AREA IDENTIFIER                                         { $$ = $3; }
         ;
 
 flags:
@@ -452,6 +462,16 @@ max:
 
 step:
         SET STEP FLOAT                                              { $$ = $3; }
+        ;
+
+icon_view_with_area:
+        ICON_VIEW_WITH_AREA IDENTIFIER area { icon_view_new_with_area($2, $3); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+icon_view:
+        ICON_VIEW IDENTIFIER                              { icon_view_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 calendar:
@@ -992,6 +1012,10 @@ set:
         | set_expand
         | set_show_close_button
         | set_submenu
+        | set_selection_mode
+        | set_tooltip_column
+        | set_row_spacing
+        | set_column_spacing
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -1095,9 +1119,7 @@ set:
         | set_spin_button_wrap
         | set_spin_button_snap_to_ticks
         | set_grid_row_homogeneous
-        | set_grid_row_spacing
         | set_grid_column_homogeneous
-        | set_grid_column_spacing
         | set_grid_baseline_row
         | set_grid_row_baseline_position
         | set_spinner_start
@@ -1161,7 +1183,6 @@ set:
         | set_tree_view_rubber_banding
         | set_tree_view_enable_tree_lines
         | set_tree_view_grid_lines
-        | set_tree_view_tooltip_column
         | set_cell_renderer_toggle_radio
         | set_tree_view_column_visible
         | set_tree_view_column_sizing
@@ -1210,7 +1231,6 @@ set:
         | set_g_menu_item_link
         | set_g_menu_item_attribute
         | set_g_menu_item_accelerator_label
-        | set_list_box_selection_mode
         | set_list_box_placeholder
         | set_list_box_header_func
         | set_list_box_row_header
@@ -1248,15 +1268,47 @@ set:
         | set_calendar_detail_func
         | set_calendar_detail_width_chars
         | set_calendar_detail_height_rows
+        | set_icon_view_text_column
+        | set_icon_view_markup_column
+        | set_icon_view_pixbuf_column
+        | set_icon_view_item_orientation
+        | set_icon_view_columns
+        | set_icon_view_item_width
+        | set_icon_view_margin
+        | set_icon_view_item_padding
         ;
 
-/*
- * calendar_select_month(char *month, char *year);
- * calendar_select_day(char *setting);
- * calendar_mark_day(char *setting);
- * calendar_unmark_day(char *setting);
- * calendar_clear_marks();
- */
+set_icon_view_text_column:
+        SET TEXT_COLUMN NUMBER                { icon_view_set_text_column($3); }
+        ;
+
+set_icon_view_markup_column:
+        SET MARKUP_COLUMN NUMBER            { icon_view_set_markup_column($3); }
+        ;
+
+set_icon_view_pixbuf_column:
+        SET PIXBUF_COLUMN NUMBER            { icon_view_set_pixbuf_column($3); }
+        ;
+
+set_icon_view_item_orientation:
+        SET ITEM_ORIENTATION IDENTIFIER  { icon_view_set_item_orientation($3); }
+        ;
+
+set_icon_view_columns:
+        SET COLUMNS NUMBER                        { icon_view_set_columns($3); }
+        ;
+
+set_icon_view_item_width:
+        SET ITEM_WIDTH NUMBER                  { icon_view_set_item_width($3); }
+        ;
+
+set_icon_view_margin:
+        SET MARGIN NUMBER                          { icon_view_set_margin($3); }
+        ;
+
+set_icon_view_item_padding:
+        SET ITEM_PADDING NUMBER              { icon_view_set_item_padding($3); }
+        ;
 
 set_calendar_display_options:
         SET DISPLAY_OPTIONS IDENTIFIER     { calendar_set_display_options($3); }
@@ -1402,9 +1454,6 @@ set_menu_item_reserve_indicator:
                                         { menu_item_set_reserve_indicator($3); }
         ;
 
-set_list_box_selection_mode:
-        SET SELECTION_MODE IDENTIFIER       { list_box_set_selection_mode($3); }
-        ;
 
 set_list_box_placeholder:
         SET PLACEHOLDER IDENTIFIER             { list_box_set_placeholder($3); }
@@ -1690,10 +1739,6 @@ set_tree_view_grid_lines:
         SET GRID_LINES IDENTIFIER              { tree_view_set_grid_lines($3); }
         ;
 
-set_tree_view_tooltip_column:
-        SET TOOLTIP_COLUMN IDENTIFIER      { tree_view_set_tooltip_column($3); }
-        ;
-
 set_frame_label_align:
         SET LABEL_ALIGN FLOAT FLOAT           { frame_set_label_align($3, $4); }
         ;
@@ -1895,16 +1940,8 @@ set_grid_row_homogeneous:
         SET ROW_HOMOGENEOUS IDENTIFIER         { grid_set_row_homogeneous($3); }
         ;
 
-set_grid_row_spacing:
-        SET ROW_SPACING NUMBER                     { grid_set_row_spacing($3); }
-        ;
-
 set_grid_column_homogeneous:
         SET COLUMN_HOMOGENEOUS IDENTIFIER   { grid_set_column_homogeneous($3); }
-        ;
-
-set_grid_column_spacing:
-        SET COLUMN_SPACING NUMBER               { grid_set_column_spacing($3); }
         ;
 
 set_grid_baseline_row:
@@ -2334,6 +2371,22 @@ set_window_deletable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_column_spacing:
+        SET COLUMN_SPACING NUMBER                    { set_column_spacing($3); }
+        ;
+        
+set_row_spacing:
+        SET ROW_SPACING NUMBER                          { set_row_spacing($3); }
+        ;
+
+set_tooltip_column:
+        SET TOOLTIP_COLUMN NUMBER                    { set_tooltip_column($3); }
+        ;
+
+set_selection_mode:
+        SET SELECTION_MODE IDENTIFIER                { set_selection_mode($3); }
         ;
 
 set_submenu:

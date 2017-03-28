@@ -63,6 +63,98 @@ LIST_STORE lrmodel
   SET Id 0 "Right"
 ;
 
+LIST_STORE iconsmodel
+  ADD Column 0 G_TYPE_STRING
+  SET Row
+  SET Id 0 "audio-headphones-symbolic"
+  SET Row
+  SET Id 0 "audio-speakers-symbolic"
+  SET Row
+  SET Id 0 "audio-input-microphone-symboliccol"
+  SET Row
+  SET Id 0 "bookmark-new-symboliccol"
+  SET Row
+  SET Id 0 "call-start-symboliccol"
+  SET Row
+  SET Id 0 "call-stop-symboliccol"
+  SET Row
+  SET Id 0 "camera-photo-symboliccol"
+  SET Row
+  SET Id 0 "camera-video-symboliccol"
+  SET Row
+  SET Id 0 "camera-web-symboliccol"
+  SET Row
+  SET Id 0 "document-new-symboliccol"
+  SET Row
+  SET Id 0 "document-open-recent-symboliccol"
+  SET Row
+  SET Id 0 "document-open-symboliccol"
+  SET Row
+  SET Id 0 "drive-harddisk-symboliccol"
+  SET Row
+  SET Id 0 "drive-multidisk-symboliccol"
+  SET Row
+  SET Id 0 "drive-optical-symboliccol"
+  SET Row
+  SET Id 0 "edit-clear-all-symboliccol"
+  SET Row
+  SET Id 0 "edit-copy-symboliccol"
+  SET Row
+  SET Id 0 "edit-cut-symboliccol"
+  SET Row
+  SET Id 0 "edit-delete-symboliccol"
+  SET Row
+  SET Id 0 "find-location-symboliccol"
+  SET Row
+  SET Id 0 "format-indent-less-symboliccol"
+  SET Row
+  SET Id 0 "format-indent-more-symboliccol"
+  SET Row
+  SET Id 0 "format-justify-left-symboliccol"
+  SET Row
+  SET Id 0 "format-justify-center-symboliccol"
+  SET Row
+  SET Id 0 "format-justify-right-symboliccol"
+  SET Row
+  SET Id 0 "network-wired-symboliccol"
+  SET Row
+  SET Id 0 "network-wireless-symboliccol"
+  SET Row
+  SET Id 0 "phone-symboliccol"
+  SET Row
+  SET Id 0 "insert-image-symboliccol"
+  SET Row
+  SET Id 0 "insert-link-symboliccol"
+  SET Row
+  SET Id 0 "insert-object-symboliccol"
+  SET Row
+  SET Id 0 "view-continuous-symboliccol"
+  SET Row
+  SET Id 0 "view-dual-symboliccol"
+  SET Row
+  SET Id 0 "view-fullscreen-symboliccol"
+  SET Row
+  SET Id 0 "view-grid-symboliccol"
+  SET Row
+  SET Id 0 "view-list-symboliccol"
+  SET Row
+  SET Id 0 "view-paged-symboliccol"
+  SET Row
+  SET Id 0 "weather-clear-night-symboliccol"
+  SET Row
+  SET Id 0 "weather-few-clouds-night-symboliccol"
+  SET Row
+  SET Id 0 "weather-fog-symboliccol"
+  SET Row
+  SET Id 0 "weather-overcast-symboliccol"
+  SET Row
+  SET Id 0 "weather-severe-alert-symboliccol"
+  SET Row
+  SET Id 0 "weather-showers-symboliccol"
+  SET Row
+  SET Id 0 "weather-snow-symboliccol"
+;
+
 TEXT_BUFFER textbuffer1
   SET Text "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\
 Nullam fringilla, est ut feugiat ultrices, elit lacus ultricies nibh, \
@@ -243,23 +335,17 @@ SEPARATOR separator11
   SET Orientation GTK_ORIENTATION_HORIZONTAL
 ;
 
+/*
 CELL_RENDERER_PIXBUF iconviewcell
   PRT "stock-size" "2"
+  PRT "icon-name" "0"
 ;
-
-/*
-<object class="GtkIconView" id="iconview1">
-                                        <property name="can_focus">1</property>
-                                        <property name="selection_mode">multiple</property>
-                                        <property name="model">iconsmodel</property>
-                                        <child>
-                                          iconviewcell
-                                          <attributes>
-                                            <attribute name="icon-name">0</attribute>
-                                          </attributes>
-                                        </child>
-                                      </object>
 */
+
+ICON_VIEW iconview1
+  SET Selection_mode GTK_SELECTION_MULTIPLE
+  SET Model iconsmodel
+;
 
 /*
 <object class="GtkScrolledWindow" id="scrolledwindow3">
