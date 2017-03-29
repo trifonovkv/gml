@@ -75,6 +75,7 @@
 #include "widgets/application.h"
 #include "widgets/calendar.h"
 #include "widgets/icon_view.h"
+#include "widgets/expander.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -92,6 +93,8 @@ int yywrap()
 int yylex();
 
 %}
+%token EXPANDER EXPANDER_WITH_MNEMONIC EXPANDED LABEL_FILL RESIZE_TOPLEVEL 
+
 %token ICON_VIEW ICON_VIEW_WITH_AREA AREA TEXT_COLUMN MARKUP_COLUMN 
 %token PIXBUF_COLUMN ITEM_ORIENTATION COLUMNS ITEM_WIDTH MARGIN ITEM_PADDING 
 
@@ -232,9 +235,9 @@ int yylex();
 
 %token LABEL PATTERN JUSTIFY XALIGN YALIGN ELLIPSIZE MAX_WIDTH_CHARS LINE_WRAP 
 %token LINE_WRAP_MODE LINES SELECT_REGION SELECTABLE TEXT_WITH_MNEMONIC 
-%token LABEL_TEXT  LABEL_USE_MARKUP SINGLE_LINE_MODE ANGLE TRACK_VISITED_LINKS 
+%token LABEL_TEXT USE_MARKUP SINGLE_LINE_MODE ANGLE TRACK_VISITED_LINKS 
 
-%token STYLE ADD_CLASS
+%token STYLE STYLE_OP ADD_CLASS
 
 %token COMBO_BOX_TEXT COMBO_BOX_TEXT_ENTRY
 
@@ -392,6 +395,8 @@ widget:
         | calendar
         | icon_view
         | icon_view_with_area
+        | expander
+        | expander_with_mnemonic
         ;
 
 params: 
@@ -450,7 +455,7 @@ size:
         ;
 
 style:
-        STYLE ADD_CLASS STRING                  { style_context_add_class($3); }
+        STYLE_OP ADD_CLASS STRING               { style_context_add_class($3); }
         ;
 min:
         SET MIN FLOAT                                               { $$ = $3; }
@@ -462,6 +467,16 @@ max:
 
 step:
         SET STEP FLOAT                                              { $$ = $3; }
+        ;
+
+expander:
+        EXPANDER IDENTIFIER                                { expander_new($2); }
+        params SEMICOLON                                    { block_close($2); }
+        ;
+
+expander_with_mnemonic:
+        EXPANDER_WITH_MNEMONIC IDENTIFIER mnemonic
+                                         { expander_new_with_mnemonic($2, $3); }
         ;
 
 icon_view_with_area:
@@ -1016,6 +1031,7 @@ set:
         | set_tooltip_column
         | set_row_spacing
         | set_column_spacing
+        | set_use_markup
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -1107,7 +1123,6 @@ set:
         | set_label_lines
         | set_label_region
         | set_label_text_with_mnemonic
-        | set_label_use_markup
         | set_label_single_line_mode
         | set_label_angle
         | set_label_track_visited_links
@@ -1276,8 +1291,23 @@ set:
         | set_icon_view_item_width
         | set_icon_view_margin
         | set_icon_view_item_padding
+        | set_expander_expanded
+        | set_expander_label_fill
+        | set_expander_resize_toplevel
         ;
 
+set_expander_expanded:
+        SET EXPANDED IDENTIFIER                   { expander_set_expanded($3); }
+        ;
+
+set_expander_label_fill:
+        SET LABEL_FILL IDENTIFIER               { expander_set_label_fill($3); }
+        ;
+
+set_expander_resize_toplevel:
+        SET RESIZE_TOPLEVEL IDENTIFIER     { expander_set_resize_toplevel($3); }
+        ;
+  
 set_icon_view_text_column:
         SET TEXT_COLUMN NUMBER                { icon_view_set_text_column($3); }
         ;
@@ -2017,10 +2047,6 @@ set_label_text_with_mnemonic:
         SET TEXT_WITH_MNEMONIC STRING      { label_set_text_with_mnemonic($3); }
         ;
 
-set_label_use_markup:
-        SET LABEL_USE_MARKUP IDENTIFIER            { label_set_use_markup($3); }
-        ;
-
 set_label_single_line_mode:
         SET SINGLE_LINE_MODE IDENTIFIER      { label_set_single_line_mode($3); }
         ;
@@ -2371,6 +2397,10 @@ set_window_deletable:
 
 set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
+        ;
+
+set_use_markup:
+        SET USE_MARKUP IDENTIFIER                        { set_use_markup($3); }
         ;
 
 set_column_spacing:

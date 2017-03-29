@@ -44,6 +44,18 @@
 #include "info_bar.h"
 #include "icon_view.h"
 #include "grid.h"
+#include "expander.h"
+
+void set_use_markup(char *setting)
+{
+        widget_type type = getsymtype(this);
+      
+        if (TYPE_LABEL == type) {
+                label_set_use_markup(setting);
+        } else if (TYPE_EXPANDER == type) {
+                expander_set_use_markup(setting);
+        }
+}
 
 void set_column_spacing(char *setting)
 {
@@ -132,6 +144,8 @@ void set_label_widget(char *setting)
                 frame_set_label_widget(setting);
         } else if (TYPE_TOOL_BUTTON == type) {
                 tool_button_set_label_widget(setting);
+        } else if (TYPE_EXPANDER == type) {
+                expander_set_label_widget(setting);
         }
 }
 
@@ -267,9 +281,9 @@ void set_label(char *setting)
                 menu_item_set_label(setting);
         } else if (TYPE_TOOL_BUTTON == type) {
                 tool_button_set_label(setting);
+        } else if (TYPE_EXPANDER == type) {
+                expander_set_label(setting);
         }
-
-
 }
 
 void set_transition_type(char *setting)
@@ -505,6 +519,8 @@ void set_use_underline(char *setting)
                 menu_item_set_use_underline(setting);
         } else if (TYPE_TOOL_BUTTON == type) {
                 tool_button_set_use_underline(setting);
+        } else if (TYPE_EXPANDER == type) {
+                expander_set_use_underline(setting);
         }
 }
 

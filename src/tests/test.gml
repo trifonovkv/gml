@@ -152,7 +152,7 @@ LABEL label
   SET Select_region 10 20
   SET Text_with_mnemonic "_C"
   SET Label_text "https://ya.ru"
-  SET Label_use_markup TRUE
+  SET Use_markup TRUE
   SET Single_line_mode TRUE
   SET Angle 45.0
   SET Track_visited_links TRUE

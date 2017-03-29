@@ -1,5 +1,11 @@
 #include <gtk/gtk.h>
 
+void reset_icon_size(GtkWidget *iv);
+
+void increase_icon_size(GtkWidget *iv);
+
+void decrease_icon_size(GtkWidget *iv);
+
 void show_statusbar(GtkWidget *widget, gpointer user_data);
 
 void change_visible(GSimpleAction *action,

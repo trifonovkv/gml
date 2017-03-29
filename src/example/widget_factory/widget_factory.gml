@@ -347,71 +347,54 @@ ICON_VIEW iconview1
   SET Model iconsmodel
 ;
 
-/*
-<object class="GtkScrolledWindow" id="scrolledwindow3">
-                                    <property name="can_focus">1</property>
-                                    <property name="shadow_type">in</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="height_request">226</property>
-                                    <child>
-                                      iconview1
-                                    </child>
-                                  </object>
-*/
+SCROLLED_WINDOW scrolledwindow3
+  SET Shadow_type GTK_SHADOW_IN
+  CMN Margin_top 6
+  CMN Size_request 0 226
+  ADD iconview1
+;
 
-/*
-<object class="GtkBox"> box16a
-                                <property name="orientation">vertical</property>
-                                <child>
-                                  scrolledwindow3
-                                </child>
-                                <child>
-                                  <object class="GtkToolbar">
-                                    <property name="icon-size">1</property>
-                                    <property name="toolbar-style">icons</property>
-                                    <style>
-                                      <class name="inline-toolbar"/>
-                                    </style>
-                                    <child>
-                                      <object class="GtkToolButton" id="decrease_button">
-                                        <property name="icon-name">zoom-out-symbolic</property>
-                                        <property name="label">Remove item</property>
-                                        <signal name="clicked" handler="decrease_icon_size" object="iconview1" swapped="yes"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkToolButton" id="increase_button">
-                                        <property name="icon-name">zoom-in-symbolic</property>
-                                        <property name="label">Add item</property>
-                                        <signal name="clicked" handler="increase_icon_size" object="iconview1" swapped="yes"/>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkToolButton" id="reset_button">
-                                        <property name="icon-name">zoom-original-symbolic</property>
-                                        <property name="label">Refresh</property>
-                                        <signal name="clicked" handler="reset_icon_size" object="iconview1" swapped="yes"/>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-*/
+TOOL_BUTTON decrease_button
+  SET Icon_name "zoom-out-symbolic"
+  SET Label "Remove item"
+  SIGNAL "clicked" decrease_icon_size iconview1
+;
 
-/*
-<object class="GtkExpander" id="expander1">
-                            <property name="can_focus">1</property>
-                            <property name="expanded">1</property>
-                            <child>
-                              box16a
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="label19">
-                                <property name="label" translatable="yes">Expander</property>
-                              </object>
-                            </child>
-                          </object>
-*/
+TOOL_BUTTON increase_button
+  SET Icon_name "zoom-in-symbolic"
+  SET Label "Add item"
+  SIGNAL "clicked" increase_icon_size iconview1
+;
+
+TOOL_BUTTON reset_button
+  SET Icon_name "zoom-original-symbolic"
+  SET Label "Refresh"
+  SIGNAL "clicked" reset_icon_size iconview1
+;
+
+TOOLBAR toolbar1
+  SET Icon_size GTK_ICON_SIZE_MENU
+  SET Style GTK_TOOLBAR_ICONS
+  STYLE Add_class "inline-toolbar"
+  ADD decrease_button
+  ADD increase_button
+  ADD reset_button
+;
+
+VBOX box16a
+  ADD  scrolledwindow3
+  ADD  toolbar1 
+;
+
+LABEL label19
+  SET Label "Expander"
+;
+
+EXPANDER expander1
+  SET Expanded TRUE
+  SET Label_widget label19
+  ADD box16a
+;
 
 /*
 <object class="GtkBox" id="filler2">
@@ -1524,7 +1507,7 @@ SEPARATOR separator4
 
 LABEL label18
   SET Text "<b>Etched out</b>"
-  SET Label_use_markup TRUE
+  SET Use_markup TRUE
 ;
 
 FRAME frame4
@@ -1534,7 +1517,7 @@ FRAME frame4
 
 LABEL label17
   SET Text "<b>Etched in</b>"
-  SET Label_use_markup TRUE
+  SET Use_markup TRUE
 ;
 
 FRAME frame3
@@ -1544,7 +1527,7 @@ FRAME frame3
 
 LABEL label2
   SET Text "<b>Out</b>"
-  SET Label_use_markup TRUE
+  SET Use_markup TRUE
 ;
 
 FRAME frame2
@@ -1554,7 +1537,7 @@ FRAME frame2
 
 LABEL label1
   SET Text "<b>In</b>"
-  SET Label_use_markup TRUE
+  SET Use_markup TRUE
 ;
 
 FRAME frame1
