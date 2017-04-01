@@ -30,8 +30,17 @@ WINDOW                                return WINDOW_WIDGET;
 SET                                   return SET;
 ADD                                   return ADD;
 SIGNAL                                return SIGNAL;
+SIGNAL_SWAPPED                        return SIGNAL_SWAPPED;
 PACK                                  return PACK;
 ARG                                   return ARG;
+
+MESSAGE_DIALOG                        return MESSAGE_DIALOG;
+Type                                  return TYPE;
+Buttons                               return BUTTONS;
+Parent                                return PARENT;
+Markup                                return MARKUP;
+Secondary_text                        return SECONDARY_TEXT;
+Secondary_markup                      return SECONDARY_MARKUP;
 
 EXPANDER                              return EXPANDER;
 EXPANDER_WITH_MNEMONIC                return EXPANDER_WITH_MNEMONIC;
@@ -162,6 +171,7 @@ ACTION_BAR                            return ACTION_BAR;
 Pack_center                           return PACK_CENTER;
 
 PRT                                   return PROPERTY;
+Set_data                              return SET_DATA;
 
 IMAGE                                 return IMAGE_WIDGET;
 Image_from_file                       return IMAGE_FROM_FILE;

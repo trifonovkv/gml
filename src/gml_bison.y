@@ -76,6 +76,8 @@
 #include "widgets/calendar.h"
 #include "widgets/icon_view.h"
 #include "widgets/expander.h"
+#include "widgets/g_signal.h"
+#include "widgets/message_dialog.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -93,6 +95,8 @@ int yywrap()
 int yylex();
 
 %}
+%token MESSAGE_DIALOG BUTTONS PARENT MARKUP SECONDARY_TEXT SECONDARY_MARKUP 
+
 %token EXPANDER EXPANDER_WITH_MNEMONIC EXPANDED LABEL_FILL RESIZE_TOPLEVEL 
 
 %token ICON_VIEW ICON_VIEW_WITH_AREA AREA TEXT_COLUMN MARKUP_COLUMN 
@@ -148,7 +152,7 @@ int yylex();
 
 %token ACTION_BAR PACK_CENTER
 
-%token PROPERTY
+%token PROPERTY SET_DATA
 
 %token IMAGE_WIDGET IMAGE_FROM_FILE IMAGE_FROM_ICON_NAME IMAGE_FROM_RESOURCE 
 %token IMAGE_PIXEL_SIZE
@@ -289,8 +293,8 @@ int yylex();
 %token STACK STACK_SWITCHER STACK_SWITCHER_STACK HHOMOGENEOUS VHOMOGENEOUS 
 %token TRANSITION_DURATION TRANSITION_TYPE TITLED
 
-%token INCLUDE SET ADD SIGNAL PACK IDENTIFIER STRING NUMBER SEMICOLON 
-%token HBOX VBOX WINDOW_WIDGET TYPE FLOAT CHAR OR ARG
+%token INCLUDE SET ADD SIGNAL SIGNAL_SWAPPED PACK IDENTIFIER STRING NUMBER 
+%token SEMICOLON HBOX VBOX WINDOW_WIDGET TYPE FLOAT CHAR OR ARG
 
 %union
 {
@@ -299,7 +303,7 @@ int yylex();
 
 %type <string> IDENTIFIER STRING NUMBER FLOAT icon_name size flags
 %type <string> set_label_text mnemonic orientation arg_id area
-%type <string> min max step model application_id 
+%type <string> min max step model application_id text buttons type parent
 %%
 
 widgets: 
@@ -397,6 +401,7 @@ widget:
         | icon_view_with_area
         | expander
         | expander_with_mnemonic
+        | message_dialog
         ;
 
 params: 
@@ -408,6 +413,7 @@ param:
         | set
         | add
         | signal
+        | signal_swapped
         | pack
         | bbox_child_set
         | bar_pack
@@ -416,6 +422,22 @@ param:
         | grid_add
         | icon_add
         | properties
+        ;
+
+text:
+        ARG TEXT STRING                                             { $$ = $3; }
+        ;
+
+buttons:
+        ARG BUTTONS IDENTIFIER                                      { $$ = $3; }
+        ;
+
+type:
+        ARG TYPE IDENTIFIER                                         { $$ = $3; }
+        ;
+
+parent:
+        ARG PARENT IDENTIFIER                                       { $$ = $3; }
         ;
 
 area:
@@ -444,7 +466,7 @@ set_label_text:
         ;
 
 mnemonic:
-        SET MNEMONIC STRING                                        { $$ = $3; }
+        SET MNEMONIC STRING                                         { $$ = $3; }
         ;
 
 icon_name:
@@ -467,6 +489,12 @@ max:
 
 step:
         SET STEP FLOAT                                              { $$ = $3; }
+        ;
+
+message_dialog:
+        MESSAGE_DIALOG IDENTIFIER parent flags type buttons text
+                                 { message_dialog_new($2, $3, $4, $5, $6, $7); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 expander:
@@ -1294,6 +1322,21 @@ set:
         | set_expander_expanded
         | set_expander_label_fill
         | set_expander_resize_toplevel
+        | set_message_dialog_markup
+        | set_message_dialog_secondary_text
+        | set_message_dialog_secondary_markup
+        ;
+
+set_message_dialog_markup:
+        SET MARKUP STRING                     { message_dialog_set_markup($3); }
+        ;
+
+set_message_dialog_secondary_text:
+        SET SECONDARY_TEXT STRING     { message_dialog_set_secondary_text($3); }
+        ;
+
+set_message_dialog_secondary_markup:
+        SET SECONDARY_MARKUP STRING { message_dialog_set_secondary_markup($3); }
         ;
 
 set_expander_expanded:
@@ -2790,8 +2833,15 @@ signal:
         | SIGNAL STRING IDENTIFIER           { signal_connect($2, $3, "NULL"); }
         ;
 
+signal_swapped:
+        SIGNAL_SWAPPED STRING IDENTIFIER IDENTIFIER      
+                                         { signal_connect_swapped($2, $3, $4); }
+        ;
+
 properties:
         PROPERTY STRING STRING                           { object_set($2, $3); }
+        | PROPERTY STRING NUMBER                         { object_set($2, $3); }
+        | PROPERTY SET_DATA STRING IDENTIFIER       { object_set_data($3, $4); }
         ;
 %%
 

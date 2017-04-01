@@ -70,89 +70,89 @@ LIST_STORE iconsmodel
   SET Row
   SET Id 0 "audio-speakers-symbolic"
   SET Row
-  SET Id 0 "audio-input-microphone-symboliccol"
+  SET Id 0 "audio-input-microphone-symbolic"
   SET Row
-  SET Id 0 "bookmark-new-symboliccol"
+  SET Id 0 "bookmark-new-symbolic"
   SET Row
-  SET Id 0 "call-start-symboliccol"
+  SET Id 0 "call-start-symbolic"
   SET Row
-  SET Id 0 "call-stop-symboliccol"
+  SET Id 0 "call-stop-symbolic"
   SET Row
-  SET Id 0 "camera-photo-symboliccol"
+  SET Id 0 "camera-photo-symbolic"
   SET Row
-  SET Id 0 "camera-video-symboliccol"
+  SET Id 0 "camera-video-symbolic"
   SET Row
-  SET Id 0 "camera-web-symboliccol"
+  SET Id 0 "camera-web-symbolic"
   SET Row
-  SET Id 0 "document-new-symboliccol"
+  SET Id 0 "document-new-symbolic"
   SET Row
-  SET Id 0 "document-open-recent-symboliccol"
+  SET Id 0 "document-open-recent-symbolic"
   SET Row
-  SET Id 0 "document-open-symboliccol"
+  SET Id 0 "document-open-symbolic"
   SET Row
-  SET Id 0 "drive-harddisk-symboliccol"
+  SET Id 0 "drive-harddisk-symbolic"
   SET Row
-  SET Id 0 "drive-multidisk-symboliccol"
+  SET Id 0 "drive-multidisk-symbolic"
   SET Row
-  SET Id 0 "drive-optical-symboliccol"
+  SET Id 0 "drive-optical-symbolic"
   SET Row
-  SET Id 0 "edit-clear-all-symboliccol"
+  SET Id 0 "edit-clear-all-symbolic"
   SET Row
-  SET Id 0 "edit-copy-symboliccol"
+  SET Id 0 "edit-copy-symbolic"
   SET Row
-  SET Id 0 "edit-cut-symboliccol"
+  SET Id 0 "edit-cut-symbolic"
   SET Row
-  SET Id 0 "edit-delete-symboliccol"
+  SET Id 0 "edit-delete-symbolic"
   SET Row
-  SET Id 0 "find-location-symboliccol"
+  SET Id 0 "find-location-symbolic"
   SET Row
-  SET Id 0 "format-indent-less-symboliccol"
+  SET Id 0 "format-indent-less-symbolic"
   SET Row
-  SET Id 0 "format-indent-more-symboliccol"
+  SET Id 0 "format-indent-more-symbolic"
   SET Row
-  SET Id 0 "format-justify-left-symboliccol"
+  SET Id 0 "format-justify-left-symbolic"
   SET Row
-  SET Id 0 "format-justify-center-symboliccol"
+  SET Id 0 "format-justify-center-symbolic"
   SET Row
-  SET Id 0 "format-justify-right-symboliccol"
+  SET Id 0 "format-justify-right-symbolic"
   SET Row
-  SET Id 0 "network-wired-symboliccol"
+  SET Id 0 "network-wired-symbolic"
   SET Row
-  SET Id 0 "network-wireless-symboliccol"
+  SET Id 0 "network-wireless-symbolic"
   SET Row
-  SET Id 0 "phone-symboliccol"
+  SET Id 0 "phone-symbolic"
   SET Row
-  SET Id 0 "insert-image-symboliccol"
+  SET Id 0 "insert-image-symbolic"
   SET Row
-  SET Id 0 "insert-link-symboliccol"
+  SET Id 0 "insert-link-symbolic"
   SET Row
-  SET Id 0 "insert-object-symboliccol"
+  SET Id 0 "insert-object-symbolic"
   SET Row
-  SET Id 0 "view-continuous-symboliccol"
+  SET Id 0 "view-continuous-symbolic"
   SET Row
-  SET Id 0 "view-dual-symboliccol"
+  SET Id 0 "view-dual-symbolic"
   SET Row
-  SET Id 0 "view-fullscreen-symboliccol"
+  SET Id 0 "view-fullscreen-symbolic"
   SET Row
-  SET Id 0 "view-grid-symboliccol"
+  SET Id 0 "view-grid-symbolic"
   SET Row
-  SET Id 0 "view-list-symboliccol"
+  SET Id 0 "view-list-symbolic"
   SET Row
-  SET Id 0 "view-paged-symboliccol"
+  SET Id 0 "view-paged-symbolic"
   SET Row
-  SET Id 0 "weather-clear-night-symboliccol"
+  SET Id 0 "weather-clear-night-symbolic"
   SET Row
-  SET Id 0 "weather-few-clouds-night-symboliccol"
+  SET Id 0 "weather-few-clouds-night-symbolic"
   SET Row
-  SET Id 0 "weather-fog-symboliccol"
+  SET Id 0 "weather-fog-symbolic"
   SET Row
-  SET Id 0 "weather-overcast-symboliccol"
+  SET Id 0 "weather-overcast-symbolic"
   SET Row
-  SET Id 0 "weather-severe-alert-symboliccol"
+  SET Id 0 "weather-severe-alert-symbolic"
   SET Row
-  SET Id 0 "weather-showers-symboliccol"
+  SET Id 0 "weather-showers-symbolic"
   SET Row
-  SET Id 0 "weather-snow-symboliccol"
+  SET Id 0 "weather-snow-symbolic"
 ;
 
 TEXT_BUFFER textbuffer1
@@ -322,7 +322,6 @@ G_MENU dinner_menu
   ADD Item section3
 ;
 
-
 SEPARATOR separator10
   SET Orientation GTK_ORIENTATION_VERTICAL
 ;
@@ -335,16 +334,33 @@ SEPARATOR separator11
   SET Orientation GTK_ORIENTATION_HORIZONTAL
 ;
 
-/*
 CELL_RENDERER_PIXBUF iconviewcell
-  PRT "stock-size" "2"
-  PRT "icon-name" "0"
+  PRT "stock-size" 5
 ;
-*/
 
 ICON_VIEW iconview1
   SET Selection_mode GTK_SELECTION_MULTIPLE
   SET Model iconsmodel
+  PACK iconviewcell Start TRUE
+  SET Attribute iconviewcell "icon-name" 0
+;
+
+TOOL_BUTTON decrease_button
+  SET Icon_name "zoom-out-symbolic"
+  SET Label "Remove item"
+  SIGNAL_SWAPPED "clicked" decrease_icon_size iconview1
+;
+
+TOOL_BUTTON increase_button
+  SET Icon_name "zoom-in-symbolic"
+  SET Label "Add item"
+  SIGNAL_SWAPPED "clicked" increase_icon_size iconview1
+;
+
+TOOL_BUTTON reset_button
+  SET Icon_name "zoom-original-symbolic"
+  SET Label "Refresh"
+  SIGNAL_SWAPPED "clicked" reset_icon_size iconview1
 ;
 
 SCROLLED_WINDOW scrolledwindow3
@@ -352,24 +368,8 @@ SCROLLED_WINDOW scrolledwindow3
   CMN Margin_top 6
   CMN Size_request 0 226
   ADD iconview1
-;
-
-TOOL_BUTTON decrease_button
-  SET Icon_name "zoom-out-symbolic"
-  SET Label "Remove item"
-  SIGNAL "clicked" decrease_icon_size iconview1
-;
-
-TOOL_BUTTON increase_button
-  SET Icon_name "zoom-in-symbolic"
-  SET Label "Add item"
-  SIGNAL "clicked" increase_icon_size iconview1
-;
-
-TOOL_BUTTON reset_button
-  SET Icon_name "zoom-original-symbolic"
-  SET Label "Refresh"
-  SIGNAL "clicked" reset_icon_size iconview1
+  PRT Set_data "increase_button" increase_button
+  PRT Set_data "decrease_button" decrease_button
 ;
 
 TOOLBAR toolbar1
@@ -397,44 +397,67 @@ EXPANDER expander1
 ;
 
 /*
-<object class="GtkBox" id="filler2">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">10</property>
-                        <child>
-                          calendar
-                        </child>
-                        <child>
-                          separator11
-                        </child>
-                        <child>
-                          expander1
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="info_dialog_button">
-                            <property name="label" translatable="yes">_Inform</property>
-                            <property name="use_underline">1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="action_dialog_button">
-                            <property name="label" translatable="yes">_Act</property>
-                            <property name="use_underline">1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="preference_dialog_button">
-                            <property name="label" translatable="yes">_Configure</property>
-                            <property name="use_underline">1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="selection_dialog_button">
-                            <property name="label" translatable="yes">_Select</property>
-                            <property name="use_underline">1</property>
-                          </object>
-                        </child>
-                      </object>
+    <property name="transient-for">window</property>
+    <child type="action">
+      <object class="GtkButton" id="cancel_info_dialog">
+        <property name="label" translatable="yes">_Cancel</property>
+        <property name="use_underline">1</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkButton" id="doit_info_dialog">
+        <property name="label" translatable="yes">_Do It</property>
+        <property name="use_underline">1</property>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="cancel">cancel_info_dialog</action-widget>
+      <action-widget response="ok">doit_info_dialog</action-widget>
+    </action-widgets>
 */
+
+MESSAGE_DIALOG message_dialog
+  ARG Parent NULL
+  ARG Flags GTK_DIALOG_MODAL
+  ARG Type GTK_MESSAGE_INFO
+  ARG Buttons GTK_BUTTONS_NONE
+  ARG Text "Do something?"
+  SET Resizable FALSE
+  SET Modal TRUE
+  SET Secondary_text "If you do something,bad things might happen."
+  SIGNAL "delete-event" gtk_widget_hide_on_delete
+;
+
+BUTTON info_dialog_button
+  SET Label "_Inform"
+  SET Use_underline TRUE
+;
+
+BUTTON action_dialog_button
+  SET Label "_Act"
+  SET Use_underline TRUE
+;
+
+BUTTON preference_dialog_button
+  SET Label "_Configure"
+  SET Use_underline TRUE
+;
+
+BUTTON selection_dialog_button
+  SET Label "_Select"
+  SET Use_underline TRUE
+;
+
+VBOX filler2
+  SET Spacing 10
+  ADD calendar
+  ADD separator11
+  ADD expander1
+  ADD info_dialog_button
+  ADD action_dialog_button
+  ADD preference_dialog_button
+  ADD selection_dialog_button
+;
 
 /*
                     <child>
@@ -1229,6 +1252,8 @@ HBOX box1a
   ADD box2a
   ADD separator8
   ADD box15a
+  ADD separator10
+  ADD filler2
 ;
 
 BUTTON_FROM_ICON_NAME page2dismiss

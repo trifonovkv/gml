@@ -13,3 +13,14 @@ void object_set(char *name, char *value)
         free(value);
 }
 
+void object_set_data(char *key, char *data)
+{
+        char *widget = wrptype("G_OBJECT", this);
+
+        putfun("g_object_set_data", 3, widget, key, data);
+
+        free(widget);
+        free(key);
+        free(data);
+}
+

@@ -19,10 +19,13 @@ static int icon_sizes[] = {0, 1, 2, 3, 4, 5, 6};
 void update_buttons(GtkWidget *iv, int pos)
 {
         GtkWidget *button;
+        GtkWidget *sw;
 
-        button = GTK_WIDGET(g_object_get_data(G_OBJECT(iv), "increase_button"));
+        sw = gtk_widget_get_parent(iv);
+
+        button = GTK_WIDGET(g_object_get_data(G_OBJECT(sw), "increase_button"));
         gtk_widget_set_sensitive(button, pos + 1 < G_N_ELEMENTS(icon_sizes));
-        button = GTK_WIDGET(g_object_get_data(G_OBJECT(iv), "decrease_button"));
+        button = GTK_WIDGET(g_object_get_data(G_OBJECT(sw), "decrease_button"));
         gtk_widget_set_sensitive(button, pos > 0);
 }
 
@@ -35,7 +38,7 @@ void reset_icon_size(GtkWidget *iv)
         cell = cells->data;
         g_list_free(cells);
 
-        g_object_set(cell, "stock-size", 2, NULL);
+        g_object_set(cell, "stock-size", 5, NULL);
 
         update_buttons(iv, 2);
 
@@ -53,7 +56,7 @@ void increase_icon_size(GtkWidget *iv)
         g_list_free(cells);
 
         g_object_get(cell, "stock-size", &size, NULL);
-        size = MIN (size + 1, G_N_ELEMENTS(icon_sizes) - 1);
+        size = MIN(size + 1, G_N_ELEMENTS(icon_sizes) - 1);
         g_object_set(cell, "stock-size", size, NULL);
 
         update_buttons(iv, size);
@@ -72,9 +75,9 @@ void decrease_icon_size(GtkWidget *iv)
         g_list_free(cells);
 
         g_object_get(cell, "stock-size", &size, NULL);
-        size  = MAX(size - 1, 1);
+        size  = MAX(size - 1, 0);
         g_object_set(cell, "stock-size", size, NULL);
-
+        
         update_buttons(iv, size);
 
         gtk_widget_queue_resize(iv);

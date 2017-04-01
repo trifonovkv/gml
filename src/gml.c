@@ -91,21 +91,6 @@ void block_close(char *start)
         this = NULL;
 }
 
-void signal_connect(char *signal, char *handler, char *data)
-{
-        char *widget = this;
-        char *callback = wrptype("G_CALLBACK", handler);
-
-        putfun("g_signal_connect"
-              , 4
-              , widget
-              , signal
-              , callback
-              , data);
-
-        free(callback);
-}
-
 symrec *get_symbol_by_type(widget_type type)
 {
         symrec *ptr = sym_table;

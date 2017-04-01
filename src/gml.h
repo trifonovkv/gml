@@ -98,6 +98,7 @@ typedef enum
         , TYPE_CALENDAR
         , TYPE_ICON_VIEW
         , TYPE_EXPANDER
+        , TYPE_MESSAGE_DIALOG
 } widget_type;
 
 /* Keyboard accelerators and action */
@@ -136,7 +137,6 @@ void        main_start      ();
 void        main_end        ();
 void        include_insert  (char *include);
 void        block_close     (char *start);
-void        signal_connect  (char *signal, char *handler, char *data);
 void        button_box_new  (char *widget);
 
 symrec*     get_symbol_by_type(widget_type type);
