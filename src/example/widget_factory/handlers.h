@@ -1,5 +1,9 @@
 #include <gtk/gtk.h>
 
+void close_dialog(GtkWidget *dialog);
+
+void show_dialog(GtkWidget *button, GtkWidget *dialog);
+
 void reset_icon_size(GtkWidget *iv);
 
 void increase_icon_size(GtkWidget *iv);

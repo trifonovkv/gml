@@ -14,7 +14,17 @@ typedef struct {
         gchar *filename;
 } BackgroundData;
 
-static int icon_sizes[] = {0, 1, 2, 3, 4, 5, 6}; 
+int icon_sizes[] = {0, 1, 2, 3, 4, 5, 6}; 
+
+void close_dialog(GtkWidget *dialog)
+{
+        gtk_widget_hide(dialog);
+}
+
+void show_dialog(GtkWidget *button, GtkWidget *dialog)
+{
+        gtk_widget_show(dialog);
+}
 
 void update_buttons(GtkWidget *iv, int pos)
 {

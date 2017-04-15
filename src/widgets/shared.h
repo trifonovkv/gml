@@ -45,6 +45,52 @@
 #include "icon_view.h"
 #include "grid.h"
 #include "expander.h"
+#include "dialog.h"
+#include "message_dialog.h"
+
+void add_action_widget(char *child, char *response_id)
+{
+        widget_type type = getsymtype(this);
+        
+        if (TYPE_DIALOG == type || TYPE_MESSAGE_DIALOG == type) {
+                dialog_add_action_widget(child, response_id);
+        } else if (TYPE_INFO_BAR == type) {
+                info_bar_add_action_widget(child, response_id);
+        }
+}
+
+void add_button(char *button_text, char *response_id)
+{
+        widget_type type = getsymtype(this);
+        
+        if (TYPE_DIALOG == type || TYPE_MESSAGE_DIALOG == type) {
+                dialog_add_button(button_text, response_id);
+        } else if (TYPE_INFO_BAR == type) {
+                info_bar_add_button(button_text, response_id);
+        }
+}
+
+void set_response_sensitive(char *response_id, char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (TYPE_DIALOG == type) {
+                dialog_set_response_sensitive(response_id, setting);
+        } else if (TYPE_INFO_BAR == type) {
+                info_bar_set_response_sensitive(response_id, setting);
+        }
+}
+
+void set_default_response(char *setting)
+{
+        widget_type type = getsymtype(this);
+
+        if (TYPE_DIALOG == type) {
+                dialog_set_default_response(setting);
+        } else if (TYPE_INFO_BAR == type) {
+                info_bar_set_default_response(setting);
+        }
+}
 
 void set_use_markup(char *setting)
 {

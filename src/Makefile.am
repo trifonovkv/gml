@@ -91,6 +91,7 @@ gml_SOURCES =                                     \
 								widgets/expander.c                \
 								widgets/g_signal.c                \
 								widgets/message_dialog.c          \
+								widgets/dialog.c                  \
 								$(NULL)
 
 noinst_HEADERS = gml.h

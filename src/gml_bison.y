@@ -78,6 +78,7 @@
 #include "widgets/expander.h"
 #include "widgets/g_signal.h"
 #include "widgets/message_dialog.h"
+#include "widgets/dialog.h"
 
 #define YYERROR_VERBOSE 1
 
@@ -95,6 +96,8 @@ int yywrap()
 int yylex();
 
 %}
+%token DIALOG
+
 %token MESSAGE_DIALOG BUTTONS PARENT MARKUP SECONDARY_TEXT SECONDARY_MARKUP 
 
 %token EXPANDER EXPANDER_WITH_MNEMONIC EXPANDED LABEL_FILL RESIZE_TOPLEVEL 
@@ -402,6 +405,7 @@ widget:
         | expander
         | expander_with_mnemonic
         | message_dialog
+        | dialog
         ;
 
 params: 
@@ -489,6 +493,11 @@ max:
 
 step:
         SET STEP FLOAT                                              { $$ = $3; }
+        ;
+
+dialog:
+        DIALOG IDENTIFIER                                    { dialog_new($2); }
+        params SEMICOLON                                    { block_close($2); }
         ;
 
 message_dialog:
@@ -1060,6 +1069,8 @@ set:
         | set_row_spacing
         | set_column_spacing
         | set_use_markup
+        | set_default_response
+        | set_response_sensitive
         | set_window_default_size
         | set_window_deletable
         | set_window_urgent
@@ -1298,8 +1309,6 @@ set:
         | set_toolbar_icon_size
         | set_search_bar_search_mode
         | set_search_bar_connect_entry
-        | set_info_bar_response_sensitive
-        | set_info_bar_default_response
         | set_info_bar_message_type
         | set_paned_position
         | set_paned_wide_handle
@@ -1424,15 +1433,6 @@ set_paned_position:
 
 set_paned_wide_handle:
         SET WIDE_HANDLE IDENTIFIER                { paned_set_wide_handle($3); }
-        ;
-
-set_info_bar_response_sensitive:
-        SET RESPONSE_SENSITIVE NUMBER IDENTIFIER 
-                                    { info_bar_set_response_sensitive($3, $4); }
-        ;
-
-set_info_bar_default_response:
-        SET DEFAULT_RESPONSE NUMBER       { info_bar_set_default_response($3); }
         ;
 
 set_info_bar_message_type:
@@ -2442,6 +2442,15 @@ set_window_default_size:
         SET DEFAULT_SIZE NUMBER NUMBER      { window_set_default_size($3, $4); }
         ;
 
+set_response_sensitive:
+        SET RESPONSE_SENSITIVE NUMBER IDENTIFIER 
+                                             { set_response_sensitive($3, $4); }
+        ;
+
+set_default_response:
+        SET DEFAULT_RESPONSE NUMBER                { set_default_response($3); }
+        ;
+
 set_use_markup:
         SET USE_MARKUP IDENTIFIER                        { set_use_markup($3); }
         ;
@@ -2644,9 +2653,8 @@ add:
         | ADD ADD_OVERLAY IDENTIFIER                { overlay_add_overlay($3); }
         | ADD ITEM IDENTIFIER                        { g_menu_append_item($3); }
         | ADD WIDGET IDENTIFIER                   { size_group_add_widget($3); }
-        | ADD ACTION_WIDGET IDENTIFIER NUMBER 
-                                         { info_bar_add_action_widget($3, $4); }
-        | ADD BUTTON IDENTIFIER NUMBER          { info_bar_add_button($3, $4); }
+        | ADD ACTION_WIDGET IDENTIFIER IDENTIFIER { add_action_widget($3, $4); }
+        | ADD BUTTON STRING IDENTIFIER                   { add_button($3, $4); }
         | ADD CONTENT_AREA IDENTIFIER         { info_bar_add_content_area($3); }
         | ADD PACK1 IDENTIFIER IDENTIFIER IDENTIFIER 
                                                     { paned_pack1($3, $4, $5); }

@@ -396,27 +396,19 @@ EXPANDER expander1
   ADD box16a
 ;
 
-/*
-    <property name="transient-for">window</property>
-    <child type="action">
-      <object class="GtkButton" id="cancel_info_dialog">
-        <property name="label" translatable="yes">_Cancel</property>
-        <property name="use_underline">1</property>
-      </object>
-    </child>
-    <child type="action">
-      <object class="GtkButton" id="doit_info_dialog">
-        <property name="label" translatable="yes">_Do It</property>
-        <property name="use_underline">1</property>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="cancel">cancel_info_dialog</action-widget>
-      <action-widget response="ok">doit_info_dialog</action-widget>
-    </action-widgets>
-*/
+BUTTON cancel_info_dialog
+  SET Label "_Cancel"
+  SET Use_underline TRUE
+  CMN Show 
+;
 
-MESSAGE_DIALOG message_dialog
+BUTTON doit_info_dialog
+  SET Label "_Do It"
+  SET Use_underline TRUE
+  CMN Show 
+;
+
+MESSAGE_DIALOG info_dialog
   ARG Parent NULL
   ARG Flags GTK_DIALOG_MODAL
   ARG Type GTK_MESSAGE_INFO
@@ -424,13 +416,17 @@ MESSAGE_DIALOG message_dialog
   ARG Text "Do something?"
   SET Resizable FALSE
   SET Modal TRUE
-  SET Secondary_text "If you do something,bad things might happen."
+  SET Secondary_text "If you do something,\nbad things might happen."
+  ADD Action_widget cancel_info_dialog GTK_RESPONSE_CANCEL
+  ADD Action_widget doit_info_dialog GTK_RESPONSE_OK
   SIGNAL "delete-event" gtk_widget_hide_on_delete
+  SIGNAL "response" close_dialog
 ;
 
 BUTTON info_dialog_button
   SET Label "_Inform"
   SET Use_underline TRUE
+  SIGNAL "clicked" show_dialog info_dialog
 ;
 
 BUTTON action_dialog_button
@@ -458,23 +454,6 @@ VBOX filler2
   ADD preference_dialog_button
   ADD selection_dialog_button
 ;
-
-/*
-                    <child>
-                      separator10
-                    </child>
-                    <child>
-                      filler2
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="name">page2</property>
-                <property name="title" translatable="yes">Page 2</property>
-              </packing>
-</child>
-*/
 
 SEPARATOR separator8
   SET Orientation GTK_ORIENTATION_HORIZONTAL

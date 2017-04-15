@@ -34,6 +34,8 @@ SIGNAL_SWAPPED                        return SIGNAL_SWAPPED;
 PACK                                  return PACK;
 ARG                                   return ARG;
 
+DIALOG                                return DIALOG;
+
 MESSAGE_DIALOG                        return MESSAGE_DIALOG;
 Type                                  return TYPE;
 Buttons                               return BUTTONS;

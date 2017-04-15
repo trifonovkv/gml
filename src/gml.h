@@ -99,6 +99,7 @@ typedef enum
         , TYPE_ICON_VIEW
         , TYPE_EXPANDER
         , TYPE_MESSAGE_DIALOG
+        , TYPE_DIALOG
 } widget_type;
 
 /* Keyboard accelerators and action */
